@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using EMS.Services;
 
 namespace EMS
 {
@@ -13,6 +14,15 @@ namespace EMS
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
+
+
+            builder.Services.AddTransient<DBService>(provider  =>
+            {
+                string connectionString = "Server=107.180.27.178;Port=3306;Database=EMS;Uid=oopadmin;Pwd=taQoCt]ApQZ5";
+                return new DBService(connectionString);
+            });
+
+
 
             builder.Services.AddMauiBlazorWebView();
 

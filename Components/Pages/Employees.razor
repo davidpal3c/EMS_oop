@@ -1,0 +1,122 @@
+﻿@page "/employees"
+@using Models
+@using Services
+@inject EmployeeService EmployeeService
+@inject DBService DBService 
+
+
+
+<h1>Employees</h1>
+
+<p>@msg</p>
+
+<div class="mt-3 bg-success text-white bg-opacity-75">
+    @testMsg
+</div>
+
+
+@if (employeeList == null)
+{
+    <PageTitle>Loading...</PageTitle>
+}
+else 
+{    
+    <div class="nav-header">
+            <div>
+                <form>
+                    <input type="text" class="search-field" placeholder="Name"/>
+                    <button type="submit" class="btn btn-dark"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-person-add"></i>
+                </button>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-secondary">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+            </div>
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Employee e in employeeList)
+            {
+                <tr>
+                    <td>@e.Id.ToString()</td>
+                    <td>@e.Name</td>
+                    <td><a href="mailto:@e.Email">@e.Email</a></td>
+                    <td>@e.Position</td>
+                    <td>@e.Salary</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@code {
+    private List<Employee> employeeList = new List<Employee>();
+    private string msg;
+    private string testMsg;
+
+    private List<Employee>? filteredData = new List<Employee>();
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (DBService.IsSuccessfulConnection())
+            {
+            msg = "DB Connection - OK!";
+        }
+        else
+            {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+        }
+
+        //custList = await DatabaseService.GetCustomers();
+        await RefreshList();
+    }
+    
+    private async Task RefreshList()
+    {
+        try
+        {
+            employeeList = await EmployeeService.GetEmployees();
+            //filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+        }
+    }
+
+
+}
