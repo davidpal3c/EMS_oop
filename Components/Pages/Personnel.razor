@@ -1,16 +1,91 @@
 ﻿@page "/personnel"
 
-<h1>Personnel</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<h1>Employees</h1>
+<div class="page-header-ems">
+    <input type="search" class="form-control" placeholder="Search for employees" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+</div>
+<div class="page-ems">
+    <div class="page-section-ems">
+        <table class="table table-hover">
+            <thead>
+                <tr class="thead-border">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+                    <th>Created</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Position</td>
+                    <td>Salary</td>
+                    <td>Created</td>
+                    <td>Updated</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-section-ems">
+        <form>
+            @if(id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="id">Id</label>
+                    <input type="number" @bind="id" class="form-control" id="id" readonly />
+                </div>
+            }
+           
+            <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" @bind="emailAddress" placeholder="someone@sample.net" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="position">Position</label>
+                <input type="text" @bind="position"  placeholder="Enter Full Name" class="form-control" id="position" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="salary">Salary</label>
+                <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+            </div>
+            @if (id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="date" @bind="created" class="form-control" id="created" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                <input type="date" @bind="updated" class="form-control" id="updated" />
+            </div>
+            }
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+        </form>
+    </div>
+</div>
 
 @code {
-    private int currentCount = 0;
+    private int? id;
+    private string? fullName;
+    private string? emailAddress;
+    private string? position;
+    private double? salary;
+    private DateOnly? created;
+    private DateOnly? updated;
+    private string? search;
 
-    private void IncrementCount()
+    private void SearchEmployees()
     {
-        currentCount++;
+        
     }
+
 }

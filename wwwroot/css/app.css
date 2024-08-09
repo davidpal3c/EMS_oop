@@ -69,6 +69,36 @@ h1:focus {
     display: none;
 }
 
+.page-ems
+{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items:start;
+    gap:20px;
+}
+
+.page-section-ems
+{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr;
+}
+
+.page-header-ems
+{
+    padding-block:20px;
+    background-color:#ffffff;
+    z-index:2;
+    position:sticky;
+    top:60px;
+}
+
+.thead-border
+{
+    border-bottom:solid 3px #000000;
+}
+
 @supports (-webkit-touch-callout: none) {
     .status-bar-safe-area {
         display: flex;
