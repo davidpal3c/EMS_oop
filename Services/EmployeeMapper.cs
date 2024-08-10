@@ -53,6 +53,7 @@ namespace EMS.Services
                 {
                     Id = reader.GetInt32("Id"),
                     EmployeeId = reader.GetInt32("EmployeeId"),
+                    EmployeeName = reader.GetString("Name"),
                     BaseSalary = reader.GetDouble("BaseSalary"),
                     OvertimePay = reader.GetDouble("OvertimePay"),
                     Deductions = reader.GetDouble("Deductions"),
