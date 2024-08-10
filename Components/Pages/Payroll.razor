@@ -100,7 +100,13 @@
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
-                <input type="number" @bind="employee" placeholder="Employee" class="form-control" id="name" required />
+                <select @bind="employee" placeholder="Employee" class="form-control" id="name" required>
+                    <option value="">Select Employee</option>
+                    @foreach(Employee e in employeeOptions)
+                    {
+                        <option value="@e.Id">@e.Name</option>
+                    }
+                </select>
             </div>        
             <div class="mb-3">
                 <label class="form-label" for="salary">Base Salary</label>
@@ -149,6 +155,7 @@
     private DateOnly? updated;
     private string? search;
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
+    private List<Models.Employee> employeeOptions = new List<Models.Employee>();
     private string? msg;
     private string alert = "alert-success";
     private int records = 0;
@@ -194,6 +201,7 @@
         try
         {
             payrollList = await EmployeeService.GetPayrolls();
+            employeeOptions = await EmployeeService.GetEmployees();
             records = payrollList.Count;
             filteredData = null;
         }
