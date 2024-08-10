@@ -6,7 +6,7 @@
 
 <h1>Employees</h1>
 <div class="page-header-ems">
-    <input type="search" class="form-control" placeholder="Search for employees" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+    <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
     @if (msg != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -96,7 +96,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="position">Position</label>
-                <input type="text" @bind="position"  placeholder="Enter Full Name" class="form-control" id="position" required />
+                <input type="text" @bind="position"  placeholder="Enter Position" class="form-control" id="position" required />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="salary">Salary</label>
