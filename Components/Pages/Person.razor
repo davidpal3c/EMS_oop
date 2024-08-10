@@ -1,4 +1,8 @@
-﻿@page "/personnel"
+﻿@page "/person"
+@using Models
+@using Services
+@inject EmployeeService EmployeeService
+@inject DBService DBService
 
 <h1>Employees</h1>
 <div class="page-header-ems">
@@ -19,15 +23,21 @@
                 </tr>
             </thead>
             <tbody>
+            @foreach (Employee e in employeeList)
+            {
                 <tr>
-                    <td>Id</td>
-                    <td>Name</td>
-                    <td>Email</td>
-                    <td>Position</td>
-                    <td>Salary</td>
-                    <td>Created</td>
-                    <td>Updated</td>
+                    <td>@e.Id.ToString()</td>
+                    <td>@e.Name</td>
+                    <td><a href="mailto:@e.Email">@e.Email</a></td>
+                    <td>@e.Position</td>
+                    <td>@e.Salary</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
                 </tr>
+            }
             </tbody>
         </table>
     </div>
@@ -82,10 +92,46 @@
     private DateOnly? created;
     private DateOnly? updated;
     private string? search;
+    private List<Employee> employeeList = new List<Employee>();
+    private string? msg;
+    private string? testMsg;
+
+    private List<Employee>? filteredData = new List<Employee>();
 
     private void SearchEmployees()
     {
         
+    }
+
+    
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (DBService.IsSuccessfulConnection())
+        {
+            msg = "DB Connection - OK!";
+        }
+        else
+        {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+        }
+
+        //custList = await DatabaseService.GetCustomers();
+        await RefreshList();
+    }
+
+    private async Task RefreshList()
+    {
+        try
+        {
+            employeeList = await EmployeeService.GetEmployees();
+            //filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+        }
     }
 
 }
