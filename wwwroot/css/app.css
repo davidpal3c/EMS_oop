@@ -75,7 +75,7 @@ h1:focus {
     display:grid;
     grid-template-columns: 1fr 1fr;
     align-items:start;
-    gap:20px;
+    gap:30px;
 }
 
 .page-section-ems
@@ -97,6 +97,10 @@ h1:focus {
 .thead-border
 {
     border-bottom:solid 3px #000000;
+}
+
+td{
+    vertical-align:middle;
 }
 
 @supports (-webkit-touch-callout: none) {

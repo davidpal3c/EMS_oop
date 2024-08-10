@@ -18,16 +18,18 @@ namespace EMS
 
             builder.Services.AddTransient<DBService>(provider  =>
             {
-                string connectionString = "Server=107.180.27.178;Port=3306;Database=EMS;Uid=oopadmin;Pwd=taQoCt]ApQZ5";
+                string connectionString = "Server=107.180.27.178;Port=3306;Database=employeemanager;Uid=oopadmin;Pwd=taQoCt]ApQZ5";
                 return new DBService(connectionString);
             });
 
 
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddSingleton<EmployeeService>();
+            builder.Services.AddSingleton<EmployeeMapper>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 

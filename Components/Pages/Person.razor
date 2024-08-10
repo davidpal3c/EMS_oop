@@ -1,12 +1,19 @@
 ﻿@page "/person"
 @using Models
 @using Services
-@inject EmployeeService EmployeeService
-@inject DBService DBService
+@inject Services.DBService DBService
+@inject Services.EmployeeService EmployeeService
 
 <h1>Employees</h1>
 <div class="page-header-ems">
     <input type="search" class="form-control" placeholder="Search for employees" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+    @if (msg != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+             @msg
+        <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+    </div>
+    }
 </div>
 <div class="page-ems">
     <div class="page-section-ems">
@@ -18,37 +25,65 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-                    <th>Created</th>
-                    <th>Updated</th>
+              <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach (Employee e in employeeList)
+            @if(filteredData != null)
             {
-                <tr>
+                    @foreach (Employee e in filteredData)
+                    {
+                        <tr>
+                            <td>@e.Id.ToString()</td>
+                            <td>@e.Name</td>
+                            <td><a href="mailto:@e.Email">@e.Email</a></td>
+                            <td>@e.Position</td>
+                            <td>@e.Salary</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    
+                
+                    @foreach (Employee e in employeeList)
+                    {
+                    <tr>
                     <td>@e.Id.ToString()</td>
                     <td>@e.Name</td>
                     <td><a href="mailto:@e.Email">@e.Email</a></td>
                     <td>@e.Position</td>
                     <td>@e.Salary</td>
                     <td>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-pencil-square"></i>
+                        <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                            Edit
                         </button>
                     </td>
                 </tr>
+            }
             }
             </tbody>
         </table>
     </div>
     <div class="page-section-ems">
-        <form>
+        <form @onsubmit="AddEmployee">
+            
             @if(id != null)
             {
+                <h2>Update @fullName</h2>
                 <div class="mb-3">
                     <label class="form-label" for="id">Id</label>
                     <input type="number" @bind="id" class="form-control" id="id" readonly />
                 </div>
+            }
+            else
+            {
+                <h2>Create Customer</h2>
             }
            
             <div class="mb-3">
@@ -69,16 +104,15 @@
             </div>
             @if (id != null)
             {
-                <div class="mb-3">
-                    <label class="form-label" for="created">Created</label>
-                    <input type="date" @bind="created" class="form-control" id="created" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="updated">Updated</label>
-                <input type="date" @bind="updated" class="form-control" id="updated" />
-            </div>
+                <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update Employee</button>
+                <button type="button" @onclick="Reset" class="btn btn-outline-danger">Cancel</button>
             }
-            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            else
+            {
+                <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Add Employee</button>
+            }
+            
+            
         </form>
     </div>
 </div>
@@ -88,26 +122,25 @@
     private string? fullName;
     private string? emailAddress;
     private string? position;
-    private double? salary;
+    private decimal salary = 0;
     private DateOnly? created;
     private DateOnly? updated;
     private string? search;
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
-    private string? testMsg;
-
+    private string alert = "alert-success";
+    private bool editMode = false;
+    private Employee? emp;
     private List<Employee>? filteredData = new List<Employee>();
 
-    private void SearchEmployees()
-    {
-        
-    }
+   
 
-    
+
 
 
     protected override async Task OnInitializedAsync()
     {
+
         if (DBService.IsSuccessfulConnection())
         {
             msg = "DB Connection - OK!";
@@ -115,10 +148,23 @@
         else
         {
             msg = "Reconfigure connection string at MauiProgram.cs";
+            alert = "alert-danger";
         }
 
         //custList = await DatabaseService.GetCustomers();
         await RefreshList();
+    }
+
+    private async Task Reset()
+    {
+        fullName = emailAddress = position = "";
+        salary = 0;
+        id = null;
+    }
+
+    private async Task CloseMessage()
+    {
+        msg = null;
     }
 
     private async Task RefreshList()
@@ -126,12 +172,91 @@
         try
         {
             employeeList = await EmployeeService.GetEmployees();
-            //filteredData = null;
+            filteredData = null;
         }
         catch (Exception e)
         {
             msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
         }
     }
+
+    private async Task SearchEmployees()
+    {
+        try
+        {
+            filteredData = await EmployeeService.SearchEmployees(search);
+            //filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task EditEmployee(Employee employee)
+    {
+        try
+        {
+            emp = employee;
+            editMode = true;
+            id = employee.Id;
+            fullName = employee.Name;
+            emailAddress = employee.Email;
+            position = employee.Position;
+            salary = employee.Salary;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+    private async Task AddEmployee()
+    {
+        try
+        {
+            List<object> customerData = new List<object>();
+            customerData.Add(fullName);
+            customerData.Add(emailAddress);
+            customerData.Add(position);
+            customerData.Add(salary);
+
+            msg = $"New employee {fullName} added successfully!";
+            await EmployeeService.AddEmployee(customerData);
+            await RefreshList();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task UpdateEmployee()
+    {
+        try
+        {
+
+            emp.Name = fullName;
+            emp.Email = emailAddress;
+            emp.Position = position;
+            emp.Salary = salary;
+            msg = $"{emp.Name} updated successfully!";
+            await EmployeeService.UpdateEmployee(emp);
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
 
 }
