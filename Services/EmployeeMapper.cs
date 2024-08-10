@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EMS.Models;   
 using MySqlConnector;
+using System.Data;
 
 
 namespace EMS.Services
@@ -65,6 +66,34 @@ namespace EMS.Services
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error mapping data from reader to Payroll", ex);
+            }
+
+        }
+
+
+
+        public TimeRecord MapFromReaderTime(MySqlDataReader reader)
+        {
+            try
+            {
+                TimeRecord payroll = new TimeRecord();
+
+
+                return new TimeRecord
+                {
+                    Id = reader.GetInt32("Id"),
+                    EmployeeId = reader.GetInt32("EmployeeId"),
+                    EmployeeName = reader.GetString("Name"),
+                    Date = reader.GetDateTime("Date"),
+                    HoursWorked = reader.GetDouble("HoursWorked"),
+                    //TimeRecord.TimeType = reader.GetEnumerator("Type"),
+                    CreatedAt = reader.GetDateTime("CreatedAt"),
+                    UpdatedAt = reader.GetDateTime("UpdatedAt")
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error mapping data from reader to TimeRecord", ex);
             }
 
         }
