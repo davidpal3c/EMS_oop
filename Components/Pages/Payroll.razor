@@ -126,6 +126,14 @@
                 <label class="form-label" for="netpay">Net Pay</label>
                 <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly/>
             </div>
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
             }
             <div class="button-holder-ems">
                 @if (id != null)
@@ -151,8 +159,8 @@
     private double overtimePay = 0;
     private double deductions = 0;
     private double netPay = 0;
-    private DateOnly? created;
-    private DateOnly? updated;
+    private DateTime? created;
+    private DateTime? updated;
     private string? search;
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
@@ -237,6 +245,8 @@
             overtimePay = payroll.OvertimePay;
             deductions = payroll.Deductions;
             netPay = payroll.NetSalary;
+            created = payroll.CreatedAt;
+            updated = payroll.UpdatedAt;
         }
         catch (Exception e)
         {

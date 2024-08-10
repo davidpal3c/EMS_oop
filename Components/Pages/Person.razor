@@ -126,6 +126,17 @@
                     <option value="3">Management</option>
                 </select>
             </div>
+            @if (id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
+            }
             <div class="button-holder-ems">
             @if (id != null)
             {
@@ -151,8 +162,8 @@
     private decimal salary = 0;
     private string? status;
     private int role = 1;
-    private DateOnly? created;
-    private DateOnly? updated;
+    private DateTime? created;
+    private DateTime? updated;
     private string? search;
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
@@ -239,6 +250,8 @@
             salary = employee.Salary;
             status = employee.Status;
             role = employee.Role;
+            created = employee.CreatedAt;
+            updated = employee.UpdatedAt;
 
         }
         catch (Exception e)
