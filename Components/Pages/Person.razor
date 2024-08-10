@@ -86,8 +86,8 @@
             {
                 <h2>Update @fullName</h2>
                 <div class="mb-3">
-                    <label class="form-label" for="id">Id</label>
-                    <input type="number" @bind="id" class="form-control" id="id" readonly />
+                    <label class="form-label" for="idd">Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
             else
@@ -151,7 +151,6 @@
     private string? msg;
     private string alert = "alert-success";
     private int records = 0;
-    private bool editMode = false;
     private string activeClass = "";
     private Employee? emp;
     private List<Employee>? filteredData = new List<Employee>();
@@ -226,7 +225,6 @@
         try
         {
             emp = employee;
-            editMode = true;
             id = employee.Id;
             fullName = employee.Name;
             emailAddress = employee.Email;

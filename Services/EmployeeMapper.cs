@@ -39,5 +39,33 @@ namespace EMS.Services
             }
 
         }
+
+        // TEMPORARY LOCATION - TO MOVE TO PAYROLL MAPPER
+
+        public Payroll MapFromReaderPayroll(MySqlDataReader reader)
+        {
+            try
+            {
+                Payroll payroll = new Payroll();
+
+
+                return new Payroll
+                {
+                    Id = reader.GetInt32("Id"),
+                    EmployeeId = reader.GetInt32("EmployeeId"),
+                    BaseSalary = reader.GetDouble("BaseSalary"),
+                    OvertimePay = reader.GetDouble("OvertimePay"),
+                    Deductions = reader.GetDouble("Deductions"),
+                    NetSalary = reader.GetDouble("NetPay"),
+                    CreatedAt = reader.GetDateTime("CreatedAt"),
+                    UpdatedAt = reader.GetDateTime("UpdatedAt"),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error mapping data from reader to Payroll", ex);
+            }
+
+        }
     }
 }

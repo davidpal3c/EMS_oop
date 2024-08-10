@@ -54,8 +54,9 @@ namespace EMS.Models
         {
             get { return _netSalary; }
             set { _netSalary = value; }
-        }   
+        }
 
+        public Payroll() { }
 
         public Payroll(int id, int employeeId, double baseSalary, double overtimePay, double deductions, double netSalary, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
