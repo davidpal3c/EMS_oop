@@ -4,7 +4,7 @@
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
 
-<h1>TimeRecord</h1>
+<h1>Time Record</h1>
 <div>Manage employee time records</div>
 <div class="page-header-ems">
     <div class="page-header-ems-section">
@@ -46,7 +46,7 @@
                             <td>@t.Type</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
-                                    <i class="bi bi-info-circle"></i>
+                                    <i class="bi bi-pen"></i>
                                     View
                                 </button>
                             </td>
@@ -69,7 +69,7 @@
                             <td>@t.Type</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
-                                    <span class="bi bi-info-circle"></span>
+                                    <i class="bi bi-pen"></i>
                                     View
                                 </button>
                             </td>
@@ -81,19 +81,29 @@
     </div>
     <div class="page-section-ems">
         <form @onsubmit="AddPayroll">
-
+            <div class="h2">@title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update Payroll</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Add Payroll<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
             @if (id != null)
             {
-                <h2>Update Time Record @id</h2>
+                
                 <div class="mb-3">
                     <label class="form-label" for="idd">Id</label>
                     <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
-            else
-            {
-                <h2>Create Time Record</h2>
-            }
+           
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
@@ -133,18 +143,7 @@
                     <input type="date" @bind="updated" class="form-control" id="updated" required readonly />
                 </div>
             }
-            <div class="button-holder-ems">
-                @if (id != null)
-                {
-                    <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update Payroll</button>
-                    <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close</button>
-                    <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
-                }
-                else
-                {
-                    <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Add Payroll</button>
-                }
-            </div>
+            
 
         </form>
     </div>
@@ -163,6 +162,7 @@
     private DateOnly? created;
     private DateOnly? updated;
     private string? search;
+    private string title = "Add Time Record";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
@@ -200,6 +200,7 @@
     {
         baseSalary = netPay = overtimePay = deductions = 0;
         id = employee = null;
+        title = "Add Time Record";
     }
 
     private async Task CloseMessage()
@@ -247,6 +248,7 @@
             employee = time.EmployeeId;
             date = time.Date;
             hoursWorked = time.HoursWorked;
+            title = $"Update Time Record {id}";
             //type = time.Type;
         }
         catch (Exception e)

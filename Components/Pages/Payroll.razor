@@ -48,7 +48,7 @@
                             <td>@p.NetSalary.ToString("C")</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
-                                    <i class="bi bi-info-circle"></i>
+                                    <i class="bi bi-pen"></i>
                                     View
                                 </button>
                             </td>
@@ -72,7 +72,7 @@
                             <td>@p.NetSalary.ToString("C")</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
-                                    <span class="bi bi-info-circle"></span>
+                                    <i class="bi bi-pen"></i>
                                     View
                                 </button>
                             </td>
@@ -84,19 +84,29 @@
     </div>
     <div class="page-section-ems">
         <form @onsubmit="AddPayroll">
-
+            <div class="h2">@title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close<i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
             @if (id != null)
             {
-                <h2>Update Payroll @id</h2>
+                
                 <div class="mb-3">
                     <label class="form-label" for="idd">Id</label>
                     <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
-            else
-            {
-                <h2>Add Payroll</h2>
-            }
+            
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
@@ -135,18 +145,7 @@
                     <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
                 </div>
             }
-            <div class="button-holder-ems">
-                @if (id != null)
-                {
-                    <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update Payroll</button>
-                    <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close</button>
-                    <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
-                }
-                else
-                {
-                    <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Add Payroll</button>
-                }
-            </div>
+           
 
         </form>
     </div>
@@ -162,6 +161,7 @@
     private DateTime? created;
     private DateTime? updated;
     private string? search;
+    private string title = "Add Payroll";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
     private string? msg;
@@ -197,6 +197,7 @@
     {
         baseSalary = netPay = overtimePay = deductions = 0;
         id = employee = null;
+        title = "Add Payroll";
     }
 
     private async Task CloseMessage()
@@ -247,6 +248,7 @@
             netPay = payroll.NetSalary;
             created = payroll.CreatedAt;
             updated = payroll.UpdatedAt;
+            title = $"Update {id}";
         }
         catch (Exception e)
         {

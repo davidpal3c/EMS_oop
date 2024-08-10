@@ -9,8 +9,10 @@
 <div class="page-header-ems">
     <div class="page-header-ems-section">
         <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>@records employees listed</div>
-    </div>
+        <div>
+            <i class="check-circle"></i>
+            @records employees listed</div>
+        </div>
     @if (msg != null)
     {
         <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -46,7 +48,7 @@
                             <td>@e.Salary.ToString("C")</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <i class="bi bi-info-circle"></i>
+                                    <span class="bi bi-pen"></span>
                                     View
                                 </button>
                             </td>
@@ -69,7 +71,7 @@
                     <td>@e.Salary.ToString("C")</td>
                     <td>
                         <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <span class="bi bi-info-circle"></span>
+                                    <i class="bi bi-pen"></i>
                             View
                         </button>
                     </td>
@@ -82,18 +84,29 @@
     <div class="page-section-ems">
         <form @onsubmit="AddEmployee">
             
+            <div class="h2"> @title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
             @if(id != null)
             {
-                <h2>Update @fullName</h2>
+              
                 <div class="mb-3">
                     <label class="form-label" for="idd">Id</label>
                     <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
-            else
-            {
-                <h2>Create Customer</h2>
-            }
+          
            
             <div class="mb-3">
                 <label class="form-label" for="name">Full Name</label>
@@ -137,18 +150,7 @@
                     <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
                 </div>
             }
-            <div class="button-holder-ems">
-            @if (id != null)
-            {
-                <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update Employee</button>
-                <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close</button>
-                <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
-            }
-            else
-            {
-                <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Add Employee</button>
-            }
-            </div>
+            
             
         </form>
     </div>
@@ -168,6 +170,7 @@
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
     private string alert = "alert-success";
+    private string title = "Add Employee";
     private int records = 0;
     private string activeClass = "";
     private Employee? emp;
@@ -202,6 +205,7 @@
         status = "Active";
         role = 1;
         id = null;
+        title = "Add Employee";
     }
 
     private async Task CloseMessage()
@@ -252,6 +256,7 @@
             role = employee.Role;
             created = employee.CreatedAt;
             updated = employee.UpdatedAt;
+            title = $"Update {fullName}";
 
         }
         catch (Exception e)
