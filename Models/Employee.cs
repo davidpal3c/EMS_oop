@@ -14,6 +14,8 @@ namespace EMS.Models
         private string _email;
         private string _position;
         private decimal _salary;
+        private string _status;
+        private int _role;
 
 
         [Required(ErrorMessage = "Eemployee Name required")]
@@ -48,16 +50,30 @@ namespace EMS.Models
             set { _salary = value; }
         }
 
+        public string Status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
+
+        public int Role
+        {
+            get { return _role; }
+            set { _role = value; }
+        }
+
 
         public Employee() { }
 
-        public Employee(int id, string name, string email, string position, decimal salary, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        public Employee(int id, string name, string email, string position, decimal salary, string status, int role, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             Id = id;
             Name = name;
             Email = email;
             Position = position;
             Salary = salary;
+            Status = status;
+            Role = role;
         }
 
         public override string ToString()

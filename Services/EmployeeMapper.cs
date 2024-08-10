@@ -27,6 +27,8 @@ namespace EMS.Services
                     Email = reader.GetString("Email"),
                     Position = reader.GetString("Position"),
                     Salary = reader.GetDecimal("Salary"),
+                    Status = reader.GetString("EmployeeStatus"),
+                    Role = reader.GetInt32("EmployeeRole"),
                     CreatedAt = reader.GetDateTime("CreatedAt"),
                     UpdatedAt = reader.GetDateTime("UpdatedAt"),
                 };

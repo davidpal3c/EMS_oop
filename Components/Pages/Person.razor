@@ -5,9 +5,12 @@
 @inject Services.EmployeeService EmployeeService
 
 <h1>Employees</h1>
-<p>Manage employees</p>
+<div>Manage employees</div>
 <div class="page-header-ems">
-    <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+    <div class="page-header-ems-section">
+        <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <div>@records employees listed</div>
+    </div>
     @if (msg != null)
     {
         <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -30,8 +33,9 @@
                 </tr>
             </thead>
             <tbody>
-            @if(filteredData != null)
+                @if (filteredData != null)
             {
+                   
                     @foreach (Employee e in filteredData)
                     {
                         <tr>
@@ -39,10 +43,11 @@
                             <td>@e.Name</td>
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
-                            <td>@e.Salary</td>
+                            <td>@e.Salary.ToString("C")</td>
                             <td>
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    Edit
+                                    <i class="bi bi-info-circle"></i>
+                                    View
                                 </button>
                             </td>
                         </tr>
@@ -54,15 +59,18 @@
                 
                     @foreach (Employee e in employeeList)
                     {
-                    <tr>
+
+                        @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
+                        <tr class="@activeClass">
                     <td>@e.Id.ToString()</td>
                     <td>@e.Name</td>
                     <td><a href="mailto:@e.Email">@e.Email</a></td>
                     <td>@e.Position</td>
-                    <td>@e.Salary</td>
+                    <td>@e.Salary.ToString("C")</td>
                     <td>
                         <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                            Edit
+                                    <span class="bi bi-info-circle"></span>
+                            View
                         </button>
                     </td>
                 </tr>
@@ -88,7 +96,7 @@
             }
            
             <div class="mb-3">
-                <label class="form-label" for="name">Name</label>
+                <label class="form-label" for="name">Full Name</label>
                 <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
             </div>
             <div class="mb-3">
@@ -103,17 +111,26 @@
                 <label class="form-label" for="salary">Salary</label>
                 <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
             </div>
+            <div class="mb-3">
+                <label class="form-label" for="status">Status</label>
+                <input type="text" @bind="status" placeholder="Status" class="form-control" id="status" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="role">Role</label>
+                <input type="number" @bind="role" placeholder="Role" class="form-control" id="role" required />
+            </div>
+            <div class="button-holder-ems">
             @if (id != null)
             {
                 <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update Employee</button>
-                <button type="button" @onclick="Reset" class="btn btn-outline-danger">Cancel</button>
+                <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close</button>
                 <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
             }
             else
             {
                 <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Add Employee</button>
             }
-            
+            </div>
             
         </form>
     </div>
@@ -125,17 +142,21 @@
     private string? emailAddress;
     private string? position;
     private decimal salary = 0;
+    private string? status;
+    private int role = 1;
     private DateOnly? created;
     private DateOnly? updated;
     private string? search;
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
     private string alert = "alert-success";
+    private int records = 0;
     private bool editMode = false;
+    private string activeClass = "";
     private Employee? emp;
     private List<Employee>? filteredData = new List<Employee>();
 
-   
+
 
 
 
@@ -145,7 +166,7 @@
 
         if (DBService.IsSuccessfulConnection())
         {
-            msg = "DB Connection - OK!";
+            //msg = "DB Connection - OK!";
         }
         else
         {
@@ -161,6 +182,8 @@
     {
         fullName = emailAddress = position = "";
         salary = 0;
+        status = "Active";
+        role = 1;
         id = null;
     }
 
@@ -174,6 +197,7 @@
         try
         {
             employeeList = await EmployeeService.GetEmployees();
+            records = employeeList.Count;
             filteredData = null;
         }
         catch (Exception e)
@@ -188,7 +212,7 @@
         try
         {
             filteredData = await EmployeeService.SearchEmployees(search);
-            //filteredData = null;
+            records = filteredData.Count;
         }
         catch (Exception e)
         {
@@ -208,6 +232,9 @@
             emailAddress = employee.Email;
             position = employee.Position;
             salary = employee.Salary;
+            status = employee.Status;
+            role = employee.Role;
+
         }
         catch (Exception e)
         {
@@ -226,7 +253,8 @@
             customerData.Add(emailAddress);
             customerData.Add(position);
             customerData.Add(salary);
-
+            customerData.Add(status);
+            customerData.Add(role);
             msg = $"New employee {fullName} added successfully!";
             await EmployeeService.AddEmployee(customerData);
             await RefreshList();
@@ -247,6 +275,8 @@
             emp.Email = emailAddress;
             emp.Position = position;
             emp.Salary = salary;
+            emp.Status = status;
+            emp.Role = role;
             msg = $"{emp.Name} updated successfully!";
             await EmployeeService.UpdateEmployee(emp);
             await RefreshList();

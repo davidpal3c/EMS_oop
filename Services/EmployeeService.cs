@@ -32,7 +32,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Employees", conn))
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT *  FROM Employees", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {                           
@@ -90,14 +90,14 @@ namespace EMS.Services
         public async Task AddEmployee(List<object> employeeData)
         {
 
-            if (employeeData == null || !(employeeData.Count == 5 || employeeData.Count == 4))
+            if (employeeData == null || !(employeeData.Count == 6))
                 throw new ArgumentException("Invalid customer data");
 
             using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
             {
                 await conn.OpenAsync();
 
-                string commandString = $"INSERT INTO Employees ( Name, Email, Position, Salary) VALUES ( @Name, @Email, @Position, @Salary);";
+                string commandString = $"INSERT INTO Employees ( Name, Email, Position, Salary, EmployeeStatus, EmployeeRole) VALUES ( @Name, @Email, @Position, @Salary, @Status, @Role);";
 
                 using (MySqlCommand cmd = new MySqlCommand(commandString, conn))
                 {
@@ -105,6 +105,8 @@ namespace EMS.Services
                     cmd.Parameters.AddWithValue("@Email", employeeData[1]);
                     cmd.Parameters.AddWithValue("@Position", employeeData[2]);
                     cmd.Parameters.AddWithValue("@Salary", employeeData[3]);
+                    cmd.Parameters.AddWithValue("@Status", employeeData[4]);
+                    cmd.Parameters.AddWithValue("@Role", employeeData[5]);
 
                     //string cmdString = BuildQueryString(cmd);
 
@@ -120,7 +122,7 @@ namespace EMS.Services
             {
                 await conn.OpenAsync();
 
-                string commandString = "UPDATE Employees SET Name = @Name, Email = @Email, Position = @Position, Salary = @Salary WHERE Id = @Id";
+                string commandString = "UPDATE Employees SET Name = @Name, Email = @Email, Position = @Position, Salary = @Salary, EmployeeStatus = @Status, EmployeeRole = @Role WHERE Id = @Id";
 
                 using (MySqlCommand cmd = new MySqlCommand(commandString, conn))
                 {
@@ -128,6 +130,8 @@ namespace EMS.Services
                     cmd.Parameters.AddWithValue("@Email", updatedEmployee.Email);
                     cmd.Parameters.AddWithValue("@Position", updatedEmployee.Position);
                     cmd.Parameters.AddWithValue("@Salary", updatedEmployee.Salary);
+                    cmd.Parameters.AddWithValue("@Status", updatedEmployee.Status);
+                    cmd.Parameters.AddWithValue("@Role", updatedEmployee.Role);
                     cmd.Parameters.AddWithValue("@Id", updatedEmployee.Id);
             
 
