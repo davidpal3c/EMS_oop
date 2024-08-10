@@ -8,8 +8,17 @@ a, .btn-link {
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #3b0647;
+    border-color: #3b0647;
+}
+
+    .btn-primary:hover {
+        background-color: #182162;
+        border-color: #182162;
+    }
+::placeholder
+{
+    color:#999999 !important;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -67,6 +76,109 @@ h1:focus {
 
 .status-bar-safe-area {
     display: none;
+}
+
+.page-ems
+{
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items:start;
+    gap:30px;
+    padding-bottom:50px;
+}
+
+.page-section-ems
+{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr;
+    max-height:450px;
+    overflow-y:auto;
+  
+    z-index:2;
+}
+
+.page-header-ems
+{
+    padding-block:20px;
+    background-color:#ffffff;
+    z-index:2;
+    position:sticky;
+    top:60px;
+
+    
+
+}
+
+.page-header-ems-section
+{
+    display:grid;
+    grid-template-columns:auto auto;
+    align-items:center;
+    gap:20px;
+}
+
+.thead-border
+{
+    
+}
+
+thead {
+    position: sticky;
+    top: 0px;
+    border-bottom: solid 3px #000000;
+}
+
+td{
+    vertical-align:middle;
+}
+
+h1, h2
+{
+    font-weight:700;
+}
+
+.h2
+{
+    position:sticky;
+    top:0px;
+    background-color:#ffffff;
+    z-index:1;
+    display:flex;
+    flex-flow:row nowrap;
+    align-items:center;
+    justify-content:flex-start;
+    gap:20px;
+    padding-right:10px;
+    margin:0px;
+    font-weight:700;
+
+
+}
+
+.inactive td, .inactive a
+{
+    color:#bababa !important;
+}
+
+.button-holder-ems
+{
+    position:relative;
+    display:flex;
+    flex-flow:row wrap;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+    vertical-align:middle;
+}
+
+button {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap:5px !important;
 }
 
 @supports (-webkit-touch-callout: none) {

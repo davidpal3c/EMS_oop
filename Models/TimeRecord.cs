@@ -12,6 +12,7 @@ namespace EMS.Models
     {
 
         private int _employeeId;
+        private string _name;
         private DateTime _date;
         private double _hoursWorked;
         private TimeType _type;
@@ -31,6 +32,12 @@ namespace EMS.Models
         {
             get { return _employeeId; }
             set { _employeeId = value; }
+        }
+
+        public string EmployeeName
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
 
@@ -58,10 +65,13 @@ namespace EMS.Models
             set { _type = value; }
         }   
 
+        public TimeRecord() { }
 
-        public TimeRecord(int id, int employeeId, DateTime date, double hoursWorked, TimeType type, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+
+        public TimeRecord(int id, int employeeId, string name, DateTime date, double hoursWorked, TimeType type, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             EmployeeId = employeeId;
+            EmployeeName = name;
             Date = date;
             HoursWorked = hoursWorked;
             Type = type;

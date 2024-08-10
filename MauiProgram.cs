@@ -24,9 +24,11 @@ namespace EMS
 
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddSingleton<EmployeeService>();
+            builder.Services.AddSingleton<EmployeeMapper>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 

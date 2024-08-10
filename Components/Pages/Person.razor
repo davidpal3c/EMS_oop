@@ -1,0 +1,335 @@
+﻿@page "/person"
+@using Models
+@using Services
+@inject Services.DBService DBService
+@inject Services.EmployeeService EmployeeService
+
+<h1>Employees</h1>
+<div>Manage employees</div>
+<div class="page-header-ems">
+    <div class="page-header-ems-section">
+        <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <div>
+            <i class="check-circle"></i>
+            @records employees listed</div>
+        </div>
+    @if (msg != null)
+    {
+        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+             @msg
+        <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+    </div>
+    }
+</div>
+<div class="page-ems">
+    <div class="page-section-ems">
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr class="thead-border">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Salary</th>
+              <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filteredData != null)
+            {
+                   
+                    @foreach (Employee e in filteredData)
+                    {
+                        <tr>
+                            <td>@e.Id.ToString()</td>
+                            <td>@e.Name</td>
+                            <td><a href="mailto:@e.Email">@e.Email</a></td>
+                            <td>@e.Position</td>
+                            <td>@e.Salary.ToString("C")</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                                    <span class="bi bi-pen"></span>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    
+                
+                    @foreach (Employee e in employeeList)
+                    {
+
+                        @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
+                        <tr class="@activeClass">
+                    <td>@e.Id.ToString()</td>
+                    <td>@e.Name</td>
+                    <td><a href="mailto:@e.Email">@e.Email</a></td>
+                    <td>@e.Position</td>
+                    <td>@e.Salary.ToString("C")</td>
+                    <td>
+                        <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                                    <i class="bi bi-pen"></i>
+                            View
+                        </button>
+                    </td>
+                </tr>
+            }
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="page-section-ems">
+        <form @onsubmit="AddEmployee">
+            
+            <div class="h2"> @title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
+            @if(id != null)
+            {
+              
+                <div class="mb-3">
+                    <label class="form-label" for="idd">Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                </div>
+            }
+          
+           
+            <div class="mb-3">
+                <label class="form-label" for="name">Full Name</label>
+                <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" @bind="emailAddress" placeholder="someone@sample.net" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="position">Position</label>
+                <input type="text" @bind="position"  placeholder="Enter Position" class="form-control" id="position" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="salary">Salary</label>
+                <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="status">Status</label>
+                <select @bind="status" placeholder="Status" class="form-control" id="status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="role">Role</label>
+                <select @bind="role" placeholder="Role" class="form-control" id="role" required>
+                    <option value="1">Staff</option>
+                    <option value="2">Supervisor</option>
+                    <option value="3">Management</option>
+                </select>
+            </div>
+            @if (id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
+            }
+            
+            
+        </form>
+    </div>
+</div>
+
+@code {
+    private int? id;
+    private string? fullName;
+    private string? emailAddress;
+    private string? position;
+    private decimal salary = 0;
+    private string? status;
+    private int role = 1;
+    private DateTime? created;
+    private DateTime? updated;
+    private string? search;
+    private List<Employee> employeeList = new List<Employee>();
+    private string? msg;
+    private string alert = "alert-success";
+    private string title = "Add Employee";
+    private int records = 0;
+    private string activeClass = "";
+    private Employee? emp;
+    private List<Employee>? filteredData = new List<Employee>();
+
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (DBService.IsSuccessfulConnection())
+        {
+            //msg = "DB Connection - OK!";
+        }
+        else
+        {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+            alert = "alert-danger";
+        }
+
+        //custList = await DatabaseService.GetCustomers();
+        await RefreshList();
+    }
+
+    private async Task Reset()
+    {
+        fullName = emailAddress = position = "";
+        salary = 0;
+        status = "Active";
+        role = 1;
+        id = null;
+        title = "Add Employee";
+    }
+
+    private async Task CloseMessage()
+    {
+        msg = null;
+    }
+
+    private async Task RefreshList()
+    {
+        try
+        {
+            employeeList = await EmployeeService.GetEmployees();
+            records = employeeList.Count;
+            filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task SearchEmployees()
+    {
+        try
+        {
+            filteredData = await EmployeeService.SearchEmployees(search);
+            records = filteredData.Count;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task EditEmployee(Employee employee)
+    {
+        try
+        {
+            emp = employee;
+            id = employee.Id;
+            fullName = employee.Name;
+            emailAddress = employee.Email;
+            position = employee.Position;
+            salary = employee.Salary;
+            status = employee.Status;
+            role = employee.Role;
+            created = employee.CreatedAt;
+            updated = employee.UpdatedAt;
+            title = $"Update {fullName}";
+
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+    private async Task AddEmployee()
+    {
+        try
+        {
+            List<object> customerData = new List<object>();
+            customerData.Add(fullName);
+            customerData.Add(emailAddress);
+            customerData.Add(position);
+            customerData.Add(salary);
+            customerData.Add(status);
+            customerData.Add(role);
+            msg = $"New employee {fullName} added successfully!";
+            await EmployeeService.AddEmployee(customerData);
+            await RefreshList();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task UpdateEmployee()
+    {
+        try
+        {
+
+            emp.Name = fullName;
+            emp.Email = emailAddress;
+            emp.Position = position;
+            emp.Salary = salary;
+            emp.Status = status;
+            emp.Role = role;
+            msg = $"{emp.Name} updated successfully!";
+            await EmployeeService.UpdateEmployee(emp);
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task DeleteEmployee()
+    {
+        try
+        {
+
+            await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete {fullName}?", "OK");
+            await EmployeeService.DeleteEmployee(emp);
+            msg = $"{emp.Name} was deleted successfully";
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+
+}

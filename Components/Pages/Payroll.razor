@@ -1,61 +1,329 @@
 ﻿@page "/payroll"
+@using Models
+@using Services
+@inject Services.DBService DBService
+@inject Services.EmployeeService EmployeeService
 
 <h1>Payroll</h1>
-
-<p>This component demonstrates showing data.</p>
-
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+<div>Manage payrolls for employees</div>
+<div class="page-header-ems">
+    <div class="page-header-ems-section">
+        <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <div>@records payroll records listed</div>
+    </div>
+    @if (msg != null)
+    {
+        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+            @msg
+            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+        </div>
+    }
+</div>
+<div class="page-ems">
+    <div class="page-section-ems">
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr class="thead-border">
+                    <th>Id</th>
+                    <th>Employee</th>
+                    <th>Base</th>
+                    <th>Overtime</th>
+                    <th>Deductions</th>
+                    <th>Net</th>
+                    <th>Actions</th>
                 </tr>
+            </thead>
+            <tbody>
+                @if (filteredData != null)
+                {
+
+                    @foreach (Models.Payroll p in filteredData)
+                    {
+                        <tr>
+                            <td>@p.Id</td>
+                            <td>@p.EmployeeName</td>
+                            <td>@p.BaseSalary.ToString("C")</td>
+                            <td>@p.OvertimePay.ToString("C")</td>
+                            <td>@p.Deductions.ToString("C")</td>
+                            <td>@p.NetSalary.ToString("C")</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
+                                    <i class="bi bi-pen"></i>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+
+
+                    @foreach (Models.Payroll p in payrollList)
+                    {
+
+                        
+                        <tr>
+                            <td>@p.Id</td>
+                            <td>@p.EmployeeName</td>
+                            <td>@p.BaseSalary.ToString("C")</td>
+                            <td>@p.OvertimePay.ToString("C")</td>
+                            <td>@p.Deductions.ToString("C")</td>
+                            <td>@p.NetSalary.ToString("C")</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
+                                    <i class="bi bi-pen"></i>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="page-section-ems">
+        <form @onsubmit="AddPayroll">
+            <div class="h2">@title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close<i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
+            @if (id != null)
+            {
+                
+                <div class="mb-3">
+                    <label class="form-label" for="idd">Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                </div>
             }
-        </tbody>
-    </table>
-}
+            
+
+            <div class="mb-3">
+                <label class="form-label" for="name">Employee</label>
+                <select @bind="employee" placeholder="Employee" class="form-control" id="name" required>
+                    <option value="">Select Employee</option>
+                    @foreach(Employee e in employeeOptions)
+                    {
+                        <option value="@e.Id">@e.Name</option>
+                    }
+                </select>
+            </div>        
+            <div class="mb-3">
+                <label class="form-label" for="salary">Base Salary</label>
+                <input type="number" @bind="baseSalary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="overtime">Overtime Pay</label>
+                <input type="number" @bind="overtimePay" step=".01" placeholder="Enter Overtime Pay" class="form-control" id="overtime" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="deductions">Deductions</label>
+                <input type="number" @bind="deductions" step=".01" placeholder="Enter Deductions" class="form-control" id="deductions" required />
+            </div>
+             @if (id != null)
+            {
+            <div class="mb-3">
+                <label class="form-label" for="netpay">Net Pay</label>
+                <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly/>
+            </div>
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
+            }
+           
+
+        </form>
+    </div>
+</div>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private int? id;
+    private int? employee;
+    private double baseSalary = 0;
+    private double overtimePay = 0;
+    private double deductions = 0;
+    private double netPay = 0;
+    private DateTime? created;
+    private DateTime? updated;
+    private string? search;
+    private string title = "Add Payroll";
+    private List<Models.Payroll> payrollList = new List<Models.Payroll>();
+    private List<Models.Employee> employeeOptions = new List<Models.Employee>();
+    private string? msg;
+    private string alert = "alert-success";
+    private int records = 0;
+    private string activeClass = "";
+    private Models.Payroll? pay;
+    private List<Models.Payroll>? filteredData = new List<Models.Payroll>();
+
+
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
 
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        if (DBService.IsSuccessfulConnection())
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+            //msg = "DB Connection - OK!";
+        }
+        else
+        {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+            alert = "alert-danger";
+        }
+
+        //custList = await DatabaseService.GetCustomers();
+        await RefreshList();
     }
 
-    private class WeatherForecast
+    private async Task Reset()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        baseSalary = netPay = overtimePay = deductions = 0;
+        id = employee = null;
+        title = "Add Payroll";
     }
+
+    private async Task CloseMessage()
+    {
+        msg = null;
+    }
+
+    private async Task RefreshList()
+    {
+        try
+        {
+            payrollList = await EmployeeService.GetPayrolls();
+            employeeOptions = await EmployeeService.GetEmployees();
+            records = payrollList.Count;
+            filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task SearchEmployees()
+    {
+        try
+        {
+            filteredData = await EmployeeService.SearchPayrolls(search);
+            records = filteredData.Count;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task EditPayroll(Models.Payroll payroll)
+    {
+        try
+        {
+            pay = payroll;
+            id = payroll.Id;
+            employee = payroll.EmployeeId;
+            baseSalary = payroll.BaseSalary;
+            overtimePay = payroll.OvertimePay;
+            deductions = payroll.Deductions;
+            netPay = payroll.NetSalary;
+            created = payroll.CreatedAt;
+            updated = payroll.UpdatedAt;
+            title = $"Update {id}";
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+    private async Task AddPayroll()
+    {
+        try
+        {
+            List<object> customerData = new List<object>();
+            customerData.Add(employee);
+            customerData.Add(baseSalary);
+            customerData.Add(overtimePay);
+            customerData.Add(deductions);
+            netPay = (baseSalary + overtimePay) - deductions;
+            customerData.Add(netPay);
+            msg = $"New payroll record added successfully!";
+            await EmployeeService.AddPayroll(customerData);
+            await RefreshList();
+            Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task UpdatePayroll()
+    {
+        try
+        {
+            netPay = (baseSalary + overtimePay) - deductions;
+            id = pay.Id;
+            pay.BaseSalary = baseSalary;
+            pay.OvertimePay = overtimePay;
+            pay.Deductions = deductions;
+            pay.NetSalary= netPay;
+
+            
+            await EmployeeService.UpdatePayroll(pay);
+            msg = $"Payroll record updated successfully!";
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task DeletePayroll()
+    {
+        try
+        {
+
+            await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete?", "OK");
+            await EmployeeService.DeletePayroll(pay);
+            msg = $"Payroll record was deleted successfully";
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+
 }
+

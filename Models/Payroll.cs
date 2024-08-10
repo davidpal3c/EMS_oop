@@ -14,12 +14,19 @@ namespace EMS.Models
         private double _overtimePay;
         private double _deductions;
         private double _netSalary;
+        private string _name;
 
     
         public int EmployeeId
         {
             get { return _employeeId; }
             set { _employeeId = value; }
+        }
+
+        public string EmployeeName
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         [Required(ErrorMessage = "Base Salary is required")]
@@ -54,12 +61,14 @@ namespace EMS.Models
         {
             get { return _netSalary; }
             set { _netSalary = value; }
-        }   
+        }
 
+        public Payroll() { }
 
-        public Payroll(int id, int employeeId, double baseSalary, double overtimePay, double deductions, double netSalary, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        public Payroll(int id, int employeeId, string name, double baseSalary, double overtimePay, double deductions, double netSalary, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             EmployeeId = employeeId;
+            EmployeeName = name;
             BaseSalary = baseSalary;
             OvertimePay = overtimePay;
             Deductions = deductions;

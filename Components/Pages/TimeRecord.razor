@@ -1,7 +1,331 @@
 ﻿@page "/timeRecord"
+@using Models
+@using Services
+@inject Services.DBService DBService
+@inject Services.EmployeeService EmployeeService
 
-<h3>TimeRecord</h3>
+<h1>Time Record</h1>
+<div>Manage employee time records</div>
+<div class="page-header-ems">
+    <div class="page-header-ems-section">
+        <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <div>@records time records listed</div>
+    </div>
+    @if (msg != null)
+    {
+        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+            @msg
+            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+        </div>
+    }
+</div>
+<div class="page-ems">
+    <div class="page-section-ems">
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr class="thead-border">
+                    <th>Id</th>
+                    <th>Employee</th>
+                    <th>Date</th>
+                    <th>Hours Worked</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filteredData != null)
+                {
+
+                    @foreach (Models.TimeRecord t in filteredData)
+                    {
+                        <tr>
+                            <td>@t.Id</td>
+                            <td>@t.EmployeeName</td>
+                            <td>@t.Date</td>
+                            <td>@t.HoursWorked</td>
+                            <td>@t.Type</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
+                                    <i class="bi bi-pen"></i>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+
+
+                    @foreach (Models.TimeRecord t in timeList)
+                    {
+
+
+                        <tr>
+                            <td>@t.Id</td>
+                            <td>@t.EmployeeName</td>
+                            <td>@t.Date</td>
+                            <td>@t.HoursWorked</td>
+                            <td>@t.Type</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
+                                    <i class="bi bi-pen"></i>
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="page-section-ems">
+        <form @onsubmit="AddPayroll">
+            <div class="h2">@title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary">Update Payroll</button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger">Delete</button>
+                    }
+                    else
+                    {
+                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Add Payroll<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
+            @if (id != null)
+            {
+                
+                <div class="mb-3">
+                    <label class="form-label" for="idd">Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                </div>
+            }
+           
+
+            <div class="mb-3">
+                <label class="form-label" for="name">Employee</label>
+                <select @bind="employee" placeholder="Employee" class="form-control" id="name" required>
+                    <option value="">Select Employee</option>
+                    @foreach (Employee e in employeeOptions)
+                    {
+                        <option value="@e.Id">@e.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="date">Date</label>
+                <input type="date" @bind="date" class="form-control" id="date" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="hours">Hours Worked</label>
+                <input type="number" @bind="hoursWorked" step=".01" placeholder="Hours" class="form-control" id="hours" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="type">Type</label>
+                <select @bind="type" class="form-control" id="type" required>
+                    <option value="">Select Type</option>
+                    <option value="Attendance">Attendance</option>
+                    <option value="Overtime">Overtime</option>
+                    <option value="Leave">leave</option> 
+                </select>
+            </div>
+            @if (id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="date" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="date" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
+            }
+            
+
+        </form>
+    </div>
+</div>
 
 @code {
+    private int? id;
+    private int? employee;
+    private double baseSalary = 0;
+    private double overtimePay = 0;
+    private double deductions = 0;
+    private double netPay = 0;
+    private DateTime? date;
+    private double? hoursWorked;
+    private string type;
+    private DateOnly? created;
+    private DateOnly? updated;
+    private string? search;
+    private string title = "Add Time Record";
+    private List<Models.Payroll> payrollList = new List<Models.Payroll>();
+    private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
+    private List<Models.Employee> employeeOptions = new List<Models.Employee>();
+    private string? msg;
+    private string alert = "alert-success";
+    private int records = 0;
+    private string activeClass = "";
+    private Models.Payroll? pay;
+    private Models.TimeRecord? timerec;
+    private List<Models.TimeRecord>? filteredData = new List<Models.TimeRecord>();
+
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (DBService.IsSuccessfulConnection())
+        {
+            //msg = "DB Connection - OK!";
+        }
+        else
+        {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+            alert = "alert-danger";
+        }
+
+        //custList = await DatabaseService.GetCustomers();
+        await RefreshList();
+    }
+
+    private async Task Reset()
+    {
+        baseSalary = netPay = overtimePay = deductions = 0;
+        id = employee = null;
+        title = "Add Time Record";
+    }
+
+    private async Task CloseMessage()
+    {
+        msg = null;
+    }
+
+    private async Task RefreshList()
+    {
+        try
+        {
+            payrollList = await EmployeeService.GetPayrolls();
+            //timeList = await EmployeeService.GetPayrolls();
+            employeeOptions = await EmployeeService.GetEmployees();
+            records = payrollList.Count;
+            filteredData = null;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task SearchEmployees()
+    {
+        try
+        {
+            //filteredData = await EmployeeService.SearchPayrolls(search);
+            records = filteredData.Count;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task EditPayroll(Models.TimeRecord time)
+    {
+        try
+        {
+            timerec = time;
+            id = time.Id;
+            employee = time.EmployeeId;
+            date = time.Date;
+            hoursWorked = time.HoursWorked;
+            title = $"Update Time Record {id}";
+            //type = time.Type;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+    private async Task AddPayroll()
+    {
+        try
+        {
+            List<object> customerData = new List<object>();
+            customerData.Add(employee);
+            customerData.Add(baseSalary);
+            customerData.Add(overtimePay);
+            customerData.Add(deductions);
+            netPay = (baseSalary + overtimePay) - deductions;
+            customerData.Add(netPay);
+            msg = $"New payroll record added successfully!";
+            await EmployeeService.AddPayroll(customerData);
+            await RefreshList();
+            Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task UpdatePayroll()
+    {
+        try
+        {
+            netPay = (baseSalary + overtimePay) - deductions;
+            id = pay.Id;
+            pay.BaseSalary = baseSalary;
+            pay.OvertimePay = overtimePay;
+            pay.Deductions = deductions;
+            pay.NetSalary = netPay;
+
+
+            await EmployeeService.UpdatePayroll(pay);
+            msg = $"Payroll record updated successfully!";
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task DeletePayroll()
+    {
+        try
+        {
+
+            await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete?", "OK");
+            await EmployeeService.DeletePayroll(pay);
+            msg = $"Payroll record was deleted successfully";
+            await RefreshList();
+            await Reset();
+        }
+        catch (Exception e)
+        {
+            msg = $"An error occurred: adding{e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
 
 }
+
+
