@@ -137,6 +137,25 @@ namespace EMS.Services
         }
 
 
+        public async Task DeleteEmployee(Employee employee)
+        {
+
+            using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
+            {
+                await conn.OpenAsync();
+
+                string commandString = "DELETE FROM Employees WHERE Id = @Id";
+
+                using (MySqlCommand cmd = new MySqlCommand(commandString, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", employee.Id);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+
+        }
+
+
     }
 
 }

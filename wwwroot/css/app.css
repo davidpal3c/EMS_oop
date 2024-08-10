@@ -103,6 +103,11 @@ td{
     vertical-align:middle;
 }
 
+h1, h2
+{
+    font-weight:700;
+}
+
 @supports (-webkit-touch-callout: none) {
     .status-bar-safe-area {
         display: flex;
