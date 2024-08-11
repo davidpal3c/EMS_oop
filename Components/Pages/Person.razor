@@ -9,8 +9,10 @@
 <div class="page-header-ems">
     <div class="page-header-ems-section">
         <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>@records employees listed</div>
-    </div>
+        <div>
+            <i class="check-circle"></i>
+            @records employees listed</div>
+        </div>
     @if (msg != null)
     {
         <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,7 +31,7 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-              <th>Actions</th>
+                    <th class="td-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,9 +46,9 @@
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
-                            <td>
+                            <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <i class="bi bi-info-circle"></i>
+                                    <span class="bi bi-pen"></span>
                                     View
                                 </button>
                             </td>
@@ -67,9 +69,9 @@
                     <td><a href="mailto:@e.Email">@e.Email</a></td>
                     <td>@e.Position</td>
                     <td>@e.Salary.ToString("C")</td>
-                    <td>
+                            <td class="td-actions">
                         <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <span class="bi bi-info-circle"></span>
+                                    <i class="bi bi-pen"></i>
                             View
                         </button>
                     </td>
@@ -80,20 +82,33 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="AddEmployee">
+        <form @onsubmit="SubmitForm">
             
+            <div class="h2"> @title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        formSubmission = "update";
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                    }
+                    else
+                    {
+                        formSubmission = "create";
+                        <button type="submit" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
             @if(id != null)
             {
-                <h2>Update @fullName</h2>
+              
                 <div class="mb-3">
-                    <label class="form-label" for="id">Id</label>
-                    <input type="number" @bind="id" class="form-control" id="id" readonly />
+                    <label class="form-label" for="idd">Employee Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
-            else
-            {
-                <h2>Create Customer</h2>
-            }
+          
            
             <div class="mb-3">
                 <label class="form-label" for="name">Full Name</label>
@@ -113,24 +128,31 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="status">Status</label>
-                <input type="text" @bind="status" placeholder="Status" class="form-control" id="status" required />
+                <select @bind="status" placeholder="Status" class="form-control" id="status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="role">Role</label>
-                <input type="number" @bind="role" placeholder="Role" class="form-control" id="role" required />
+                <select @bind="role" placeholder="Role" class="form-control" id="role" required>
+                    <option value="1">Staff</option>
+                    <option value="2">Supervisor</option>
+                    <option value="3">Management</option>
+                </select>
             </div>
-            <div class="button-holder-ems">
             @if (id != null)
             {
-                <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update Employee</button>
-                <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close</button>
-                <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                </div>
             }
-            else
-            {
-                <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Add Employee</button>
-            }
-            </div>
+            
             
         </form>
     </div>
@@ -143,15 +165,16 @@
     private string? position;
     private decimal salary = 0;
     private string? status;
+    private string formSubmission = "create";
     private int role = 1;
-    private DateOnly? created;
-    private DateOnly? updated;
+    private DateTime? created;
+    private DateTime? updated;
     private string? search;
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
     private string alert = "alert-success";
+    private string title = "Add Employee";
     private int records = 0;
-    private bool editMode = false;
     private string activeClass = "";
     private Employee? emp;
     private List<Employee>? filteredData = new List<Employee>();
@@ -185,6 +208,7 @@
         status = "Active";
         role = 1;
         id = null;
+        title = "Add Employee";
     }
 
     private async Task CloseMessage()
@@ -226,7 +250,6 @@
         try
         {
             emp = employee;
-            editMode = true;
             id = employee.Id;
             fullName = employee.Name;
             emailAddress = employee.Email;
@@ -234,6 +257,9 @@
             salary = employee.Salary;
             status = employee.Status;
             role = employee.Role;
+            created = employee.CreatedAt;
+            updated = employee.UpdatedAt;
+            title = $"{fullName}";
 
         }
         catch (Exception e)
@@ -243,6 +269,17 @@
         }
     }
 
+    private async Task SubmitForm()
+    {
+        if(formSubmission == "create")
+        {
+            AddEmployee();
+        }
+        else
+        {
+            UpdateEmployee();
+        }
+    }
 
     private async Task AddEmployee()
     {
@@ -257,6 +294,7 @@
             customerData.Add(role);
             msg = $"New employee {fullName} added successfully!";
             await EmployeeService.AddEmployee(customerData);
+            Reset();
             await RefreshList();
         }
         catch (Exception e)

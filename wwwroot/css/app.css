@@ -82,7 +82,7 @@ h1:focus {
 {
     position:relative;
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 450px;
     align-items:start;
     gap:30px;
     padding-bottom:50px;
@@ -93,8 +93,10 @@ h1:focus {
     position:relative;
     display:grid;
     grid-template-columns:1fr;
-    max-height:500px;
-  
+    max-height:480px;
+    overflow-y:auto;
+  padding-inline:10px;
+   
 }
 
 .page-header-ems
@@ -119,7 +121,13 @@ h1:focus {
 
 .thead-border
 {
-    border-bottom:solid 3px #000000;
+    
+}
+
+thead {
+    position: sticky;
+    top: 0px;
+    border-bottom: solid 3px #000000;
 }
 
 td{
@@ -131,16 +139,62 @@ h1, h2
     font-weight:700;
 }
 
+.h2
+{
+    position:sticky;
+    top:0px;
+    background-color:#ffffff;
+    z-index:1;
+    display:flex;
+    flex-flow:row nowrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding-right:10px;
+    margin:0px;
+    font-weight:700;
+    padding-bottom:10px;
+
+}
+
 .inactive td, .inactive a
 {
     color:#bababa !important;
 }
 
+label
+{
+    color:#999999;
+}
+
+.td-actions
+{
+    text-align:right;
+    
+}
+
+.td-actions button
+{
+    float:right;
+}
+
 .button-holder-ems
 {
+    position:relative;
     display:flex;
     flex-flow:row wrap;
+    align-items:center;
+    justify-content:flex-start;
     gap:10px;
+    vertical-align:middle;
+}
+
+button {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap:5px !important;
 }
 
 @supports (-webkit-touch-callout: none) {
