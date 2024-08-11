@@ -32,7 +32,7 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-                    <th class="td-actions">Actions</th>
+                    <th class="td-actions"></th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
 
                     @foreach (Employee e in filteredData)
                     {
-                        <tr>
+                        <tr class="@activeClass"  @onclick="() => EditEmployee(e)">
                             <td>@e.Id.ToString()</td>
                             <td>@e.Name</td>
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
@@ -49,8 +49,7 @@
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <span class="bi bi-pen"></span>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>
@@ -64,7 +63,7 @@
                     {
 
                         @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
-                        <tr class="@activeClass">
+                        <tr class="@activeClass" @onclick="() => EditEmployee(e)">
                             <td>@e.Id.ToString()</td>
                             <td>@e.Name</td>
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
@@ -72,8 +71,7 @@
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>

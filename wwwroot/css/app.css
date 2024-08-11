@@ -78,7 +78,17 @@ h1:focus {
     display: none;
 }
 
+::-webkit-scrollbar
+{
+    height:5px;
+    width:5px;
+}
 
+::-webkit-scrollbar-thumb
+{
+    background-color:#727098;
+    border-radius:10px;
+}
 
 .page-ems
 {
@@ -88,9 +98,27 @@ h1:focus {
     align-items:start;
     gap:30px;
     padding-bottom:50px;
-    max-height:480px;
-    overflow-y:auto;
-  padding-inline:10px;   
+     
+}
+
+.nav-ems
+{
+    padding-inline:15px !important;
+   display:flex;
+   flex-flow:row nowrap;
+   gap:10px;
+}
+
+.nav-ems span
+{
+    display:inline-block;
+    
+}
+
+.page-section-ems {
+    max-height: 480px;
+    overflow-y: auto;
+    padding-inline: 10px;
 }
 
 
@@ -133,6 +161,16 @@ thead {
     position: sticky;
     top: 0px;
     border-bottom: solid 3px #000000;
+}
+
+tbody tr {
+    cursor: pointer;
+    user-select: none;
+    
+}
+
+tbody tr:hover td {
+    color: #727098;
 }
 
 td{
