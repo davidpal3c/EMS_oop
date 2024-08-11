@@ -292,7 +292,6 @@
                     Type = (string)type
             };
 
-
             await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);
             msg = $"Payroll record updated successfully!";
             await RefreshList();

@@ -143,7 +143,6 @@ namespace EMS.Services
             }            
         }
 
-
         public async Task DeleteTimeRecord(TimeRecord timeRecord)
         {
 
