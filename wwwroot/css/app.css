@@ -93,7 +93,7 @@ h1:focus {
     position:relative;
     display:grid;
     grid-template-columns:1fr;
-    max-height:460px;
+    max-height:480px;
     overflow-y:auto;
   padding-inline:10px;
     z-index:2;
