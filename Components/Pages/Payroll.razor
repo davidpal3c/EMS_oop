@@ -83,18 +83,19 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="AddPayroll">
+        <form @onsubmit="SubmitForm">
             <div class="h2">@title
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary"><i class="bi bi-save2"></i></button>
+                        formSubmission = "update";
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
                         <button type="button" @onclick="DeletePayroll" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
-                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                        <button type="submit" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -160,6 +161,7 @@
     private double netPay = 0;
     private DateTime? created;
     private DateTime? updated;
+    private string formSubmission = "create";
     private string? search;
     private string title = "Add Payroll";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
@@ -254,6 +256,18 @@
         {
             msg = $"Error during refresh: {e.Message}";
             alert = "alert-danger";
+        }
+    }
+
+    private async Task SubmitForm()
+    {
+        if (formSubmission == "create")
+        {
+            AddPayroll();
+        }
+        else
+        {
+            UpdatePayroll();
         }
     }
 
