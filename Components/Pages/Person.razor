@@ -31,7 +31,7 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-              <th>Actions</th>
+                    <th class="td-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
-                            <td>
+                            <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <span class="bi bi-pen"></span>
                                     View
@@ -69,7 +69,7 @@
                     <td><a href="mailto:@e.Email">@e.Email</a></td>
                     <td>@e.Position</td>
                     <td>@e.Salary.ToString("C")</td>
-                    <td>
+                            <td class="td-actions">
                         <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <i class="bi bi-pen"></i>
                             View
@@ -88,9 +88,9 @@
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update</button>
-                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
-                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
+                        <button type="button" @onclick="UpdateEmployee" class="btn btn-primary"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
@@ -102,7 +102,7 @@
             {
               
                 <div class="mb-3">
-                    <label class="form-label" for="idd">Id</label>
+                    <label class="form-label" for="idd">Employee Id</label>
                     <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
@@ -256,7 +256,7 @@
             role = employee.Role;
             created = employee.CreatedAt;
             updated = employee.UpdatedAt;
-            title = $"Update {fullName}";
+            title = $"{fullName}";
 
         }
         catch (Exception e)
