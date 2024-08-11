@@ -135,7 +135,6 @@ namespace EMS.Services
                     cmd.Parameters.AddWithValue("@NetSalary", updatedPayroll.NetSalary);
                     cmd.Parameters.AddWithValue("@Id", updatedPayroll.Id);
 
-
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
