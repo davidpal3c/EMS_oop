@@ -17,6 +17,7 @@ namespace EMS.Models
         private double _hoursWorked;
         private string _type;
 
+               
 
         [Required(ErrorMessage = "Employee ID is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Employee ID must be a positive integer")]

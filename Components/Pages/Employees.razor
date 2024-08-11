@@ -32,7 +32,7 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-                    <th class="td-actions">Actions</th>
+                    <th class="td-actions"></th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
 
                     @foreach (Employee e in filteredData)
                     {
-                        <tr>
+                        <tr class="@activeClass"  @onclick="() => EditEmployee(e)">
                             <td>@e.Id.ToString()</td>
                             <td>@e.Name</td>
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
@@ -49,8 +49,7 @@
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <span class="bi bi-pen"></span>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>
@@ -64,7 +63,7 @@
                     {
 
                         @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
-                        <tr class="@activeClass">
+                        <tr class="@activeClass" @onclick="() => EditEmployee(e)">
                             <td>@e.Id.ToString()</td>
                             <td>@e.Name</td>
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
@@ -72,8 +71,7 @@
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>
@@ -91,14 +89,14 @@
                     @if (id != null)
                     {
                         formSubmission = "update";
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i></button>
-                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
-                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
                         formSubmission = "create";
-                        <button type="submit" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i></button>
+                        <button type="submit" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>

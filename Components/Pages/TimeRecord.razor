@@ -32,7 +32,7 @@
                     <th>Date</th>
                     <th>Hours Worked</th>
                     <th>Type</th>
-                    <th class="td-actions">Actions</th>
+                    <th class="td-actions"></th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
 
                     @foreach (Models.TimeRecord t in filteredData)
                     {
-                        <tr>
+                        <tr @onclick="() => EditPayroll(t)">
                             <td>@t.Id</td>
                             <td>@t.EmployeeName</td>
                             <td>@t.Date</td>
@@ -49,8 +49,7 @@
                             <td>@t.Type</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>
@@ -60,7 +59,8 @@
                 {
                     @foreach (Models.TimeRecord t in timeList)
                     {
-                        <tr>
+
+                        <tr @onclick="() => EditPayroll(t)">
                             <td>@t.Id</td>
                             <td>@t.EmployeeName</td>
                             <td>@t.Date</td>
@@ -68,8 +68,7 @@
                             <td>@t.Type</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
                         </tr>
@@ -84,13 +83,13 @@
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdateTimeRecord" class="btn btn-primary"><i class="bi bi-save2"></i></button>
-                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
-                        <button type="button" @onclick="DeleteTimeRecord" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
-                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i></button>
+                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -127,6 +126,7 @@
                     <option value="Attendance">Attendance</option>
                     <option value="Overtime">Overtime</option>
                     <option value="Leave">Leave</option> 
+
                 </select>
             </div>
             @if (id != null)
@@ -261,6 +261,7 @@
     {
         try
         {
+
             List<object> timeRecordData = new List<object>();            
             timeRecordData.Add(employee);           // employee Id
             timeRecordData.Add(date);
@@ -269,6 +270,7 @@
 
             msg = $"New Time Record added successfully!";
             await TimeRecordService.AddTimeRecord(timeRecordData);
+
             await RefreshList();
             Reset();
         }
@@ -283,6 +285,7 @@
     {
         try
         {
+
             updatedTimeRecord = new Models.TimeRecord
             {
                     Id = (int)id,
@@ -293,6 +296,7 @@
             };
 
             await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);
+
             msg = $"Payroll record updated successfully!";
             await RefreshList();
             await Reset();
@@ -326,6 +330,7 @@
             {
                 msg = $"Deletion Cancelled.";
             }             
+
         }
         catch (Exception e)
         {
