@@ -31,7 +31,7 @@
                     <th>Overtime</th>
                     <th>Deductions</th>
                     <th>Net</th>
-                    <th class="td-actions">Actions</th>
+                    <th class="td-actions"></th>
                 </tr>
             </thead>
             <tbody>
@@ -49,8 +49,8 @@
                             <td>@p.NetSalary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
+                                   
                                 </button>
                             </td>
                         </tr>
@@ -64,7 +64,7 @@
                     {
 
                         
-                        <tr>
+                        <tr @onclick="()=>EditPayroll(p)">
                             <td>@p.Id</td>
                             <td>@p.EmployeeName</td>
                             <td>@p.BaseSalary.ToString("C")</td>
@@ -73,8 +73,8 @@
                             <td>@p.NetSalary.ToString("C")</td>
                             <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(p)">
-                                    <i class="bi bi-pen"></i>
-                                    View
+                                    <i class="bi bi-arrow-right"></i>
+                                 
                                 </button>
                             </td>
                         </tr>

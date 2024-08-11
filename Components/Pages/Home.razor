@@ -1,5 +1,55 @@
 ﻿@page "/"
+@using Models
+@using Services
+@inject Services.DBService DBService
+@inject Services.EmployeeService EmployeeService
+@inject Services.PayrollService PayrollService
 
 <h1>Home</h1>
 
 Welcome to EMS!
+
+<div class="home-section">
+    <div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div></div>
+    <div class="home-sub-section"><span>@payrollList.Count</span><div>Payrolls</div></div>
+    <div class="home-sub-section"><span>0</span><div>Time Records</div></div>
+</div>
+
+@code{
+
+    private List<Models.Payroll> payrollList = new List<Models.Payroll>();
+    private List<Models.Employee> employeeList = new List<Models.Employee>();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (DBService.IsSuccessfulConnection())
+        {
+       
+        }
+        else
+        {
+            //msg = "Reconfigure connection string at MauiProgram.cs";
+            //alert = "alert-danger";
+        }
+
+    
+        await RefreshList();
+    }
+
+
+    private async Task RefreshList()
+    {
+        try
+        {
+            employeeList = await EmployeeService.GetEmployees();
+            payrollList = await PayrollService.GetPayrolls();
+         
+        }
+        catch (Exception e)
+        {
+            //msg = $"Error during refresh: {e.Message}";
+            //alert = "alert-danger";
+        }
+    }
+}
