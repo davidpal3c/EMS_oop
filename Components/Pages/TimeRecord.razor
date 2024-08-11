@@ -3,6 +3,7 @@
 @using Services
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
+@inject Services.PayrollService PayrollService
 @inject Services.TimeRecordService TimeRecordService    
 
 
@@ -48,7 +49,7 @@
                             <td>@t.HoursWorked</td>
                             <td>@t.Type</td>
                             <td class="td-actions">
-                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
+                                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Edit" @onclick="() => EditPayroll(t)">
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
@@ -67,7 +68,7 @@
                             <td>@t.HoursWorked</td>
                             <td>@t.Type</td>
                             <td class="td-actions">
-                                <button type="submit" class="btn btn-primary" @onclick="() => EditPayroll(t)">
+                                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Edit" @onclick="() => EditPayroll(t)">
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
@@ -83,9 +84,9 @@
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdatePayroll" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="UpdateTimeRecord" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
-                        <button type="button" @onclick="DeletePayroll" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
+                        <button type="button" @onclick="DeleteTimeRecord" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
@@ -208,7 +209,7 @@
     {
         try
         {
-            payrollList = await EmployeeService.GetPayrolls();
+            payrollList = await PayrollService.GetPayrolls();
             timeList = await TimeRecordService.GetTimeRecords();
             employeeOptions = await EmployeeService.GetEmployees();
             records = payrollList.Count;

@@ -48,7 +48,7 @@
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
-                                <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Edit" @onclick="() => EditEmployee(e)">
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
@@ -57,8 +57,6 @@
                 }
                 else
                 {
-
-
                     @foreach (Employee e in employeeList)
                     {
 
@@ -70,7 +68,7 @@
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
                             <td class="td-actions">
-                                <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
+                                <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Edit" @onclick="() => EditEmployee(e)">
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
