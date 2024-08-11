@@ -15,15 +15,7 @@ namespace EMS.Models
         private string _name;
         private DateTime _date;
         private double _hoursWorked;
-        private TimeType _type;
-
-
-        public enum TimeType
-        {
-            Attendance,
-            Overtime,
-            Leave
-        }
+        private string _type;
 
 
         [Required(ErrorMessage = "Employee ID is required")]
@@ -59,7 +51,7 @@ namespace EMS.Models
         }
 
         //enum selection
-        public TimeType Type
+        public string Type
         {
             get { return _type; }
             set { _type = value; }
@@ -68,7 +60,7 @@ namespace EMS.Models
         public TimeRecord() { }
 
 
-        public TimeRecord(int id, int employeeId, string name, DateTime date, double hoursWorked, TimeType type, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
+        public TimeRecord(int id, int employeeId, string name, DateTime date, double hoursWorked, string type, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             EmployeeId = employeeId;
             EmployeeName = name;
