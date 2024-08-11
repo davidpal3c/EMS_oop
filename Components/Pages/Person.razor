@@ -31,7 +31,7 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-              <th>Actions</th>
+                    <th class="td-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
-                            <td>
+                            <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <span class="bi bi-pen"></span>
                                     View
@@ -69,7 +69,7 @@
                     <td><a href="mailto:@e.Email">@e.Email</a></td>
                     <td>@e.Position</td>
                     <td>@e.Salary.ToString("C")</td>
-                    <td>
+                            <td class="td-actions">
                         <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <i class="bi bi-pen"></i>
                             View
@@ -82,19 +82,21 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="AddEmployee">
+        <form @onsubmit="SubmitForm">
             
             <div class="h2"> @title
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update</button>
-                        <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
-                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
+                        formSubmission = "update";
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
-                        <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
+                        formSubmission = "create";
+                        <button type="submit" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -102,7 +104,7 @@
             {
               
                 <div class="mb-3">
-                    <label class="form-label" for="idd">Id</label>
+                    <label class="form-label" for="idd">Employee Id</label>
                     <input type="number" @bind="id" class="form-control" id="idd" readonly />
                 </div>
             }
@@ -162,6 +164,7 @@
     private string? position;
     private decimal salary = 0;
     private string? status;
+    private string formSubmission = "create";
     private int role = 1;
     private DateTime? created;
     private DateTime? updated;
@@ -255,7 +258,7 @@
             role = employee.Role;
             created = employee.CreatedAt;
             updated = employee.UpdatedAt;
-            title = $"Update {fullName}";
+            title = $"{fullName}";
 
         }
         catch (Exception e)
@@ -265,6 +268,17 @@
         }
     }
 
+    private async Task SubmitForm()
+    {
+        if(formSubmission == "create")
+        {
+            AddEmployee();
+        }
+        else
+        {
+            UpdateEmployee();
+        }
+    }
 
     private async Task AddEmployee()
     {
@@ -279,6 +293,7 @@
             customerData.Add(role);
             msg = $"New employee {fullName} added successfully!";
             await EmployeeService.AddEmployee(customerData);
+            Reset();
             await RefreshList();
         }
         catch (Exception e)
