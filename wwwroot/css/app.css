@@ -78,36 +78,45 @@ h1:focus {
     display: none;
 }
 
-.page-ems
-{
-    position:relative;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    align-items:start;
-    gap:30px;
-    padding-bottom:50px;
+
+.title-page {
+    display: flex;
+    flex-direction
 }
+
+.title-page div {
+    margin-left: 0.4rem;
+}
+
+
+.page-ems {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 30px;
+    padding-bottom: 50px;
+    border: 1px solid black;
+    padding: 1rem;
+}
+
 
 .page-section-ems
 {
     position:relative;
     display:grid;
     grid-template-columns:1fr;
-    max-height:450px;
-    overflow-y:auto;
-  
-    z-index:2;
+    
+   
 }
+
 
 .page-header-ems
 {
     padding-block:20px;
-    background-color:#ffffff;
-    z-index:2;
+    background-color:#ffffff;    
     position:sticky;
-    top:60px;
-
-    
+    top:60px;    
 
 }
 
@@ -119,9 +128,22 @@ h1:focus {
     gap:20px;
 }
 
-.thead-border
+
+.action-box,
+.header-btn-box {
+    display: flex;
+    flex-direction: row;    
+}
+
+.search-field,
+.header-btn-box button {
+    margin-right: 0.6rem;
+}
+
+
+.thead-border 
 {
-    
+
 }
 
 thead {

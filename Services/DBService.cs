@@ -8,14 +8,14 @@ namespace EMS.Services
     {
         private readonly string _connectionString;
         private readonly EmployeeMapper _employeeMapper;
-        //private readonly PayrollMapper _payrollMapper;
+        private readonly PayrollMapper _payrollMapper;
         //private readonly TimeRecordMapper _timeRecordMapper;
 
 
         public string ConnectionString
-            {
-                get { return _connectionString; }
-            }
+        {
+            get { return _connectionString; }
+        }
 
 
         public EmployeeMapper EmployeeMapper
@@ -24,10 +24,23 @@ namespace EMS.Services
         }
 
 
+        public PayrollMapper PayrollMapper
+        {
+            get { return _payrollMapper; }
+        }   
+
+        /*
+        public TimeRecordMapper TimeRecordMapper
+        {
+            get { return _timeRecordMapper; }
+        }   
+        */
         public DBService(string connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             _employeeMapper = new EmployeeMapper();
+            _payrollMapper = new PayrollMapper();
+            //_timeRecordMapper = new TimeRecordMapper(); 
         }
 
 
