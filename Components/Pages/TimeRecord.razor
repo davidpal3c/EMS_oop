@@ -3,7 +3,9 @@
 @using Services
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
-@inject Services.PayrollService PayrollService
+@inject Services.TimeRecordService TimeRecordService    
+
+
 
 <h1>Time Record</h1>
 <div>Manage employee time records</div>
@@ -55,11 +57,8 @@
                 }
                 else
                 {
-
-
                     @foreach (Models.TimeRecord t in timeList)
                     {
-
 
                         <tr @onclick="() => EditPayroll(t)">
                             <td>@t.Id</td>
@@ -79,7 +78,7 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="AddPayroll">
+        <form @onsubmit="AddTimeRecord">
             <div class="h2">@title
                 <div class="button-holder-ems">
                     @if (id != null)
@@ -90,7 +89,7 @@
                     }
                     else
                     {
-                        <button type="button" @onclick="AddPayroll" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
+                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -168,11 +167,11 @@
     private string alert = "alert-success";
     private int records = 0;
     private string activeClass = "";
-    private Models.Payroll? pay;
-    private Models.TimeRecord? timerec;
+    private Models.TimeRecord? updatedTimeRecord;     
+    private Models.TimeRecord? selectedTimeRec;
     private List<Models.TimeRecord>? filteredData = new List<Models.TimeRecord>();
 
-
+    private int employeeId;
 
 
 
@@ -195,8 +194,7 @@
     }
 
     private async Task Reset()
-    {
-        baseSalary = netPay = overtimePay = deductions = 0;
+    {        
         id = employee = null;
         title = "Add Time Record";
     }
@@ -210,8 +208,8 @@
     {
         try
         {
-            payrollList = await PayrollService.GetPayrolls();
-            //timeList = await EmployeeService.GetPayrolls();
+            payrollList = await EmployeeService.GetPayrolls();
+            timeList = await TimeRecordService.GetTimeRecords();
             employeeOptions = await EmployeeService.GetEmployees();
             records = payrollList.Count;
             filteredData = null;
@@ -237,16 +235,18 @@
         }
     }
 
-    private async Task EditPayroll(Models.TimeRecord time)
+    private async Task EditPayroll(Models.TimeRecord timeRec)
     {
         try
         {
-            timerec = time;
-            id = time.Id;
-            employee = time.EmployeeId;
-            date = time.Date;
-            hoursWorked = time.HoursWorked;
-            title = $"Update Time Record {id}";
+            selectedTimeRec = timeRec;
+
+            id = selectedTimeRec.Id;
+            employee = selectedTimeRec.EmployeeId;
+            date = selectedTimeRec.Date;
+            hoursWorked = selectedTimeRec.HoursWorked;
+
+            title = $"Update Time Record {selectedTimeRec.Id}";
             //type = time.Type;
         }
         catch (Exception e)
@@ -257,19 +257,20 @@
     }
 
 
-    private async Task AddPayroll()
+    private async Task AddTimeRecord()
     {
         try
         {
-            List<object> customerData = new List<object>();
-            customerData.Add(employee);
-            customerData.Add(baseSalary);
-            customerData.Add(overtimePay);
-            customerData.Add(deductions);
-            netPay = (baseSalary + overtimePay) - deductions;
-            customerData.Add(netPay);
-            msg = $"New payroll record added successfully!";
-            await PayrollService.AddPayroll(customerData);
+
+            List<object> timeRecordData = new List<object>();            
+            timeRecordData.Add(employee);           // employee Id
+            timeRecordData.Add(date);
+            timeRecordData.Add(hoursWorked);
+            timeRecordData.Add(type);
+
+            msg = $"New Time Record added successfully!";
+            await TimeRecordService.AddTimeRecord(timeRecordData);
+
             await RefreshList();
             Reset();
         }
@@ -280,19 +281,22 @@
         }
     }
 
-    private async Task UpdatePayroll()
+    private async Task UpdateTimeRecord()
     {
         try
         {
-            netPay = (baseSalary + overtimePay) - deductions;
-            id = pay.Id;
-            pay.BaseSalary = baseSalary;
-            pay.OvertimePay = overtimePay;
-            pay.Deductions = deductions;
-            pay.NetSalary = netPay;
 
+            updatedTimeRecord = new Models.TimeRecord
+            {
+                    Id = (int)id,
+                    EmployeeId = (int)employee,
+                    Date = (DateTime)date,
+                    HoursWorked = (int)hoursWorked,
+                    Type = (string)type
+            };
 
-            await PayrollService.UpdatePayroll(pay);
+            await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);
+
             msg = $"Payroll record updated successfully!";
             await RefreshList();
             await Reset();
@@ -304,24 +308,38 @@
         }
     }
 
-    private async Task DeletePayroll()
+
+    private async Task DeleteTimeRecord()
     {
+
         try
         {
+            bool confirmDelete = await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete?", "OK", "Cancel");
 
-            await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete?", "OK");
-            await PayrollService.DeletePayroll(pay);
-            msg = $"Payroll record was deleted successfully";
-            await RefreshList();
-            await Reset();
+            if (confirmDelete)
+            {
+                if (selectedTimeRec != null)
+                {
+                    await TimeRecordService.DeleteTimeRecord(selectedTimeRec);
+                    msg = $"Time record was deleted successfully";
+                    await RefreshList();
+                    await Reset();
+                }
+            }
+            else
+            {
+                msg = $"Deletion Cancelled.";
+            }             
+
         }
         catch (Exception e)
         {
             msg = $"An error occurred: adding{e.Message}";
             alert = "alert-danger";
         }
+        
     }
-
+  
 
 
 }

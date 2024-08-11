@@ -22,9 +22,10 @@ namespace EMS.Services
                     Id = reader.GetInt32("Id"),
                     EmployeeId = reader.GetInt32("EmployeeId"),
                     EmployeeName = reader.GetString("Name"),
-                    Date = reader.GetDateTime("Date"),    
+                    Date = reader.GetDateTime("Date"),
                     HoursWorked = reader.GetDouble("HoursWorked"),
-                    Type = reader.GetString("Type"),    
+                    Type = reader.GetString("Type"),
+
                     CreatedAt = reader.GetDateTime("CreatedAt"),
                     UpdatedAt = reader.GetDateTime("UpdatedAt"),
                 };

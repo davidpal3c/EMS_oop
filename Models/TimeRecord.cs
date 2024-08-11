@@ -42,7 +42,6 @@ namespace EMS.Models
             set { _date = value; }
         }
 
-
         [Required(ErrorMessage = "Hours Worked is required")]
         [Range(0, double.MaxValue, ErrorMessage = "Hours Worked must be a non-negative number")]
         public double HoursWorked
