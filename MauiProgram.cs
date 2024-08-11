@@ -23,7 +23,6 @@ namespace EMS
             });
 
 
-
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<EmployeeService>();
             builder.Services.AddSingleton<EmployeeMapper>();

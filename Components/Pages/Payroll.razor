@@ -3,6 +3,7 @@
 @using Services
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
+@inject Services.PayrollService PayrollService
 
 <h1>Payroll</h1>
 <div>Manage payrolls for employees</div>
@@ -211,7 +212,7 @@
     {
         try
         {
-            payrollList = await EmployeeService.GetPayrolls();
+            payrollList = await PayrollService.GetPayrolls();
             employeeOptions = await EmployeeService.GetEmployees();
             records = payrollList.Count;
             filteredData = null;
@@ -227,7 +228,7 @@
     {
         try
         {
-            filteredData = await EmployeeService.SearchPayrolls(search);
+            filteredData = await PayrollService.SearchPayrolls(search);
             records = filteredData.Count;
         }
         catch (Exception e)
@@ -284,7 +285,7 @@
             netPay = (baseSalary + overtimePay) - deductions;
             customerData.Add(netPay);
             msg = $"New payroll record added successfully!";
-            await EmployeeService.AddPayroll(customerData);
+            await PayrollService.AddPayroll(customerData);
             await RefreshList();
             Reset();
         }
@@ -307,7 +308,7 @@
             pay.NetSalary= netPay;
 
             
-            await EmployeeService.UpdatePayroll(pay);
+            await PayrollService.UpdatePayroll(pay);
             msg = $"Payroll record updated successfully!";
             await RefreshList();
             await Reset();
@@ -325,7 +326,7 @@
         {
 
             await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete?", "OK");
-            await EmployeeService.DeletePayroll(pay);
+            await PayrollService.DeletePayroll(pay);
             msg = $"Payroll record was deleted successfully";
             await RefreshList();
             await Reset();

@@ -78,6 +78,8 @@ h1:focus {
     display: none;
 }
 
+
+
 .page-ems
 {
     position:relative;
@@ -86,28 +88,18 @@ h1:focus {
     align-items:start;
     gap:30px;
     padding-bottom:50px;
-}
-
-.page-section-ems
-{
-    position:relative;
-    display:grid;
-    grid-template-columns:1fr;
     max-height:480px;
     overflow-y:auto;
-  padding-inline:10px;
-   
+  padding-inline:10px;   
 }
+
 
 .page-header-ems
 {
     padding-block:20px;
-    background-color:#ffffff;
-    z-index:2;
+    background-color:#ffffff;    
     position:sticky;
-    top:60px;
-
-    
+    top:60px;    
 
 }
 
@@ -119,9 +111,22 @@ h1:focus {
     gap:20px;
 }
 
-.thead-border
+
+.action-box,
+.header-btn-box {
+    display: flex;
+    flex-direction: row;    
+}
+
+.search-field,
+.header-btn-box button {
+    margin-right: 0.6rem;
+}
+
+
+.thead-border 
 {
-    
+
 }
 
 thead {
