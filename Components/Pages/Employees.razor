@@ -5,31 +5,23 @@
 @inject Services.EmployeeService EmployeeService
 
 <h1>Employees</h1>
-<div class="title-page">Manage employees - 
-    <div><i class="check-circle"></i>@records listed</div>
-</div>
-
+<div>Manage employees</div>
 <div class="page-header-ems">
     <div class="page-header-ems-section">
-        <div class="action-box">
-            <input type="search" class="form-control search-field" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-            <div class="header-btn-box">                
-                <button type="submit" class="btn btn-success" @onclick="ShowAdd"><i class="bi bi-plus-lg"></i></button>                
-            </div>
-            
-        </div>        
-
-        @if (msg != null)
-        {
-            <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-                @msg
-                <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-            </div>
-        }
+        <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <div>
+            <i class="check-circle"></i>
+            @records employees listed
+        </div>
     </div>
-    
+    @if (msg != null)
+    {
+        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+            @msg
+            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+        </div>
+    }
 </div>
-
 <div class="page-ems">
     <div class="page-section-ems">
         <table class="table table-hover" id="myTable">
@@ -40,12 +32,13 @@
                     <th>Email</th>
                     <th>Position</th>
                     <th>Salary</th>
-                    <th>Actions</th>
+                    <th class="td-actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (filteredData != null)
                 {
+
                     @foreach (Employee e in filteredData)
                     {
                         <tr>
@@ -54,7 +47,7 @@
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
-                            <td>
+                            <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <span class="bi bi-pen"></span>
                                     View
@@ -65,8 +58,11 @@
                 }
                 else
                 {
+
+
                     @foreach (Employee e in employeeList)
                     {
+
                         @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
                         <tr class="@activeClass">
                             <td>@e.Id.ToString()</td>
@@ -74,7 +70,7 @@
                             <td><a href="mailto:@e.Email">@e.Email</a></td>
                             <td>@e.Position</td>
                             <td>@e.Salary.ToString("C")</td>
-                            <td>
+                            <td class="td-actions">
                                 <button type="submit" class="btn btn-primary" @onclick="() => EditEmployee(e)">
                                     <i class="bi bi-pen"></i>
                                     View
@@ -86,83 +82,82 @@
             </tbody>
         </table>
     </div>
-    @if (showAddEmployee)
-    {
-        <div class="page-section-ems">
-            <form @onsubmit="AddEmployee">
-                <div class="h2">
-                    @title
-                    <div class="button-holder-ems">
-                        @if (id != null)
-                        {
-                            <button type="button" @onclick="UpdateEmployee" class="btn btn-primary">Update</button>
-                            <button type="button" @onclick="Reset" class="btn btn-outline-danger">Close <i class="bi bi-x-lg"></i></button>
-                            <button type="button" @onclick="DeleteEmployee" class="btn btn-danger">Delete</button>
-                        }
-                        else
-                        {
-                            <button type="button" @onclick="AddEmployee" class="btn btn-primary mb-3">Submit<i class="bi bi-plus-lg"></i></button>
-                        }
-                    </div>
-                </div>
+    <div class="page-section-ems">
+        <form @onsubmit="SubmitForm">
 
-                @if (id != null)
-                {
-                    <div class="mb-3">
-                        <label class="form-label" for="idd">Id</label>
-                        <input type="number" @bind="id" class="form-control" id="idd" readonly />
-                    </div>
-                }
+            <div class="h2">
+                @title
+                <div class="button-holder-ems">
+                    @if (id != null)
+                    {
+                        formSubmission = "update";
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="Reset" class="btn btn-outline-danger"><i class="bi bi-x-lg"></i></button>
+                        <button type="button" @onclick="DeleteEmployee" class="btn btn-danger"><i class="bi bi-trash3"></i></button>
+                    }
+                    else
+                    {
+                        formSubmission = "create";
+                        <button type="submit" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i></button>
+                    }
+                </div>
+            </div>
+            @if (id != null)
+            {
 
                 <div class="mb-3">
-                    <label class="form-label" for="name">Full Name</label>
-                    <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
+                    <label class="form-label" for="idd">Employee Id</label>
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                </div>
+            }
+
+
+            <div class="mb-3">
+                <label class="form-label" for="name">Full Name</label>
+                <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" @bind="emailAddress" placeholder="someone@sample.net" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="position">Position</label>
+                <input type="text" @bind="position" placeholder="Enter Position" class="form-control" id="position" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="salary">Salary</label>
+                <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="status">Status</label>
+                <select @bind="status" placeholder="Status" class="form-control" id="status" required>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="role">Role</label>
+                <select @bind="role" placeholder="Role" class="form-control" id="role" required>
+                    <option value="1">Staff</option>
+                    <option value="2">Supervisor</option>
+                    <option value="3">Management</option>
+                </select>
+            </div>
+            @if (id != null)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="created">Created</label>
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" @bind="emailAddress" placeholder="someone@sample.net" class="form-control" required />
+                    <label class="form-label" for="updated">Updated</label>
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="position">Position</label>
-                    <input type="text" @bind="position" placeholder="Enter Position" class="form-control" id="position" required />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="salary">Salary</label>
-                    <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="status">Status</label>
-                    <select @bind="status" placeholder="Status" class="form-control" id="status" required>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="role">Role</label>
-                    <select @bind="role" placeholder="Role" class="form-control" id="role" required>
-                        <option value="1">Staff</option>
-                        <option value="2">Supervisor</option>
-                        <option value="3">Management</option>
-                    </select>
-                </div>
-                @if (id != null)
-                {
-                    <div class="mb-3">
-                        <label class="form-label" for="created">Created</label>
-                        <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="updated">Updated</label>
-                        <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
-                    </div>
-                }
-            </form>
-        </div>
-    }
-    
+            }
+
+        </form>
+    </div>
 </div>
-
-
 
 @code {
     private int? id;
@@ -171,6 +166,7 @@
     private string? position;
     private decimal salary = 0;
     private string? status;
+    private string formSubmission = "create";
     private int role = 1;
     private DateTime? created;
     private DateTime? updated;
@@ -184,7 +180,6 @@
     private Employee? emp;
     private List<Employee>? filteredData = new List<Employee>();
 
-    private bool showAddEmployee = false;    
 
 
 
@@ -212,7 +207,7 @@
         status = "Active";
         role = 1;
         id = null;
-        title = "Add Employee";        
+        title = "Add Employee";
     }
 
     private async Task CloseMessage()
@@ -263,7 +258,7 @@
             role = employee.Role;
             created = employee.CreatedAt;
             updated = employee.UpdatedAt;
-            title = $"Update {fullName}";
+            title = $"{fullName}";
 
         }
         catch (Exception e)
@@ -273,20 +268,17 @@
         }
     }
 
-
-    private async Task ShowAdd()
+    private async Task SubmitForm()
     {
-        if (showAddEmployee)
+        if (formSubmission == "create")
         {
-            showAddEmployee = false;
-            return;
+            AddEmployee();
         }
-        showAddEmployee = true;        
+        else
+        {
+            UpdateEmployee();
+        }
     }
-
-
-    
-
 
     private async Task AddEmployee()
     {
@@ -301,6 +293,7 @@
             customerData.Add(role);
             msg = $"New employee {fullName} added successfully!";
             await EmployeeService.AddEmployee(customerData);
+            Reset();
             await RefreshList();
         }
         catch (Exception e)
@@ -338,11 +331,22 @@
         try
         {
 
-            await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete {fullName}?", "OK");
-            await EmployeeService.DeleteEmployee(emp);
-            msg = $"{emp.Name} was deleted successfully";
-            await RefreshList();
-            await Reset();
+            bool confirmDelete = await App.Current.MainPage.DisplayAlert("Confirm Deletion!", $"Are you sure you want to delete {fullName}?", "OK", "Cancel");
+
+            if (confirmDelete)
+            {
+                if (emp != null)
+                {
+                    await EmployeeService.DeleteEmployee(emp);
+                    msg = $"{emp.Name} was deleted successfully.";
+                    await RefreshList();
+                    await Reset();
+                }                
+            }
+            else
+            {
+                msg = $"Deletion Cancelled.";
+            }            
         }
         catch (Exception e)
         {
@@ -350,7 +354,5 @@
             alert = "alert-danger";
         }
     }
-
-
 
 }
