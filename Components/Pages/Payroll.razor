@@ -5,23 +5,24 @@
 @inject Services.EmployeeService EmployeeService
 @inject Services.PayrollService PayrollService
 
-<h1>Payroll</h1>
-<div>Manage payrolls for employees</div>
-<div class="page-header-ems">
-    <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>@records payroll records listed</div>
-    </div>
-    @if (msg != null)
-    {
-        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-            @msg
-            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-        </div>
-    }
-</div>
+
 <div class="page-ems">
     <div class="page-section-ems">
+        <h1>Payroll</h1>
+        <div>Manage payrolls for employees | @records payroll records listed</div>
+        <div class="page-header-ems">
+            <div class="page-header-ems-section">
+                <div style="z-index:4;"><input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" /></div>
+                <div></div>
+            </div>
+            @if (msg != null)
+            {
+                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+                </div>
+            }
+        </div>
         <table class="table table-hover" id="myTable">
             <thead>
                 <tr class="thead-border">

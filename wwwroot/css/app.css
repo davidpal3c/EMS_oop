@@ -98,7 +98,7 @@ h1:focus {
     align-items:start;
     gap:30px;
     padding-bottom:50px;
-     
+   
 }
 
 .nav-ems
@@ -124,17 +124,22 @@ h1:focus {
 }
 
     .page-section-ems:nth-child(2) {
-        max-height: 480px;
+        max-height: 510px;
         overflow-y: auto;
         padding-inline: 20px;
         box-shadow: -2px 2px 15px 0px rgba(50,50,50,0.1);
         resize:vertical;
+        position:sticky;
+        top:60px;
     }
 
 input[type="search"] {
-    box-shadow: -2px 2px 10px 0px rgba(50,50,50,0.15);
-    border:none;
-    height:40px;
+    position: relative;
+    box-shadow: 1px 2px 10px 0px rgba(50,50,50,0.15);
+    border: none;
+    height: 45px;
+    padding-right:0px;
+    z-index: 4;
 }
 
 
@@ -144,7 +149,8 @@ input[type="search"] {
     background-color:#ffffff;    
     position:sticky;
     top:60px;    
-
+    z-index:2;
+    padding-left:0px;
 }
 
 .page-header-ems-section

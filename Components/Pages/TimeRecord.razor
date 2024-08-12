@@ -8,23 +8,24 @@
 
 
 
-<h1>Time Record</h1>
-<div>Manage employee time records</div>
-<div class="page-header-ems">
-    <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchTimeRecords" />
-        <div>@records time records listed</div>
-    </div>
-    @if (msg != null)
-    {
-        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-            @msg
-            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-        </div>
-    }
-</div>
+
 <div class="page-ems">
     <div class="page-section-ems">
+        <h1>Time Record</h1>
+        <div>Manage employee time records | @records time records listed</div>
+        <div class="page-header-ems">
+            <div class="page-header-ems-section">
+                <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchTimeRecords" />
+                <div></div>
+            </div>
+            @if (msg != null)
+            {
+                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+                </div>
+            }
+        </div>
         <table class="table table-hover" id="myTable">
             <thead>
                 <tr class="thead-border">

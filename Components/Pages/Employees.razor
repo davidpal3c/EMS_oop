@@ -4,26 +4,27 @@
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
 
-<h1>Employees</h1>
-<div>Manage employees</div>
-<div class="page-header-ems">
-    <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>
-            <i class="check-circle"></i>
-            @records employees listed
-        </div>
-    </div>
-    @if (msg != null)
-    {
-        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-            @msg
-            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-        </div>
-    }
-</div>
+
 <div class="page-ems">
     <div class="page-section-ems">
+        <h1>Employees</h1>
+        <div>Manage employees | @records employees listed</div>
+        <div class="page-header-ems">
+            <div class="page-header-ems-section">
+                <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+                <div>
+                    <i class="check-circle"></i>
+                    
+                </div>
+            </div>
+            @if (msg != null)
+            {
+                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+                </div>
+            }
+        </div>
         <table class="table table-hover" id="myTable">
             <thead>
                 <tr class="thead-border">
