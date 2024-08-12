@@ -12,20 +12,30 @@
 <div>Manage Reports</div>
 <div class="page-header-ems">
     <div class="page-header-ems-section">
-        <select @bind="selectedReport">
+        <select class="form-control" @onchange="HandleReportSelect">
+            <option value="">-- Select Report Type --</option>
             @foreach (Report.EReportType rt in Enum.GetValues(typeof(Report.EReportType)))
             {
                 <option value="@rt">@rt.ToString()</option>
             }
         </select>
-    </div>
 
+        <div class="header-btn-box">
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export (xls)">
+                <i class="bi bi-file-spreadsheet"></i>
+            </button>
+            <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print">
+                <i class="bi bi-printer"></i>
+            </button>
+        </div>        
+    </div>
 </div>
-<div class="page-ems">
+
+<div class="report-page-ems">
     <div class="page-section-ems">
         @if (reportList.Count > 0)
         {
-            <table class="table table-hover" id="myTable">
+            <table class="report-table table" id="myTable">
                 @if (selectedReport == Report.EReportType.EmployeeDirectory)
                 {
                     <thead>
@@ -41,24 +51,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (EmployeeDirectoryReport rep in reportList)
+                        @foreach (EmployeeDirectoryReport rep in reportList.OfType<EmployeeDirectoryReport>())
                         {
                             <tr>
                                 <td>@rep.Id</td>
                                 <td>@rep.Name</td>
-                                <td>@rep.Email</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
                                 <td>@rep.Position</td>
                                 <td>@rep.Salary</td>
                                 <td>@rep.CreatedAt</td>
                                 <td>@rep.UpdatedAt</td>
-                                <td class="td-actions">
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export">
-                                        <i class="bi bi-arrow-right"></i>Export
-                                    </button>
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print">
-                                        <i class="bi bi-arrow-right"></i>Print
-                                    </button>
-                                </td>
                             </tr>
                         }
                     </tbody>
@@ -71,31 +73,25 @@
                             <th>Date</th>
                             <th>Employee Id</th>
                             <th>Employee Name</th>
-                            <td>Hours Worked</td>
-                            <td>Email</td>
+                            <th>Hours Worked</th>
+                            <th>Email</th>
                             <th>Position</th>
                             <th>CreatedAt</th>
                             <th class="td-actions"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AttendanceReport rep in reportList)
+                        @foreach (AttendanceReport rep in reportList.OfType<AttendanceReport>())
                         {
                             <tr>
                                 <td>@rep.Date</td>
                                 <td>@rep.Id</td>
                                 <td>@rep.Name</td>
                                 <td>@rep.HoursWorked</td>
-                                <td>@rep.Email</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
                                 <td>@rep.Position</td>
                                 <td>@rep.CreatedAt</td>
                                 <td class="td-actions">
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export">
-                                        <i class="bi bi-arrow-right"></i>Export
-                                    </button>
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print">
-                                        <i class="bi bi-arrow-right"></i>Print
-                                    </button>
                                 </td>
                             </tr>
                         }
@@ -108,30 +104,25 @@
                             <th>Date</th>
                             <th>Employee Id</th>
                             <th>Employee Name</th>
-                            <td>Hours Worked</td>
+                            <th>Hours Worked</th>
+                            <td>Email</td>
                             <th>Position</th>                            
                             <th>CreatedAt</th>
                             <th class="td-actions"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (LeaveAndAbsenceReport rep in reportList)
+                        @foreach (LeaveAndAbsenceReport rep in reportList.OfType<LeaveAndAbsenceReport>())
                         {
                             <tr>
                                 <td>@rep.Date</td>
                                 <td>@rep.Id</td>
                                 <td>@rep.Name</td>
                                 <td>@rep.HoursWorked</td>
-                                <td>@rep.Email</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
                                 <td>@rep.Position</td>
                                 <td>@rep.CreatedAt</td>
                                 <td class="td-actions">
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export">
-                                        <i class="bi bi-arrow-right"></i>Export
-                                    </button>
-                                    <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print">
-                                        <i class="bi bi-arrow-right"></i>Print
-                                    </button>
                                 </td>
                             </tr>
                         }
@@ -150,7 +141,7 @@
 @code {
 
 
-    private Report.EReportType selectedReport = Report.EReportType.EmployeeDirectory;
+    private Report.EReportType? selectedReport = null;
     private List<Report> reportList = new List<Report>();
     private string? msg;
     private string alert = "alert-success";
@@ -167,18 +158,44 @@
             alert = "alert-danger";
         }
 
-        await RefreshList();
+        await RefreshList(selectedReport);
+
     }
 
-    private async Task RefreshList()
+    private async Task HandleReportSelect(ChangeEventArgs e)
+    {
+        if (string.IsNullOrEmpty(e.Value?.ToString()))
+        {
+            selectedReport = default; 
+            reportList.Clear();
+            return; 
+        }
+
+        if (Enum.TryParse(e.Value?.ToString(), out Report.EReportType rtype))
+        {
+            selectedReport = rtype;
+            await RefreshList(rtype);
+        }
+                
+    }
+
+
+    private async Task RefreshList(Report.EReportType? rtype)
     {  
         try
         {
+            
             Report rep = new Report();
-            var fetchedReports = await rep.GenerateReport(selectedReport);
+            var fetchedReports = await rep.GenerateReport(rtype.GetValueOrDefault());
 
             reportList.Clear();
 
+           
+
+            reportList.AddRange(fetchedReports);
+            
+
+            /*
             foreach (var r in fetchedReports)
             {
                 switch (selectedReport)
@@ -198,7 +215,8 @@
                     default:
                         throw new ArgumentException("Invalid report type");
                 }
-            }        
+            } 
+            */
         }
         catch (Exception e)
         {

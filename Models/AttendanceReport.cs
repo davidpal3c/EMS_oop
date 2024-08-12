@@ -11,7 +11,7 @@ namespace EMS.Models
         private int _id;
         private string _name;
         private DateTime _date;
-        private int _hoursWorked;
+        private double _hoursWorked;
         private string _email;
         private string _position;
         private DateTime _createdAt;
@@ -19,7 +19,7 @@ namespace EMS.Models
         public int Id { get { return _id; } set { _id = value; } }
         public string Name { get { return _name; } set { _name = value; } }
         public DateTime Date { get { return _date; } set { _date = value; } }
-        public int HoursWorked { get { return _hoursWorked; } set { _hoursWorked = value; } }   
+        public double HoursWorked { get { return _hoursWorked; } set { _hoursWorked = value; } }   
         public string Email { get { return _email; } set { _email = value; } }
         public string Position { get { return _position; } set { _position = value; } }
         

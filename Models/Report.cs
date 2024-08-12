@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EMS.Interfaces;
 using EMS.Models;
 using EMS.Services;
+using EMS.Interfaces;
 
 
 namespace EMS.Models
@@ -59,18 +59,33 @@ namespace EMS.Models
             set { generatedBy = value; }
         }
 
+
+        public DateTime CreatedDate
+        {
+            get { return _createdDate; }
+            set { _createdDate = value; }
+        }
+
+        public Report() { }
+
         public static string GenerateQuery(EReportType reportType)
         {
+            string query;
+
             switch (reportType)
             {
                 case EReportType.EmployeeDirectory:
-                    return "SELECT Id, Name, Email, Position, Salary, CreatedAt, UpdatedAt FROM Employees";
+
+                    return "SELECT Id, Name, Email, Position, Salary, CreatedAt, UpdatedAt FROM Employees";                    
 
                 case EReportType.Attendance:
-                    return "SELECT e.Id, e.Name, t.Date, t.HoursWorked, e.Email, e.Position FROM Employees e JOIN TimeRecords t ON e.Id = t.EmployeeId WHERE t.Type = 'Attendance')";
+
+                    return "SELECT e.Id, e.Name, t.Date, t.HoursWorked, e.Email, e.Position, t.CreatedAt FROM Employees e JOIN TimeRecords t ON e.Id = t.EmployeeId WHERE t.Type = 'Attendance'";                    
 
                 case EReportType.LeaveAndAbsence:
-                    return "SELECT e.Id, e.Name, t.Date, t.HoursWorked, e.Email, e.Position FROM Employees e JOIN TimeRecords t ON e.Id = t.EmployeeId WHERE (t.Type = 'Leave' OR t.Type = 'Absence')";
+
+                    return "SELECT e.Id, e.Name, t.Date, t.HoursWorked, e.Email, e.Position, t.CreatedAt FROM Employees e JOIN TimeRecords t ON e.Id = t.EmployeeId WHERE (t.Type = 'Leave' OR t.Type = 'Absence')";
+                    
 
                 default:
                     throw new ArgumentException("Invalid report type");
@@ -81,8 +96,8 @@ namespace EMS.Models
         {
             try
             {
-                ReportService reportService = new ReportService(new DBService(), new ReportMapper());
-                return await reportService.GetReport(GenerateQuery(reportType));
+                ReportService reportService = new ReportService(new DBService(), new ReportMapper());                            
+                return await reportService.GetReport(GenerateQuery(reportType), reportType);
             }
             catch (Exception ex)
             {

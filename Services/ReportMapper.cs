@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySqlConnector;
 using EMS.Models;
+using System.Data;
 
 namespace EMS.Services
 {
@@ -45,11 +46,11 @@ namespace EMS.Services
                 {
                     Id = reader.GetInt32("Id"),
                     Name = reader.GetString("Name"),
-                    Date = reader.GetDateTime("CreatedAt"),
-                    HoursWorked = reader.GetInt32("HoursWorked"),
+                    Date = reader.GetDateTime("Date"),
+                    HoursWorked = reader.GetDouble("HoursWorked"),
                     Email = reader.GetString("Email"),
                     Position = reader.GetString("Position"),
-                    CreatedAt = reader.GetDateTime("CreatedAt"),                    
+                    CreatedAt = reader.GetDateTime("CreatedAt")
                 };
 
             }
@@ -72,10 +73,10 @@ namespace EMS.Services
                     Id = reader.GetInt32("Id"),
                     Name = reader.GetString("Name"),
                     Date = reader.GetDateTime("CreatedAt"),
-                    HoursWorked = reader.GetInt32("HoursWorked"),
+                    HoursWorked = reader.GetDouble("HoursWorked"),
                     Email = reader.GetString("Email"),
                     Position = reader.GetString("Position"),
-                    CreatedAt = reader.GetDateTime("CreatedAt"),
+                    CreatedAt = reader.GetDateTime("Date"),
                 };
 
             }

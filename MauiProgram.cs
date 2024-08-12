@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using EMS.Services;
+using EMS.Models;
+
 
 namespace EMS
 {
@@ -18,7 +20,7 @@ namespace EMS
 
             builder.Services.AddTransient<DBService>(provider  =>
             {
-                string connectionString = "Server=107.180.27.178;Port=3306;Database=employeemanager;Uid=oopadmin;Pwd=taQoCt]ApQZ5";
+                string connectionString = "Server=107.180.27.178;Port=3306;Database=employeemanager;Uid=oopadmin;Pwd=taQoCt]ApQZ5;Connection Timeout=30";
                 return new DBService(connectionString);
             });
 
@@ -30,6 +32,10 @@ namespace EMS
             builder.Services.AddSingleton<PayrollMapper>();
             builder.Services.AddSingleton<TimeRecordService>();
             builder.Services.AddSingleton<TimeRecordMapper>();
+            builder.Services.AddSingleton<ReportService>();
+            builder.Services.AddSingleton<ReportMapper>();
+                        
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
