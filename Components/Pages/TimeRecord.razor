@@ -12,7 +12,7 @@
 <div>Manage employee time records</div>
 <div class="page-header-ems">
     <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchTimeRecords" />
         <div>@records time records listed</div>
     </div>
     @if (msg != null)
@@ -222,11 +222,11 @@
         }
     }
 
-    private async Task SearchEmployees()
+    private async Task SearchTimeRecords()
     {
         try
         {
-            //filteredData = await EmployeeService.SearchPayrolls(search);
+            filteredData = await TimeRecordService.SearchTimeRecords(search);
             records = filteredData.Count;
         }
         catch (Exception e)
