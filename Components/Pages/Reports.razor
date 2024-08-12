@@ -175,48 +175,20 @@
         {
             selectedReport = rtype;
             await RefreshList(rtype);
-        }
-                
+        }                
     }
 
 
     private async Task RefreshList(Report.EReportType? rtype)
     {  
         try
-        {
-            
+        {            
             Report rep = new Report();
             var fetchedReports = await rep.GenerateReport(rtype.GetValueOrDefault());
 
-            reportList.Clear();
+            reportList.Clear();                     
+            reportList.AddRange(fetchedReports);           
 
-           
-
-            reportList.AddRange(fetchedReports);
-            
-
-            /*
-            foreach (var r in fetchedReports)
-            {
-                switch (selectedReport)
-                {
-                    case Report.EReportType.EmployeeDirectory:
-                        reportList.Add((EmployeeDirectoryReport)r);
-                        break;
-
-                    case Report.EReportType.Attendance:
-                        reportList.Add((AttendanceReport)r);
-                        break;
-
-                    case Report.EReportType.LeaveAndAbsence:
-                        reportList.Add((LeaveAndAbsenceReport)r);
-                        break;
-
-                    default:
-                        throw new ArgumentException("Invalid report type");
-                }
-            } 
-            */
         }
         catch (Exception e)
         {
