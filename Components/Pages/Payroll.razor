@@ -105,7 +105,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label" for="idd">Payroll Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
                 </div>
             }
             
@@ -136,15 +136,15 @@
             {
             <div class="mb-3">
                 <label class="form-label" for="netpay">Net Pay</label>
-                <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly/>
+                <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly disabled/>
             </div>
                 <div class="mb-3">
                     <label class="form-label" for="created">Created</label>
-                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly disabled />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="updated">Updated</label>
-                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly disabled />
                 </div>
             }
            

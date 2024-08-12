@@ -98,7 +98,7 @@
             {                
                 <div class="mb-3">
                     <label class="form-label" for="idd">Time Record Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
                 </div>
             }           
 
@@ -134,11 +134,11 @@
             {
                 <div class="mb-3">
                     <label class="form-label" for="created">Created</label>
-                    <input type="date" @bind="created" class="form-control" id="created" required readonly />
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly disabled />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="updated">Updated</label>
-                    <input type="date" @bind="updated" class="form-control" id="updated" required readonly />
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly disabled />
                 </div>
             }
             
@@ -157,8 +157,8 @@
     private DateTime? date;
     private double? hoursWorked;
     private string type;
-    private DateOnly? created;
-    private DateOnly? updated;
+    private DateTime? created;
+    private DateTime? updated;
     private string? search;
     private string title = "Add Record";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
@@ -197,6 +197,7 @@
     private async Task Reset()
     {        
         id = employee = null;
+        type = "";
         title = "Add Record";
     }
 
@@ -246,9 +247,11 @@
             employee = selectedTimeRec.EmployeeId;
             date = selectedTimeRec.Date;
             hoursWorked = selectedTimeRec.HoursWorked;
-
+            type = selectedTimeRec.Type;
+            created = selectedTimeRec.CreatedAt;
+            updated = selectedTimeRec.UpdatedAt;
             title = $"Update {selectedTimeRec.Id}";
-            //type = time.Type;
+            
         }
         catch (Exception e)
         {
