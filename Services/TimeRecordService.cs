@@ -62,7 +62,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Payrolls_view where Name like '%{search}%'", conn))
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM TimeRecords_view where Name like '%{search}%'", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {

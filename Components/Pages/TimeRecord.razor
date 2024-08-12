@@ -1,4 +1,4 @@
-﻿@page "/timeRecord"
+@page "/timeRecord"
 @using Models
 @using Services
 @inject Services.DBService DBService
@@ -8,23 +8,24 @@
 
 
 
-<h1>Time Record</h1>
-<div>Manage employee time records</div>
-<div class="page-header-ems">
-    <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>@records time records listed</div>
-    </div>
-    @if (msg != null)
-    {
-        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-            @msg
-            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-        </div>
-    }
-</div>
+
 <div class="page-ems">
     <div class="page-section-ems">
+        <h1>Time Record</h1>
+        <div>Manage employee time records | @records time records listed</div>
+        <div class="page-header-ems">
+            <div class="page-header-ems-section">
+                <input type="search" class="form-control" placeholder="Search for time records by employee" @bind="search" @bind:event="oninput" @bind:after="SearchTimeRecords" />
+                <div></div>
+            </div>
+            @if (msg != null)
+            {
+                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+                </div>
+            }
+        </div>
         <table class="table table-hover" id="myTable">
             <thead>
                 <tr class="thead-border">
@@ -79,18 +80,18 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="AddTimeRecord">
-            <div class="h2">@title
+        <form @onsubmit="SubmitForm">
+            <div class="h2"><div>@title</div>
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdateTimeRecord" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit Update"><i class="bi bi-save2"></i></button>
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
                         <button type="button" @onclick="DeleteTimeRecord" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
-                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -98,7 +99,7 @@
             {                
                 <div class="mb-3">
                     <label class="form-label" for="idd">Time Record Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
                 </div>
             }           
 
@@ -134,11 +135,11 @@
             {
                 <div class="mb-3">
                     <label class="form-label" for="created">Created</label>
-                    <input type="date" @bind="created" class="form-control" id="created" required readonly />
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly disabled />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="updated">Updated</label>
-                    <input type="date" @bind="updated" class="form-control" id="updated" required readonly />
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly disabled />
                 </div>
             }
             
@@ -157,10 +158,11 @@
     private DateTime? date;
     private double? hoursWorked;
     private string type;
-    private DateOnly? created;
-    private DateOnly? updated;
+    private DateTime? created;
+    private DateTime? updated;
     private string? search;
-    private string title = "Add Time Record";
+    private string formSubmission = "create";
+    private string title = "Add Record";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
@@ -197,7 +199,8 @@
     private async Task Reset()
     {        
         id = employee = null;
-        title = "Add Time Record";
+        type = "";
+        title = "Add Record";
     }
 
     private async Task CloseMessage()
@@ -222,11 +225,11 @@
         }
     }
 
-    private async Task SearchEmployees()
+    private async Task SearchTimeRecords()
     {
         try
         {
-            //filteredData = await EmployeeService.SearchPayrolls(search);
+            filteredData = await TimeRecordService.SearchTimeRecords(search);
             records = filteredData.Count;
         }
         catch (Exception e)
@@ -246,14 +249,28 @@
             employee = selectedTimeRec.EmployeeId;
             date = selectedTimeRec.Date;
             hoursWorked = selectedTimeRec.HoursWorked;
-
-            title = $"{selectedTimeRec.EmployeeName}";
-            //type = time.Type;
+            type = selectedTimeRec.Type;
+            created = selectedTimeRec.CreatedAt;
+            updated = selectedTimeRec.UpdatedAt;
+            title = $"Update {selectedTimeRec.Id}";
+            
         }
         catch (Exception e)
         {
             msg = $"Error during refresh: {e.Message}";
             alert = "alert-danger";
+        }
+    }
+
+    private async Task SubmitForm()
+    {
+        if (formSubmission == "create")
+        {
+            AddTimeRecord();
+        }
+        else
+        {
+            UpdateTimeRecord();
         }
     }
 

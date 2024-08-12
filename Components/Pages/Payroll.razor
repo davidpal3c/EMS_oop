@@ -5,23 +5,24 @@
 @inject EmployeeService EmployeeService
 @inject PayrollService PayrollService
 
-<h1>Payroll</h1>
-<div>Manage payrolls for employees</div>
-<div class="page-header-ems">
-    <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-        <div>@records payroll records listed</div>
-    </div>
-    @if (msg != null)
-    {
-        <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
-            @msg
-            <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
-        </div>
-    }
-</div>
+
 <div class="page-ems">
     <div class="page-section-ems">
+        <h1>Payroll</h1>
+        <div>Manage payrolls for employees | @records payroll records listed</div>
+        <div class="page-header-ems">
+            <div class="page-header-ems-section">
+                <div style="z-index:4;"><input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" /></div>
+                <div></div>
+            </div>
+            @if (msg != null)
+            {
+                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                    @msg
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
+                </div>
+            }
+        </div>
         <table class="table table-hover" id="myTable">
             <thead>
                 <tr class="thead-border">
@@ -96,7 +97,7 @@
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="hover" title="Submit"><i class="bi bi-plus-lg"></i></button>
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="hover" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -105,7 +106,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label" for="idd">Payroll Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly />
+                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
                 </div>
             }            
 
@@ -135,15 +136,15 @@
             {
             <div class="mb-3">
                 <label class="form-label" for="netpay">Net Pay</label>
-                <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly/>
+                <input type="number" @bind="netPay" step=".01" placeholder="Enter Net pay" class="form-control" id="netpay" required readonly disabled/>
             </div>
                 <div class="mb-3">
                     <label class="form-label" for="created">Created</label>
-                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly />
+                    <input type="datetime" @bind="created" class="form-control" id="created" required readonly disabled />
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="updated">Updated</label>
-                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly />
+                    <input type="datetime" @bind="updated" class="form-control" id="updated" required readonly disabled />
                 </div>
             }
            

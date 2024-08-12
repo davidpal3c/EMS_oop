@@ -25,7 +25,6 @@ namespace EMS.Services
                     Date = reader.GetDateTime("Date"),
                     HoursWorked = reader.GetDouble("HoursWorked"),
                     Type = reader.GetString("Type"),
-
                     CreatedAt = reader.GetDateTime("CreatedAt"),
                     UpdatedAt = reader.GetDateTime("UpdatedAt"),
                 };
