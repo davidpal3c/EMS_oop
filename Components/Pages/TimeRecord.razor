@@ -80,7 +80,7 @@
     </div>
     <div class="page-section-ems">
         <form @onsubmit="AddTimeRecord">
-            <div class="h2">@title
+            <div class="h2"><div>@title</div>
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
@@ -90,7 +90,7 @@
                     }
                     else
                     {
-                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary mb-3" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
+                        <button type="button" @onclick="AddTimeRecord" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
             </div>
@@ -160,7 +160,7 @@
     private DateOnly? created;
     private DateOnly? updated;
     private string? search;
-    private string title = "Add Time Record";
+    private string title = "Add Record";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
@@ -197,7 +197,7 @@
     private async Task Reset()
     {        
         id = employee = null;
-        title = "Add Time Record";
+        title = "Add Record";
     }
 
     private async Task CloseMessage()
@@ -247,7 +247,7 @@
             date = selectedTimeRec.Date;
             hoursWorked = selectedTimeRec.HoursWorked;
 
-            title = $"Update Time Record {selectedTimeRec.Id}";
+            title = $"Update {selectedTimeRec.Id}";
             //type = time.Type;
         }
         catch (Exception e)

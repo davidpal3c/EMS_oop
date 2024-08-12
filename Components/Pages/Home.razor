@@ -4,6 +4,7 @@
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
 @inject Services.PayrollService PayrollService
+@inject Services.TimeRecordService TimeRecordService
 
 <h1>Home</h1>
 
@@ -12,13 +13,14 @@ Welcome to EMS!
 <div class="home-section">
     <div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div></div>
     <div class="home-sub-section"><span>@payrollList.Count</span><div>Payrolls</div></div>
-    <div class="home-sub-section"><span>0</span><div>Time Records</div></div>
+    <div class="home-sub-section"><span>@timeList.Count</span><div>Time Records</div></div>
 </div>
 
 @code{
 
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeList = new List<Models.Employee>();
+    private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,6 +46,7 @@ Welcome to EMS!
         {
             employeeList = await EmployeeService.GetEmployees();
             payrollList = await PayrollService.GetPayrolls();
+            timeList = await TimeRecordService.GetTimeRecords();
          
         }
         catch (Exception e)
