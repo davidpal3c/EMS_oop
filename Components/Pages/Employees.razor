@@ -8,7 +8,7 @@
 <div>Manage employees</div>
 <div class="page-header-ems">
     <div class="page-header-ems-section">
-        <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+        <input tabindex="1" type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
         <div>
             <i class="check-circle"></i>
             @records employees listed
@@ -87,7 +87,7 @@
                     @if (id != null)
                     {
                         formSubmission = "update";
-                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit Update"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
                         <button type="button" @onclick="DeleteEmployee" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }

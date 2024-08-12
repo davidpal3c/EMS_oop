@@ -20,7 +20,6 @@ namespace EMS.Services
             {
                 Employee employee = new Employee();
 
-
                 return new Employee
                 {
                     Id = reader.GetInt32("Id"),
@@ -39,7 +38,6 @@ namespace EMS.Services
                 throw new InvalidOperationException("Error mapping data from reader to Employee", ex);
             }
 
-        }
-                
+        }                
     }
 }

@@ -1,0 +1,228 @@
+﻿@page "/reports"
+@using Interfaces
+@using Models
+@using Services
+@inject DBService DBService
+@inject EmployeeService EmployeeService
+@inject PayrollService PayrollService
+
+
+<h3>Reports</h3>
+
+<div>Manage Reports</div>
+<div class="page-header-ems">
+    <div class="page-header-ems-section">
+        <select class="form-control" @onchange="HandleReportSelect">
+            <option value="">-- Select Report Type --</option>
+            @foreach (Report.EReportType rt in Enum.GetValues(typeof(Report.EReportType)))
+            {
+                <option value="@rt">@rt.ToString()</option>
+            }
+        </select>
+
+        <div class="header-btn-box">
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export (xls)">
+                <i class="bi bi-file-spreadsheet"></i>
+            </button>
+            <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print">
+                <i class="bi bi-printer"></i>
+            </button>
+        </div>        
+    </div>
+</div>
+
+<div class="report-page-ems">
+    <div class="page-section-ems">
+        @if (reportList.Count > 0)
+        {
+            <table class="report-table table" id="myTable">
+                @if (selectedReport == Report.EReportType.EmployeeDirectory)
+                {
+                    <thead>
+                        <tr class="thead-border">
+                            <th>Id</th>
+                            <th>Employee Name</th>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>Salary</th>
+                            <th>CreatedAt</th>
+                            <th>UpdatedAt</th>
+                            <th class="td-actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (EmployeeDirectoryReport rep in reportList.OfType<EmployeeDirectoryReport>())
+                        {
+                            <tr>
+                                <td>@rep.Id</td>
+                                <td>@rep.Name</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
+                                <td>@rep.Position</td>
+                                <td>@rep.Salary</td>
+                                <td>@rep.CreatedAt</td>
+                                <td>@rep.UpdatedAt</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            
+                else if (selectedReport == Report.EReportType.Attendance)
+                {
+                    <thead>
+                        <tr class="thead-border">
+                            <th>Date</th>
+                            <th>Employee Id</th>
+                            <th>Employee Name</th>
+                            <th>Hours Worked</th>
+                            <th>Email</th>
+                            <th>Position</th>
+                            <th>CreatedAt</th>
+                            <th class="td-actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (AttendanceReport rep in reportList.OfType<AttendanceReport>())
+                        {
+                            <tr>
+                                <td>@rep.Date</td>
+                                <td>@rep.Id</td>
+                                <td>@rep.Name</td>
+                                <td>@rep.HoursWorked</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
+                                <td>@rep.Position</td>
+                                <td>@rep.CreatedAt</td>
+                                <td class="td-actions">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }            
+                else if (selectedReport == Report.EReportType.LeaveAndAbsence)
+                {
+                    <thead>
+                        <tr class="thead-border">
+                            <th>Date</th>
+                            <th>Employee Id</th>
+                            <th>Employee Name</th>
+                            <th>Hours Worked</th>
+                            <td>Email</td>
+                            <th>Position</th>                            
+                            <th>CreatedAt</th>
+                            <th class="td-actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (LeaveAndAbsenceReport rep in reportList.OfType<LeaveAndAbsenceReport>())
+                        {
+                            <tr>
+                                <td>@rep.Date</td>
+                                <td>@rep.Id</td>
+                                <td>@rep.Name</td>
+                                <td>@rep.HoursWorked</td>
+                                <td><a href="mailto:@rep.Email">@rep.Email</a></td>                                
+                                <td>@rep.Position</td>
+                                <td>@rep.CreatedAt</td>
+                                <td class="td-actions">
+                                </td>
+                            </tr>
+                        }
+                    </tbody>                
+                }
+            </table>
+        }
+        else
+        {
+            <div>No records available for the selected report type.</div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+
+    private Report.EReportType? selectedReport = null;
+    private List<Report> reportList = new List<Report>();
+    private string? msg;
+    private string alert = "alert-success";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (DBService.IsSuccessfulConnection())
+        {
+            //msg = "DB Connection - OK!";
+        }
+        else
+        {
+            msg = "Reconfigure connection string at MauiProgram.cs";
+            alert = "alert-danger";
+        }
+
+        await RefreshList(selectedReport);
+
+    }
+
+    private async Task HandleReportSelect(ChangeEventArgs e)
+    {
+        if (string.IsNullOrEmpty(e.Value?.ToString()))
+        {
+            selectedReport = default; 
+            reportList.Clear();
+            return; 
+        }
+
+        if (Enum.TryParse(e.Value?.ToString(), out Report.EReportType rtype))
+        {
+            selectedReport = rtype;
+            await RefreshList(rtype);
+        }
+                
+    }
+
+
+    private async Task RefreshList(Report.EReportType? rtype)
+    {  
+        try
+        {
+            
+            Report rep = new Report();
+            var fetchedReports = await rep.GenerateReport(rtype.GetValueOrDefault());
+
+            reportList.Clear();
+
+           
+
+            reportList.AddRange(fetchedReports);
+            
+
+            /*
+            foreach (var r in fetchedReports)
+            {
+                switch (selectedReport)
+                {
+                    case Report.EReportType.EmployeeDirectory:
+                        reportList.Add((EmployeeDirectoryReport)r);
+                        break;
+
+                    case Report.EReportType.Attendance:
+                        reportList.Add((AttendanceReport)r);
+                        break;
+
+                    case Report.EReportType.LeaveAndAbsence:
+                        reportList.Add((LeaveAndAbsenceReport)r);
+                        break;
+
+                    default:
+                        throw new ArgumentException("Invalid report type");
+                }
+            } 
+            */
+        }
+        catch (Exception e)
+        {
+            msg = $"Error during refresh: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+    
+}

@@ -32,7 +32,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT *  FROM Employees", conn))
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Employees", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {                           
