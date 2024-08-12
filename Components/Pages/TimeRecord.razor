@@ -84,7 +84,7 @@
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
-                        <button type="button" @onclick="UpdateTimeRecord" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
+                        <button type="button" @onclick="UpdateTimeRecord" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit Update"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
                         <button type="button" @onclick="DeleteTimeRecord" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
@@ -247,7 +247,7 @@
             date = selectedTimeRec.Date;
             hoursWorked = selectedTimeRec.HoursWorked;
 
-            title = $"Update Time Record {selectedTimeRec.Id}";
+            title = $"{selectedTimeRec.EmployeeName}";
             //type = time.Type;
         }
         catch (Exception e)
