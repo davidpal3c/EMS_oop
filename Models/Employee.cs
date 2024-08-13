@@ -65,6 +65,15 @@ namespace EMS.Models
 
         public Employee() { }
 
+        public Employee(int count, string status) 
+        { 
+            Id = count;
+            Status = status;
+        
+        }
+
+       
+
         public Employee(int id, string name, string email, string position, decimal salary, string status, int role, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             Id = id;

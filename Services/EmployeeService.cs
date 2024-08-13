@@ -54,6 +54,70 @@ namespace EMS.Services
             return employeeList;
         }
 
+        public async Task<List<Employee>> GetEmployeeReport1()
+        {
+            List<Employee> employeeList = new List<Employee>();
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
+                {
+                    await conn.OpenAsync();
+
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees_report1", conn))
+                    {
+                        using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+
+                            while (await reader.ReadAsync())
+                            {
+                                Employee employee = _employeeMapper.MapFromReaderEmployeeReport1(reader);
+                                employeeList.Add(employee);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error fetching employees: {ex.Message}");
+            }
+
+            return employeeList;
+        }
+
+        public async Task<List<Employee>> GetEmployeeReport2()
+        {
+            List<Employee> employeeList = new List<Employee>();
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
+                {
+                    await conn.OpenAsync();
+
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees_report2", conn))
+                    {
+                        using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+
+                            while (await reader.ReadAsync())
+                            {
+                                Employee employee = _employeeMapper.MapFromReaderEmployeeReport2(reader);
+                                employeeList.Add(employee);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error fetching employees: {ex.Message}");
+            }
+
+            return employeeList;
+        }
+
         public async Task<List<Employee>> SearchEmployees(string search)
         {
             List<Employee> employeeList = new List<Employee>();
