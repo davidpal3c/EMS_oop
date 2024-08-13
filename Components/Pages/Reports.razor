@@ -9,9 +9,9 @@
 @inject IJSRuntime JSRuntime
 
 
-<h3>Reports</h3>
-
+<h1>Reports</h1>
 <div>Manage Reports</div>
+
 <div class="page-header-ems">
     <div class="page-header-ems-section">
         <select class="form-control" @onchange="HandleReportSelect">
@@ -169,8 +169,8 @@
             msg = "Reconfigure connection string at MauiProgram.cs";
             alert = "alert-danger";
         }
-
         await RefreshList(selectedRepType);
+
 
     }
 

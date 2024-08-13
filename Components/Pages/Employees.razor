@@ -6,15 +6,24 @@
 
 <div class="page-ems">
     <div class="page-section-ems">
-        <h1>Employees</h1>
+        <h1>Employees @filter1</h1>
         <div>Manage employees | @records employees listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
                 <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-                <div>
-                    <i class="check-circle"></i>
-                    
-                </div>
+                <select @bind="filter1" @bind:event="onchange" @bind:after="FilterByStatus" class="form-control" placeholder="Status filter">
+                    <option value="" selected>Filter by status</option>
+                   <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  
+               </select>
+
+                <select @bind="filter2" @bind:event="onchange" @bind:after="FilterByRole" class="form-control" placeholder="Role filter">
+                    <option value="" selected>Filter by role</option>               
+                    <option value="3">Managers</option>
+                    <option value="2">Supervisors</option>
+                    <option value="1">Staff</option>
+                </select>
             </div>
             @if (msg != null)
             {
@@ -41,6 +50,7 @@
 
                     @foreach (Employee e in filteredData)
                     {
+                        @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
                         <tr class="@activeClass"  @onclick="() => EditEmployee(e)">
                             <td>@e.Id.ToString()</td>
                             <td>@e.Name</td>
@@ -57,6 +67,10 @@
                 }
                 else
                 {
+                    if(employeeList.Count > 0)
+                    {
+                        
+                   
                     @foreach (Employee e in employeeList)
                     {
 
@@ -72,7 +86,12 @@
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
                             </td>
-                        </tr>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <div>Loading...</div>
                     }
                 }
             </tbody>
@@ -162,6 +181,8 @@
     private string? position;
     private decimal salary = 0;
     private string? status;
+    private string filter1 = "";
+    private string filter2 = "";
     private string formSubmission = "create";
     private int role = 1;
     private DateTime? created;
@@ -232,6 +253,46 @@
         {
             filteredData = await EmployeeService.SearchEmployees(search);
             records = filteredData.Count;
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+    private async Task FilterByRole()
+    {
+        try
+        {
+            if (filter2 == "") { await RefreshList(); }
+            else
+            {
+                filter1 = "";
+                filteredData = await EmployeeService.FilterEmployees("EmployeeRole", filter2);
+                records = filteredData.Count;
+            }
+        }
+        catch (Exception e)
+        {
+            msg = $"Error getting search results: {e.Message}";
+            alert = "alert-danger";
+        }
+    }
+
+
+    private async Task FilterByStatus()
+    {
+        try
+        {
+            if (filter1 == "") { await RefreshList(); }
+            else
+            {
+                filter2 = "";
+                filteredData = await EmployeeService.FilterEmployees("EmployeeStatus", filter1);
+                records = filteredData.Count;
+            }
+            
         }
         catch (Exception e)
         {
