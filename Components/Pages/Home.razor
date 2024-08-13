@@ -45,7 +45,7 @@ Welcome to EMS!
         try
         {
             employeeList = await EmployeeService.GetEmployees("Id");
-            payrollList = await PayrollService.GetPayrolls();
+            payrollList = await PayrollService.GetPayrolls("Id");
             timeList = await TimeRecordService.GetTimeRecords("Id");
          
         }

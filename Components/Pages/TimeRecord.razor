@@ -225,7 +225,7 @@
     {
         try
         {
-            payrollList = await PayrollService.GetPayrolls();
+            payrollList = await PayrollService.GetPayrolls("Id");
             timeList = await TimeRecordService.GetTimeRecords(sort);
             employeeOptions = await EmployeeService.GetEmployees("Id");
             records = payrollList.Count;
