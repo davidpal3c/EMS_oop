@@ -11,9 +11,9 @@
 Welcome to EMS!
 
 <div class="home-section">
-    <div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div></div>
-    <div class="home-sub-section"><span>@payrollList.Count</span><div>Payrolls</div></div>
-    <div class="home-sub-section"><span>@timeList.Count</span><div>Time Records</div></div>
+    <NavLink class="navv" href="employees"><div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div></div></NavLink>
+    <NavLink class="navv" href="payroll"><div class="home-sub-section"><span>@payrollList.Count</span><div>Payrolls</div></div></NavLink>
+    <NavLink class="navv" href="timerecord"><div class="home-sub-section"><span>@timeList.Count</span><div>Time Records</div></div></NavLink>
 </div>
 
 @code{
