@@ -44,9 +44,9 @@ Welcome to EMS!
     {
         try
         {
-            employeeList = await EmployeeService.GetEmployees();
+            employeeList = await EmployeeService.GetEmployees("Id");
             payrollList = await PayrollService.GetPayrolls();
-            timeList = await TimeRecordService.GetTimeRecords();
+            timeList = await TimeRecordService.GetTimeRecords("Id");
          
         }
         catch (Exception e)

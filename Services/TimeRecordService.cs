@@ -19,7 +19,7 @@ namespace EMS.Services
             _timeRecordMapper = timeRecordMapper ?? throw new ArgumentNullException(nameof(timeRecordMapper));
         }
 
-        public async Task<List<TimeRecord>> GetTimeRecords()
+        public async Task<List<TimeRecord>> GetTimeRecords(string sort)
         {
             List<TimeRecord> timeRecordList = new List<TimeRecord>();
 
@@ -29,7 +29,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT *  FROM TimeRecords_view", conn))
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT *  FROM TimeRecords_view order by {sort}", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {

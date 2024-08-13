@@ -3,6 +3,7 @@
 @using Services
 @inject Services.DBService DBService
 @inject Services.EmployeeService EmployeeService
+@inject IJSRuntime JS
 
 <div class="page-ems">
     <div class="page-section-ems">
@@ -23,6 +24,14 @@
                     <option value="3">Managers</option>
                     <option value="2">Supervisors</option>
                     <option value="1">Staff</option>
+                </select>
+
+                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-control" placeholder="Role filter">
+                    <option value="Id" selected>Sort by (Default: Id)</option>
+                    <option value="Position">Position</option>
+                    <option value="Salary">Salary</option>
+                    <option value="Name">Name</option>
+                    <option value="Email">Email</option>
                 </select>
             </div>
             @if (msg != null)
@@ -67,9 +76,7 @@
                 }
                 else
                 {
-                    if(employeeList.Count > 0)
-                    {
-                        
+                     
                    
                     @foreach (Employee e in employeeList)
                     {
@@ -87,12 +94,9 @@
                                 </button>
                             </td>
                             </tr>
-                        }
+                        
                     }
-                    else
-                    {
-                        <div>Loading...</div>
-                    }
+                   
                 }
             </tbody>
         </table>
@@ -181,13 +185,14 @@
     private string? position;
     private decimal salary = 0;
     private string? status;
-    private string filter1 = "";
-    private string filter2 = "";
+    private string? filter1;
+    private string? filter2;
+    private string sort = "Id";
     private string formSubmission = "create";
     private int role = 1;
     private DateTime? created;
     private DateTime? updated;
-    private string? search;
+    private string search;
     private List<Employee> employeeList = new List<Employee>();
     private string? msg;
     private string alert = "alert-success";
@@ -215,6 +220,12 @@
 
         //custList = await DatabaseService.GetCustomers();
         await RefreshList();
+
+    }
+
+    private async Task CallTable()
+    {
+        await JS.InvokeAsync<string>("loadTable");
     }
 
     private async Task Reset()
@@ -232,13 +243,16 @@
         msg = null;
     }
 
+
+
     private async Task RefreshList()
     {
         try
         {
-            employeeList = await EmployeeService.GetEmployees();
+            employeeList = await EmployeeService.GetEmployees(sort);
             records = employeeList.Count;
             filteredData = null;
+            //await CallTable();
         }
         catch (Exception e)
         {
@@ -251,8 +265,13 @@
     {
         try
         {
-            filteredData = await EmployeeService.SearchEmployees(search);
-            records = filteredData.Count;
+            if(search == ""){ await RefreshList(); }
+            else
+            {
+                filteredData = await EmployeeService.SearchEmployees(search);
+                records = filteredData.Count;
+            }
+            
         }
         catch (Exception e)
         {
@@ -269,7 +288,7 @@
             else
             {
                 filter1 = "";
-                filteredData = await EmployeeService.FilterEmployees("EmployeeRole", filter2);
+                filteredData = await EmployeeService.FilterEmployees("EmployeeRole", filter2, sort);
                 records = filteredData.Count;
             }
         }
@@ -289,16 +308,22 @@
             else
             {
                 filter2 = "";
-                filteredData = await EmployeeService.FilterEmployees("EmployeeStatus", filter1);
+                filteredData = await EmployeeService.FilterEmployees("EmployeeStatus", filter1, sort);
                 records = filteredData.Count;
             }
-            
+
         }
         catch (Exception e)
         {
             msg = $"Error getting search results: {e.Message}";
             alert = "alert-danger";
         }
+    }
+
+    public async Task SortData()
+    {
+        FilterByStatus();
+        FilterByRole();
     }
 
     private async Task EditEmployee(Employee employee)

@@ -25,7 +25,7 @@ namespace EMS.Services
         }
 
 
-        public async Task<List<Payroll>> GetPayrolls()
+        public async Task<List<Payroll>> GetPayrolls(string sort)
         {
             List<Payroll> payrollList = new List<Payroll>();
 
@@ -35,7 +35,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT *  FROM Payrolls_view", conn))
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT *  FROM Payrolls_view order by {sort}", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {

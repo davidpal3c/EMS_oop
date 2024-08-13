@@ -12,9 +12,17 @@
         <div>Manage payrolls for employees | @records payroll records listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
-                <div style="z-index:4;"><input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" /></div>
-                <div></div>
-            </div>
+           
+                    <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+            <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-control" placeholder="Role filter">
+                <option value="Id" selected>Sort by (Default: Id)</option>
+                <option value="Name">Name</option>
+                <option value="BaseSalary">Base Salary</option>
+                <option value="OvertimePay">Overtime</option>
+                <option value="Deductions">Deductions</option>
+                <option value="NetPay">Net salary</option>
+            </select>
+           </div>
             @if (msg != null)
             {
                 <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -164,6 +172,7 @@
     private DateTime? updated;
     private string formSubmission = "create";
     private string? search;
+    private string sort = "Id";
     private string title = "Add Payroll";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeOptions = new List<Models.Employee>();
@@ -212,8 +221,8 @@
     {
         try
         {
-            payrollList = await PayrollService.GetPayrolls();
-            employeeOptions = await EmployeeService.GetEmployees();
+            payrollList = await PayrollService.GetPayrolls(sort);
+            employeeOptions = await EmployeeService.GetEmployees("Id");
             records = payrollList.Count;
             filteredData = null;
         }
@@ -228,8 +237,12 @@
     {
         try
         {
-            filteredData = await PayrollService.SearchPayrolls(search);
-            records = filteredData.Count;
+            if (search == "") { await RefreshList(); }
+            else
+            {
+                filteredData = await PayrollService.SearchPayrolls(search);
+                records = filteredData.Count;
+            }
         }
         catch (Exception e)
         {
