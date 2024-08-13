@@ -115,7 +115,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAQgAAAAAAACAAAAgggAAiAEAIJABAA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAQgAAAAAAACAAAAgggAAiAUAIJABAA=</HashCode>
       <FileName>Models\Report.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -134,5 +134,19 @@
       <FileName>Services\ReportService.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="EMS.Services.IOService">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAAEBABAAAAAA=</HashCode>
+      <FileName>Services\IOService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EMS.Interfaces.IReport">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Interfaces\IReport.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
