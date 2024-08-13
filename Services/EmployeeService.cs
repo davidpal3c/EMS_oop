@@ -22,7 +22,7 @@ namespace EMS.Services
         }   
         
 
-        public async Task<List<Employee>> GetEmployees()
+        public async Task<List<Employee>> GetEmployees(string sort)
         {
             List<Employee> employeeList = new List<Employee>();
             
@@ -32,7 +32,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Employees", conn))
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees order by {sort}", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {                           
@@ -87,7 +87,7 @@ namespace EMS.Services
         }
 
 
-        public async Task<List<Employee>> FilterEmployees(string field, string search)
+        public async Task<List<Employee>> FilterEmployees(string field, string search, string sort)
         {
             List<Employee> employeeList = new List<Employee>();
 
@@ -97,7 +97,7 @@ namespace EMS.Services
                 {
                     await conn.OpenAsync();
 
-                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees where {field} = '{search}'", conn))
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees where {field} = '{search}' order by {sort}", conn))
                     {
                         using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {

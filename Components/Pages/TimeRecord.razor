@@ -7,8 +7,6 @@
 @inject Services.TimeRecordService TimeRecordService    
 
 
-
-
 <div class="page-ems">
     <div class="page-section-ems">
         <h1>Time Record</h1>
@@ -21,6 +19,14 @@
                     <option value="Attendance">Attendance</option>
                     <option value="Overtime">Overtime</option>
                     <option value="Leave">Leave</option>
+                </select>
+
+                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-control" placeholder="Type filter">
+                    <option value="Id" selected>Sort by (Default: Id)</option>
+                    <option value="Name">Name</option>
+                    <option value="Date">Date</option>
+                    <option value="HoursWorked">Hours Worked</option>
+                    <option value="Type">Type</option>
                 </select>
             </div>
             @if (msg != null)
@@ -167,6 +173,7 @@
     private DateTime? updated;
     private string? search;
     private string? filter;
+    private string sort = "Id";
     private string formSubmission = "create";
     private string title = "Add Record";
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
@@ -219,8 +226,8 @@
         try
         {
             payrollList = await PayrollService.GetPayrolls();
-            timeList = await TimeRecordService.GetTimeRecords();
-            employeeOptions = await EmployeeService.GetEmployees();
+            timeList = await TimeRecordService.GetTimeRecords(sort);
+            employeeOptions = await EmployeeService.GetEmployees("Id");
             records = payrollList.Count;
             filteredData = null;
         }
@@ -235,8 +242,13 @@
     {
         try
         {
-            filteredData = await TimeRecordService.SearchTimeRecords(search);
-            records = filteredData.Count;
+            if (search == "") { await RefreshList(); }
+            else
+            {
+                filteredData = await TimeRecordService.SearchTimeRecords(search);
+                records = filteredData.Count;
+            }
+            
         }
         catch (Exception e)
         {
