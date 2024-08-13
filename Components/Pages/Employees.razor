@@ -15,6 +15,18 @@
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
                 </div>
+
+                <div class="form-floating">
+                    <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Role filter">
+                        <option value="Id" selected>Id</option>
+                        <option value="Position">Position</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Name">Name</option>
+                        <option value="Email">Email</option>
+                    </select>
+                    <label>Sort by</label>
+                </div>
+
                 <div class="form-floating">
                 <select @bind="filter1" @bind:event="onchange" @bind:after="FilterByStatus" class="form-select" placeholder="Status filter">
                     <option value="" selected>Select filter</option>
@@ -34,20 +46,11 @@
                 <label>Filter by role</label>
                 </div>
 
-                <div class="form-floating">
-                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Role filter">
-                    <option value="Id" selected>Id</option>
-                    <option value="Position">Position</option>
-                    <option value="Salary">Salary</option>
-                    <option value="Name">Name</option>
-                    <option value="Email">Email</option>
-                </select>
-                    <label>Sort by</label>
-                </div>
+                
             </div>
             @if (msg != null)
             {
-                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="@alert alert alert-dismissible fade show alert-fixed" role="alert">
                     @msg
                     <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
                 </div>
@@ -263,7 +266,10 @@
         msg = null;
     }
 
-
+    private void SendMessage(string message)
+    {
+        msg = message;
+    }
 
     private async Task RefreshList()
     {
@@ -342,8 +348,8 @@
 
     public async Task SortData()
     {
-        FilterByStatus();
-        FilterByRole();
+        await FilterByStatus();
+        await FilterByRole();
     }
 
     private async Task EditEmployee(Employee employee)
@@ -374,11 +380,11 @@
     {
         if (formSubmission == "create")
         {
-            AddEmployee();
+            await AddEmployee();
         }
         else
         {
-            UpdateEmployee();
+            await UpdateEmployee();
         }
     }
 
@@ -393,10 +399,10 @@
             customerData.Add(salary);
             customerData.Add(status);
             customerData.Add(role);
-            msg = $"New employee {fullName} added successfully!";
             await EmployeeService.AddEmployee(customerData);
-            Reset();
+            await Reset();
             await RefreshList();
+            msg = $"New employee {fullName} added successfully!";
         }
         catch (Exception e)
         {
@@ -409,17 +415,17 @@
     {
         try
         {
-
             emp.Name = fullName;
             emp.Email = emailAddress;
             emp.Position = position;
             emp.Salary = salary;
             emp.Status = status;
             emp.Role = role;
-            msg = $"{emp.Name} updated successfully!";
             await EmployeeService.UpdateEmployee(emp);
             await RefreshList();
             await Reset();
+            SendMessage($"{emp.Name} updated successfully!");
+           
         }
         catch (Exception e)
         {

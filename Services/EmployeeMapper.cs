@@ -41,16 +41,16 @@ namespace EMS.Services
         }
 
 
-        public Employee MapFromReaderEmployeeReport1(MySqlDataReader reader)
+        public EmployeeView MapFromReaderEmployeeReport1(MySqlDataReader reader)
         {
             try
             {
-                Employee employee = new Employee();
+                EmployeeView employee = new EmployeeView();
 
-                return new Employee
+                return new EmployeeView
                 {
-                    Id = reader.GetInt32("StatusCount"),
-                    Status = reader.GetString("EmployeeStatus"),
+                    Count = reader.GetInt32("StatusCount"),
+                    Title = reader.GetString("EmployeeStatus"),
                 };
             }
             catch (Exception ex)
@@ -61,16 +61,16 @@ namespace EMS.Services
         }
 
 
-        public Employee MapFromReaderEmployeeReport2(MySqlDataReader reader)
+        public EmployeeView MapFromReaderEmployeeReport2(MySqlDataReader reader)
         {
             try
             {
-                Employee employee = new Employee();
+                EmployeeView employee = new EmployeeView();
 
-                return new Employee
+                return new EmployeeView
                 {
-                    Id = reader.GetInt32("RoleCount"),
-                    Status = reader.GetString("EmployeeRole"),
+                    Count = reader.GetInt32("RoleCount"),
+                    Title = reader.GetString("EmployeeRole"),
                 };
             }
             catch (Exception ex)
