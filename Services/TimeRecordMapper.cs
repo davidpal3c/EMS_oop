@@ -35,5 +35,25 @@ namespace EMS.Services
             }
 
         }
+
+
+        public TimeRecordView MapFromReaderTimeRecordReport(MySqlDataReader reader)
+        {
+            try
+            {
+                TimeRecordView timeRecord = new TimeRecordView();
+
+                return new TimeRecordView
+                {
+                    Count = reader.GetInt32("TypeCount"),
+                    Title = reader.GetString("TypeName"),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error mapping data from reader to TimeRecord object", ex);
+            }
+
+        }
     }
 }
