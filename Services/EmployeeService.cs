@@ -87,6 +87,39 @@ namespace EMS.Services
         }
 
 
+        public async Task<List<Employee>> FilterEmployees(string field, string search)
+        {
+            List<Employee> employeeList = new List<Employee>();
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
+                {
+                    await conn.OpenAsync();
+
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM Employees where {field} = '{search}'", conn))
+                    {
+                        using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+
+                            while (await reader.ReadAsync())
+                            {
+                                Employee employee = _employeeMapper.MapFromReaderEmployees(reader);
+                                employeeList.Add(employee);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error fetching employees: {ex.Message}");
+            }
+
+            return employeeList;
+        }
+
+
         public async Task AddEmployee(List<object> employeeData)
         {
 

@@ -85,6 +85,39 @@ namespace EMS.Services
         }
 
 
+        public async Task<List<TimeRecord>> FilterTimeRecords(string field, string search)
+        {
+            List<TimeRecord> timeRecordList = new List<TimeRecord>();
+
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
+                {
+                    await conn.OpenAsync();
+
+                    using (MySqlCommand cmd = new MySqlCommand($"SELECT * FROM TimeRecords_view where {field} = '{search}'", conn))
+                    {
+                        using (MySqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+
+                            while (await reader.ReadAsync())
+                            {
+                                TimeRecord timeRecord = _timeRecordMapper.MapFromReaderTimeRecord(reader);
+                                timeRecordList.Add(timeRecord);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error fetching payrolls: {ex.Message}");
+            }
+
+            return timeRecordList;
+        }
+
+
         public async Task AddTimeRecord(List<object> timeRecordData)
         {
 
