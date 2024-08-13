@@ -12,16 +12,21 @@
         <div>Manage payrolls for employees | @records payroll records listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
-           
-                    <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-            <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-control" placeholder="Role filter">
-                <option value="Id" selected>Sort by (Default: Id)</option>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                   <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+                   </div>
+                   <div class="form-floating">
+            <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Role filter">
+                <option value="Id" selected>Id</option>
                 <option value="Name">Name</option>
                 <option value="BaseSalary">Base Salary</option>
                 <option value="OvertimePay">Overtime</option>
                 <option value="Deductions">Deductions</option>
                 <option value="NetPay">Net salary</option>
             </select>
+            <label>Sort by</label>
+            </div>
            </div>
             @if (msg != null)
             {
@@ -46,7 +51,10 @@
             <tbody>
                 @if (filteredData != null)
                 {
-
+                    if(filteredData.Count == 0)
+                    {
+                        <div class="loader">Loading...</div>
+                    }else{
                     @foreach (Models.Payroll p in filteredData)
                     {
                         <tr>
@@ -63,12 +71,18 @@
                                 </button>
                             </td>
                         </tr>
+                        }
                     }
                 }
                 else
                 {
 
+                    if(payrollList.Count == 0)
+                    {
+                        <div class="loader">Loading...</div>
+                    }else{
 
+                   
                     @foreach (Models.Payroll p in payrollList)
                     {
 
@@ -87,6 +101,7 @@
                                 </button>
                             </td>
                         </tr>
+                    }
                     }
                 }
             </tbody>
@@ -120,7 +135,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
-                <select @bind="employee" placeholder="Employee" class="form-control" id="name" required>
+                <select @bind="employee" placeholder="Employee" class="form-select" id="name" required>
                     <option value="">Select Employee</option>
                     @foreach(Employee e in employeeOptions)
                     {

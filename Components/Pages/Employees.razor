@@ -11,28 +11,39 @@
         <div>Manage employees | @records employees listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
-                <select @bind="filter1" @bind:event="onchange" @bind:after="FilterByStatus" class="form-control" placeholder="Status filter">
-                    <option value="" selected>Filter by status</option>
+                </div>
+                <div class="form-floating">
+                <select @bind="filter1" @bind:event="onchange" @bind:after="FilterByStatus" class="form-select" placeholder="Status filter">
+                    <option value="" selected>Select filter</option>
                    <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
-                  
                </select>
+               <label>Filter by status</label>
+                </div>
 
-                <select @bind="filter2" @bind:event="onchange" @bind:after="FilterByRole" class="form-control" placeholder="Role filter">
-                    <option value="" selected>Filter by role</option>               
+               <div class="form-floating">
+                <select @bind="filter2" @bind:event="onchange" @bind:after="FilterByRole" class="form-select" placeholder="Role filter">
+                    <option value="" selected>Select filter</option>               
                     <option value="3">Managers</option>
                     <option value="2">Supervisors</option>
                     <option value="1">Staff</option>
                 </select>
+                <label>Filter by role</label>
+                </div>
 
-                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-control" placeholder="Role filter">
-                    <option value="Id" selected>Sort by (Default: Id)</option>
+                <div class="form-floating">
+                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Role filter">
+                    <option value="Id" selected>Id</option>
                     <option value="Position">Position</option>
                     <option value="Salary">Salary</option>
                     <option value="Name">Name</option>
                     <option value="Email">Email</option>
                 </select>
+                    <label>Sort by</label>
+                </div>
             </div>
             @if (msg != null)
             {
@@ -56,7 +67,12 @@
             <tbody>
                 @if (filteredData != null)
                 {
-
+                    if(filteredData.Count == 0)
+                    {
+                       
+                            <div class="loader">Loading...</div>
+                      
+                    }else{
                     @foreach (Employee e in filteredData)
                     {
                         @if (e.Status == "Inactive") { activeClass = "inactive"; } else { activeClass = "act"; }
@@ -73,11 +89,15 @@
                             </td>
                         </tr>
                     }
+                    }
                 }
                 else
                 {
-                     
-                   
+                    if(employeeList.Count == 0)
+                    {
+                        <div class="loader">Loading...</div>
+                    }else{
+
                     @foreach (Employee e in employeeList)
                     {
 
@@ -96,7 +116,7 @@
                             </tr>
                         
                     }
-                   
+                   }
                 }
             </tbody>
         </table>
@@ -149,14 +169,14 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="status">Status</label>
-                <select @bind="status" placeholder="Status" class="form-control" id="status" required>
+                <select @bind="status" placeholder="Status" class="form-select" id="status" required>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="role">Role</label>
-                <select @bind="role" placeholder="Role" class="form-control" id="role" required>
+                <select @bind="role" placeholder="Role" class="form-select" id="role" required>
                     <option value="1">Staff</option>
                     <option value="2">Supervisor</option>
                     <option value="3">Management</option>

@@ -38,6 +38,46 @@ namespace EMS.Services
                 throw new InvalidOperationException("Error mapping data from reader to Employee", ex);
             }
 
-        }                
+        }
+
+
+        public Employee MapFromReaderEmployeeReport1(MySqlDataReader reader)
+        {
+            try
+            {
+                Employee employee = new Employee();
+
+                return new Employee
+                {
+                    Id = reader.GetInt32("StatusCount"),
+                    Status = reader.GetString("EmployeeStatus"),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error mapping data from reader to Employee report 1", ex);
+            }
+
+        }
+
+
+        public Employee MapFromReaderEmployeeReport2(MySqlDataReader reader)
+        {
+            try
+            {
+                Employee employee = new Employee();
+
+                return new Employee
+                {
+                    Id = reader.GetInt32("RoleCount"),
+                    Status = reader.GetString("EmployeeRole"),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error mapping data from reader to Employee report 1", ex);
+            }
+
+        }
     }
 }

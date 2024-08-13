@@ -14,13 +14,16 @@
 
 <div class="page-header-ems">
     <div class="page-header-ems-section">
-        <select class="form-control" @onchange="HandleReportSelect">
+        <div class="form-floating">
+        <select class="form-select" @onchange="HandleReportSelect">
             <option value="">-- Select Report Type --</option>
             @foreach (Report.EReportType rt in Enum.GetValues(typeof(Report.EReportType)))
             {
                 <option value="@rt">@rt.ToString()</option>
             }
         </select>
+        <label>Select Report</label>
+        </div>
 
         <div class="header-btn-box">
             <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export (.xlsx)" @onclick="ExportHandler">
@@ -162,7 +165,7 @@
 
         if (DBService.IsSuccessfulConnection())
         {
-            msg = "DB Connection - OK!";
+            //msg = "DB Connection - OK!";
         }
         else
         {

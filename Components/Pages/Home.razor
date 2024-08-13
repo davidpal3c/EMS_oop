@@ -11,15 +11,61 @@
 Welcome to EMS!
 
 <div class="home-section">
-    <NavLink class="navv" href="employees"><div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div></div></NavLink>
+    <NavLink class="navv" href="employees"><div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div>
+    
+    </div></NavLink>
     <NavLink class="navv" href="payroll"><div class="home-sub-section"><span>@payrollList.Count</span><div>Payrolls</div></div></NavLink>
     <NavLink class="navv" href="timerecord"><div class="home-sub-section"><span>@timeList.Count</span><div>Time Records</div></div></NavLink>
+</div>
+<div class="home-section1">
+   
+    <div class="hs1">
+        <h4>Status Activity</h4>
+        <table class="table">
+            <tr class="tr-head"><th>Status</th><th># of employees</th></tr><tbody>
+                @if(employeeReport1.Count == 0)
+                {
+                    <div class="loader">Loading...</div>
+                }else{
+            @foreach (Employee er1 in employeeReport1)
+            {
+                <tr>
+                    <td>@er1.Status</td>
+                    <td>@er1.Id</td>
+                </tr>
+            }
+                }
+            </tbody>
+        </table>
+        </div>
+        <div class="hs1">
+            <h4>Employee Roles</h4>
+        <table class="table">
+            <tr class="tr-head"><th>Roles</th><th># of employees</th></tr><tbody>
+                 @if(employeeReport2.Count == 0)
+                {
+                    <div class="loader">Loading...</div>
+                }else{
+            @foreach (Employee er2 in employeeReport2)
+            {
+                <tr>
+                    <td>@er2.Status</td>
+                    <td>@er2.Id</td>
+                </tr>
+            }
+                }
+            </tbody>
+        </table>
+    </div>
+  
 </div>
 
 @code{
 
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeList = new List<Models.Employee>();
+    private List<Models.Employee>? employeeReport1 = new List<Models.Employee>();
+    private List<Models.Employee> employeeReport2 = new List<Models.Employee>();
     private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
 
     protected override async Task OnInitializedAsync()
@@ -45,6 +91,8 @@ Welcome to EMS!
         try
         {
             employeeList = await EmployeeService.GetEmployees("Id");
+            employeeReport1 = await EmployeeService.GetEmployeeReport1();
+            employeeReport2 = await EmployeeService.GetEmployeeReport2();
             payrollList = await PayrollService.GetPayrolls("Id");
             timeList = await TimeRecordService.GetTimeRecords("Id");
          
