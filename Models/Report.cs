@@ -105,13 +105,24 @@ namespace EMS.Models
             }
         }
 
+        
+        public async Task SaveReport<T>(List<T> repList, Report.EReportType repType)
+        {
+            IOService ioService = new IOService();
+
+            string repTitle = repType.ToString();
+            DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+            string dateStr = date.ToString();
+
+            await ioService.ExportToXls<T>(repList, $@"C:\cprg211\{repTitle}-{dateStr}.xlsx", $"{repTitle}", repType);
+        }
+        
+
 
         /*
-        public void SaveReport();
-        
         public void SendReport();
         
-        public void DeleteReport();
+        
         */
     }
 }

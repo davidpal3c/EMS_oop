@@ -9,21 +9,12 @@ namespace EMS.Interfaces
 {
     internal interface IReport
     {
-        /*
-        int ReportId { get; set; }
-        string ReportName { get; set; }
-        string ReportQuery { get; set; }
-        Employee GeneratedBy { get; set; }
-        */
-        
+               
 
         Task<List<Report>> GenerateReport(Report.EReportType rt);
-
-        /*
-        void SaveReport();                    
-        void SendReport();
-        void DeleteReport();
-        */
-
+                
+        Task SaveReport<T>(List<T> repList, Report.EReportType rt);                    
+        
+        
     }
 }

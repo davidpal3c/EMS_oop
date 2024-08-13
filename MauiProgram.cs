@@ -34,6 +34,7 @@ namespace EMS
             builder.Services.AddSingleton<TimeRecordMapper>();
             builder.Services.AddSingleton<ReportService>();
             builder.Services.AddSingleton<ReportMapper>();
+            builder.Services.AddSingleton<IOService>();
                         
 
 

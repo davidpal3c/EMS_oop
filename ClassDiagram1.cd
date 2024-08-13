@@ -1,88 +1,152 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="EMS.Models.BaseEntity">
-    <Position X="7" Y="1.75" Width="1.5" />
+    <Position X="9.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAQAAAAAACAAEACBAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
       <FileName>Models\BaseEntity.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Models.DBConnection">
-    <Position X="11.25" Y="5.5" Width="1.5" />
+    <Position X="13.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAEAAAAAAQAAABIAAAAAAAAQCAQIAEhAAAAA=</HashCode>
       <FileName>Models\DBConnection.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Models.Employee">
-    <Position X="9.25" Y="5.5" Width="1.5" />
+    <Position X="11.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAICAEACAAAAAkEAAAAAQAAAAAAAAAAAABgAQAAAE=</HashCode>
       <FileName>Models\Employee.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Models.Payroll">
-    <Position X="4.75" Y="5.5" Width="1.5" />
+    <Position X="7.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIIAAEAAAgAQAEAAAAAAAAAAgAAAAAICAAAAAHAAA=</HashCode>
       <FileName>Models\Payroll.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Models.TimeRecord">
-    <Position X="7" Y="5.5" Width="1.5" />
+    <Position X="9.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAIIAAAAAAQAAQEBAAAAAAAAAABAAABIQAAAAACAAA=</HashCode>
       <FileName>Models\TimeRecord.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.DBService">
-    <Position X="12" Y="1.75" Width="1.5" />
+    <Position X="15.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEIAAAAAAAAAgAACAAAAAAAAAAAoAAIACAAAIAAAAA=</HashCode>
+      <HashCode>AAEIAAAAIAAAAgAACAAAAAAAAAAAoAAIACAAAIAgAAA=</HashCode>
       <FileName>Services\DBService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.EmployeeMapper">
-    <Position X="14" Y="6" Width="1.5" />
+    <Position X="15.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAABAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\EmployeeMapper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.EmployeeService">
-    <Position X="14" Y="2" Width="1.5" />
+    <Position X="15.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIEAAAAIAhAAAAQAAAAAAAAAAgAAIAAgQABAAAAA=</HashCode>
+      <HashCode>AAAAAEAAAAIAgAAAAAAAAAAAAAAAgAAIAAAAABAAAAA=</HashCode>
       <FileName>Services\EmployeeService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.PayrollMapper">
-    <Position X="15.75" Y="5" Width="1.5" />
+    <Position X="17.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\PayrollMapper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.PayrollService">
-    <Position X="15.75" Y="2" Width="1.5" />
+    <Position X="17.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEAIAAAAAAABAAAAQAAAAAAAAAAAAAIAAgQAAAAAAA=</HashCode>
       <FileName>Services\PayrollService.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.TimeRecordMapper">
-    <Position X="17.5" Y="4.5" Width="1.5" />
+    <Position X="19.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>Services\TimeRecordMapper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EMS.Services.TimeRecordService">
-    <Position X="17.5" Y="2" Width="1.5" />
+    <Position X="19.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAIAAAAA=</HashCode>
+      <HashCode>AAAEBAAAAAAAAAAAAAAAAAAAAQAgAgAIAAAAAIAAAAA=</HashCode>
       <FileName>Services\TimeRecordService.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="EMS.Models.AttendanceReport">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAACAQAAAgBCBAAAQAAAABAAABCAAAgAAAAAE=</HashCode>
+      <FileName>Models\AttendanceReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Models.EmployeeDirectoryReport">
+    <Position X="5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACISAAACAACAAgACBAAAQAAAAAAAAACAAAgAQAAAE=</HashCode>
+      <FileName>Models\EmployeeDirectoryReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Models.LeaveAndAbsenceReport">
+    <Position X="2.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAACAQAAAgBCBAAAQAAAABAAABCAAAgAAAAAE=</HashCode>
+      <FileName>Models\LeaveAndAbsenceReport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Models.Report">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="EMS.Models.Report.EReportType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Report.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAQgAAAAAAACAAAAgggAAiAUAIJABAA=</HashCode>
+      <FileName>Models\Report.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EMS.Services.ReportMapper">
+    <Position X="21" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAABAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\ReportMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Services.ReportService">
+    <Position X="21" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAIAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAA=</HashCode>
+      <FileName>Services\ReportService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EMS.Services.IOService">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAAEBABAAAAAA=</HashCode>
+      <FileName>Services\IOService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EMS.Interfaces.IReport">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Interfaces\IReport.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
