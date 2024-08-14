@@ -19,9 +19,21 @@ namespace EMS.Services
         {
             _dbService = dbService ?? throw new ArgumentNullException(nameof(dbService));
             _employeeMapper = employeeMapper ?? throw new ArgumentNullException(nameof(employeeMapper));
-        }   
-        
+        }
 
+
+        /// <summary>
+        /// Async method generating query to fetch employees from the database.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="sort"></param>
+        /// <returns>A task async returning list of Employee objects mapped from the database table 'Employees'</returns>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: GetEmployees
+        /// Date: 2024-08-10
+        /// Uses mapping object to access the mapper method in charge of fetching database.
+        /// </remarks>
         public async Task<List<Employee>> GetEmployees(string sort)
         {
             List<Employee> employeeList = new List<Employee>();
@@ -54,6 +66,17 @@ namespace EMS.Services
             return employeeList;
         }
 
+        /// <summary>
+        /// Async method generating query to fetch employee report view (1) from the database.
+        /// </summary>        
+        /// <param>No parameters</param>
+        /// <returns>Asynchronous task returning a list of employees with more information from virtual table</returns>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: GetEmployees
+        /// Date: 2024-08-13
+        /// Used to retrieve other fields from the database virtual table 'Employees_report1'.
+        /// </remarks>
         public async Task<List<EmployeeView>> GetEmployeeReport1()
         {
             List<EmployeeView> employeeList = new List<EmployeeView>();
@@ -86,6 +109,16 @@ namespace EMS.Services
             return employeeList;
         }
 
+        /// <summary>
+        /// Async method generating query to fetch employee report view (2) from the database.
+        /// </summary>        
+        /// <param>No parameters</param>
+        /// <returns>Asynchronous task returning a list of employees with more information from virtual table
+        /// <remarks>
+        /// Name: GetEmployees
+        /// Date: 2024-08-13
+        /// Used to retrieve other fields from the database virtual table 'Employees_report2'.
+        /// </remarks>
         public async Task<List<EmployeeView>> GetEmployeeReport2()
         {
             List<EmployeeView> employeeList = new List<EmployeeView>();
@@ -117,6 +150,8 @@ namespace EMS.Services
 
             return employeeList;
         }
+
+
 
         public async Task<List<Employee>> SearchEmployees(string search)
         {

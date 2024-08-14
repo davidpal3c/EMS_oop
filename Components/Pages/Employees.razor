@@ -258,7 +258,6 @@ Users are also able to search for employees, sort and filter employee data.
 
         //custList = await DatabaseService.GetCustomers();
         await RefreshList();
-
     }
 
     private async Task CallTable()
@@ -353,7 +352,6 @@ Users are also able to search for employees, sort and filter employee data.
                 filteredData = await EmployeeService.FilterEmployees("EmployeeStatus", filter1, sort);
                 records = filteredData.Count;
             }
-
         }
         catch (Exception e)
         {

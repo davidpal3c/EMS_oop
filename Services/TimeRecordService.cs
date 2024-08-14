@@ -13,12 +13,32 @@ namespace EMS.Services
         private readonly DBService _dbService;
         private readonly TimeRecordMapper _timeRecordMapper;
 
+
+        /// <summary>
+        /// Constructor for TimeRecordService class, instanting DBService and TimeRecordMapper objects to be used in the class.
+        /// </summary>
+        /// <param name="dbService"></param>
+        /// <param name="timeRecordMapper"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public TimeRecordService(DBService dbService, TimeRecordMapper timeRecordMapper)
         {
             _dbService = dbService ?? throw new ArgumentNullException(nameof(dbService));
             _timeRecordMapper = timeRecordMapper ?? throw new ArgumentNullException(nameof(timeRecordMapper));
         }
 
+
+
+        /// <summary>
+        /// Async method generating query to fetch time records from the database.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="sort">component provided sorting string</param>
+        /// <returns>A task async returning list of TimeRecord objects mapped from the database using the sort string</returns>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: GetTimeRecords
+        /// Date: 2024-08-11
+        /// </remarks>
         public async Task<List<TimeRecord>> GetTimeRecords(string sort)
         {
             List<TimeRecord> timeRecordList = new List<TimeRecord>();
@@ -52,6 +72,17 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Async method generating query to fetch time record report view (1) from the database.
+        /// </summary>        
+        /// <param>No parameters</param>
+        /// <returns>Asynchronous task returning a list of time records with more information from virtual table</returns>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: GetEmployees
+        /// Date: 2024-08-13
+        /// Used to retrieve other fields from the database virtual table.
+        /// </remarks>
         public async Task<List<TimeRecordView>> GetTimeRecordsReport()
         {
             List<TimeRecordView> timeRecordList = new List<TimeRecordView>();
@@ -85,6 +116,18 @@ namespace EMS.Services
         }
 
 
+
+        /// <summary>
+        /// Async method generating query to fetch TimeRecords based user search parameter. 
+        /// </summary>       
+        /// <typeparam name="string"></typeparam>
+        /// <param name="search"></param>
+        /// <returns>Asynchronous task returning a list of TimeRecords objects from search query.>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: SearchEmployees
+        /// Date: 2024-08-11      
+        /// </remarks>
         public async Task<List<TimeRecord>> SearchTimeRecords(string search)
         {
             List<TimeRecord> timeRecordList = new List<TimeRecord>();
@@ -117,7 +160,17 @@ namespace EMS.Services
             return timeRecordList;
         }
 
-
+        /// <summary>
+        /// Async method generating query to fetch employees ordered based on user given filter type, and sort parameter. 
+        /// </summary>       
+        /// <typeparam name="string"></typeparam>
+        /// <param name="field, string, sort"></param>
+        /// <returns>Asynchronous task returning a list of time record objects from filter query.>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: FilterTimeRecords
+        /// Date: 2024-08-13       
+        /// </remarks>
         public async Task<List<TimeRecord>> FilterTimeRecords(string field, string search)
         {
             List<TimeRecord> timeRecordList = new List<TimeRecord>();
@@ -151,6 +204,16 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Async method generating inserting time record object in database
+        /// </summary>       
+        /// <typeparam name="object"></typeparam>
+        /// <param name="List"></param>        
+        /// <remarks>
+        /// Name: AddTimeRecord
+        /// Date: 2024-08-11
+        /// Parametizes insert query to add employee data into the database, using index of objects in list.
+        /// </remarks>
         public async Task AddTimeRecord(List<object> timeRecordData)
         {
 
@@ -176,6 +239,16 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Asynchronous task updatig time record field into database
+        /// </summary>       
+        /// <typeparam name="Payroll"></typeparam>
+        /// <param name="updatedPayroll"></param>        
+        /// <remarks>
+        /// Name: UpdateEmployee
+        /// Date: 2024-08-11  
+        /// Method used to update employee fields in the database table 'Employees', based on employee id. 
+        /// Parametizes update data in the database using index of objects in list.
         public async Task UpdateTimeRecord(TimeRecord updatedTimeRecord)
         {
             try
@@ -209,6 +282,17 @@ namespace EMS.Services
             }            
         }
 
+
+        /// <summary>
+        /// Asynchronous task deleting timeRecord field from database
+        /// </summary>       
+        /// <typeparam name="TimeRecord"></typeparam>
+        /// <param name="timeRecord"></param>        
+        /// <remarks>
+        /// Name: DeleteEmployee
+        /// Date: 2024-08-11 
+        /// Method used to delete timer ecord field in the database table 'TimeRecord', based on time record id. 
+        /// </remarks>
         public async Task DeleteTimeRecord(TimeRecord timeRecord)
         {
 

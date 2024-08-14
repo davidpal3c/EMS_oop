@@ -29,6 +29,7 @@ namespace EMS.Models
             set { _name = value; }
         }
 
+        // properties for the payroll class with validation attributes
         [Required(ErrorMessage = "Base Salary is required")]
         [Range(0, double.MaxValue, ErrorMessage = "Base Salary must be a non-negative number")]
         [DataType(DataType.Currency, ErrorMessage = "Base Salary must be a valid currency amount")]
