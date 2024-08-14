@@ -154,7 +154,8 @@ namespace EMS.Models
             string dateStr = date.ToString();
 
 
-            await ioService.ExportToXls<T>(repList, $@"C:\cprg211\{repTitle}-{dateStr}.xlsx", $"{repTitle}", repType);
+            await ioService.ExportToXls<T>(repList, $@"C:\{repTitle}-{dateStr}.xlsx", $"{repTitle}", repType);
+
         }
         
 

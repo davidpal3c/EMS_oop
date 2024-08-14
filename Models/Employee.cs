@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,9 +17,11 @@ namespace EMS.Models
         private string? _status;
         private int _role;
 
+
         //Properties of the Employee class, with validation attributes
         [Required(ErrorMessage = "Eemployee Name required")]
         [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+
         public string Name
         {
             get { return _name; }
@@ -27,7 +29,7 @@ namespace EMS.Models
         }
 
         [Required(ErrorMessage = "Email required")]
-        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 50 characters")]
         public string Email
         {
             get { return _email; }
@@ -35,14 +37,14 @@ namespace EMS.Models
         }
 
         [Required(ErrorMessage = "Position required")]
-        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 50 characters")]
         public string Position
         {
             get { return _position; }
             set { _position = value; }
         }
 
-        [Range(0, double.MaxValue, ErrorMessage = "Salary must be a positive number")]
+        [Range(1, double.MaxValue, ErrorMessage = "Salary must be a positive number")]
         public decimal Salary
         {
             get { return _salary; }

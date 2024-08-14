@@ -125,13 +125,16 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="SubmitForm">
-
+       
+            <EditForm Model="@emp" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
+         
             <div class="h2">
                 @title
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
+                      
                         formSubmission = "update";
                         <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit Update"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
@@ -149,37 +152,43 @@
 
                 <div class="mb-3">
                     <label class="form-label" for="idd">Employee Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
+                    <input type="number" @bind="emp.Id" class="form-control" id="idd" readonly disabled />
                 </div>
             }
 
 
             <div class="mb-3">
                 <label class="form-label" for="name">Full Name</label>
-                <input type="text" @bind="fullName" placeholder="Enter Full Name" class="form-control" id="name" required />
+               
+                <InputText type="text" placeholder="Enter your full name" class="form-control" @bind-Value="emp.Name" required/>
+                <div><ValidationMessage For="@(() => emp.Name)" /></div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" @bind="emailAddress" placeholder="someone@sample.net" class="form-control" required />
+                <InputText type="email" @bind-Value="emp.Email" placeholder="someone@sample.net" class="form-control" required />
+                <ValidationMessage For="@(() => emp.Email)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="position">Position</label>
-                <input type="text" @bind="position" placeholder="Enter Position" class="form-control" id="position" required />
+                <InputText type="text" @bind-Value="emp.Position" placeholder="Enter Position" class="form-control" id="position" required />
+                <ValidationMessage For="@(() => emp.Position)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="salary">Salary</label>
-                <input type="number" @bind="salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+                <InputNumber  @bind-Value="emp.Salary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+                <ValidationMessage For="@(() => emp.Salary)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="status">Status</label>
-                <select @bind="status" placeholder="Status" class="form-select" id="status" required>
+                <select @bind="emp.Status" placeholder="Status" class="form-select" id="status" required>
+                    <option value="">Select Status</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="role">Role</label>
-                <select @bind="role" placeholder="Role" class="form-select" id="role" required>
+                <select @bind="emp.Role" placeholder="Role" class="form-select" id="role"  required>
                     <option value="1">Staff</option>
                     <option value="2">Supervisor</option>
                     <option value="3">Management</option>
@@ -197,7 +206,7 @@
                 </div>
             }
 
-        </form>
+        </EditForm>
     </div>
 </div>
 
@@ -222,7 +231,7 @@
     private string title = "Add Employee";
     private int records = 0;
     private string activeClass = "";
-    private Employee? emp;
+    private Employee emp = new Employee();
     private List<Employee>? filteredData = new List<Employee>();
 
 
@@ -258,6 +267,7 @@
         role = 1;
         id = null;
         title = "Add Employee";
+        emp = new Employee();
     }
 
     private async Task CloseMessage()
@@ -296,7 +306,7 @@
                 filteredData = await EmployeeService.SearchEmployees(search);
                 records = filteredData.Count;
             }
-            
+
         }
         catch (Exception e)
         {
@@ -386,21 +396,23 @@
         }
     }
 
+
     private async Task AddEmployee()
     {
         try
         {
             List<object> customerData = new List<object>();
-            customerData.Add(fullName);
-            customerData.Add(emailAddress);
-            customerData.Add(position);
-            customerData.Add(salary);
-            customerData.Add(status);
-            customerData.Add(role);
+            customerData.Add(emp.Name);
+            customerData.Add(emp.Email);
+            customerData.Add(emp.Position);
+            customerData.Add(emp.Salary);
+            customerData.Add(emp.Status);
+            customerData.Add(emp.Role);
             await EmployeeService.AddEmployee(customerData);
+            msg = $"New employee {fullName} added successfully!";
             await Reset();
             await RefreshList();
-            msg = $"New employee {fullName} added successfully!";
+            
         }
         catch (Exception e)
         {
@@ -413,17 +425,10 @@
     {
         try
         {
-            emp.Name = fullName;
-            emp.Email = emailAddress;
-            emp.Position = position;
-            emp.Salary = salary;
-            emp.Status = status;
-            emp.Role = role;
             await EmployeeService.UpdateEmployee(emp);
             await RefreshList();
-            await Reset();
             SendMessage($"{emp.Name} updated successfully!");
-           
+            await Reset();   
         }
         catch (Exception e)
         {
