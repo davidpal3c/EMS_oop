@@ -77,7 +77,7 @@ namespace EMS.Services
         /// Date: 2024-08-13
         /// Used to retrieve other fields from the database virtual table 'Employees_report1'.
         /// </remarks>
-        public async Task<List<Employee>> GetEmployeeReport1()
+        public async Task<List<EmployeeView>> GetEmployeeReport1()
         {
             List<EmployeeView> employeeList = new List<EmployeeView>();
 
@@ -119,7 +119,7 @@ namespace EMS.Services
         /// Date: 2024-08-13
         /// Used to retrieve other fields from the database virtual table 'Employees_report2'.
         /// </remarks>
-        public async Task<List<Employee>> GetEmployeeReport2()
+        public async Task<List<EmployeeView>> GetEmployeeReport2()
         {
             List<EmployeeView> employeeList = new List<EmployeeView>();
 
