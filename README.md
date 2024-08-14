@@ -41,14 +41,14 @@ The EMS addresses several key challenges in HR management:
 •	Integration: Ensures seamless integration with a MySQL database, providing reliable data storage and retrieval.
 
 ## Key Files
-•	MauiProgram.cs: Configures the .NET MAUI application.
-•	Employee.cs: Defines the Employee model.
-•	EmployeeService.cs: Provides services for managing employee data.
-•	DBService.cs: Handles database operations.
-•	Report.cs: Defines the Report model.
-•	ReportService.cs: Provides services for generating reports.
-•	Payroll.cs: Defines the Payroll model.
-•	PayrollService.cs: Manages payroll-related operations.
-•	TimeRecordService.cs: Manages time records and attendance.
+•	MauiProgram.cs: Configures the .NET MAUI application.<br>
+•	Employee.cs: Defines the Employee model.<br>
+•	EmployeeService.cs: Provides services for managing employee data. <br>
+•	DBService.cs: Handles database operations. <br>
+•	Report.cs: Defines the Report model. <br>
+•	ReportService.cs: Provides services for generating reports. <br>
+•	Payroll.cs: Defines the Payroll model. <br>
+•	PayrollService.cs: Manages payroll-related operations. <br>
+•	TimeRecordService.cs: Manages time records and attendance. <br>
 •	Home.razor: The main Blazor component for the home page.
 
