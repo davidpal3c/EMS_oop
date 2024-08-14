@@ -34,11 +34,11 @@ The system integrates with a MySQL database to ensure efficient data storage and
 
 ## Problem Solved
 
-The EMS addresses several key challenges in HR management:
-•	Data Management: Provides a centralized system to manage employee data, reducing the need for manual record-keeping.
-•	Efficiency: Automates payroll calculations and time tracking, saving time and reducing errors.
-•	Reporting: Offers comprehensive reporting capabilities, enabling quick access to important HR metrics and insights.
-•	Integration: Ensures seamless integration with a MySQL database, providing reliable data storage and retrieval.
+The EMS addresses several key challenges in HR management:<br>
+•	Data Management: Provides a centralized system to manage employee data, reducing the need for manual record-keeping.<br>
+•	Efficiency: Automates payroll calculations and time tracking, saving time and reducing errors.<br>
+•	Reporting: Offers comprehensive reporting capabilities, enabling quick access to important HR metrics and insights.<br>
+•	Integration: Ensures seamless integration with a MySQL database, providing reliable data storage and retrieval.<br>
 
 ## Key Files
 •	MauiProgram.cs: Configures the .NET MAUI application.<br>
