@@ -1,4 +1,4 @@
-### EMS_oop
+# EMS_oop
 
 ## Overview
 <br>
@@ -10,24 +10,24 @@ The system integrates with a MySQL database to ensure efficient data storage and
 
 ## Functionality
 
-# Employee Management:
+### Employee Management:
 •	Add, Update, Delete: Manage employee records with CRUD operations.
 •	Search and Filter: Easily search for employees by various criteria.
 •	Role and Status Management: View and update employee roles and statuses.
 
-# Payroll Management:
+### Payroll Management:
 •	Payroll Details: Manage payroll information including base salary, overtime pay, deductions, and net salary.
 •	Payroll Calculations: Automatically calculate payroll based on time records and predefined rules.
 
-# Time Records:
+### Time Records:
 •	Time Tracking: Record and manage employee working hours.
 •	Attendance Management: Track attendance and generate time-based reports.
 
-# Reporting:
+### Reporting:
 •	Report Generation: Generate detailed reports on employees, payrolls, and time records.
 •	Export to Excel: Export data to Excel files for further analysis and record-keeping.
 
-# Database Integration:
+### Database Integration:
 •	MySQL Database: Uses MySQL for efficient data storage and retrieval.
 •	Data Consistency: Ensures data consistency and integrity across the application.
 
