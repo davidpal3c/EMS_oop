@@ -30,9 +30,7 @@
             <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export (.xlsx)" @onclick="ExportHandler">
                 <i class="bi bi-file-spreadsheet"></i>
             </button>
-            <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print" @onclick="PrintView">
-                <i class="bi bi-printer"></i>
-            </button>
+          
         </div>        
     </div>
     @if (msg != null)
@@ -229,7 +227,7 @@
             {
                 IReport rep = new Report();
                 await rep.SaveReport(reportList, selectedRepType);
-                msg = "Report exported successfully.";
+                msg = "Report exported successfully to your C drive (C:\\)";
                 alert = "alert-success";
             }
             else
@@ -243,29 +241,6 @@
             msg = $"Error during export: {e.Message}";
             alert = "alert-danger";
         }             
-    }
-
-
-    private async Task PrintView()
-    {
-        try
-        {
-            if (reportList.Count > 0)
-            {
-                string repTitle = selectedRepType.ToString();
-                await JSRuntime.InvokeVoidAsync("printElement", "reportTable");
-            }
-            else
-            {
-                msg = "No records available for print.";
-                alert = "alert-warning";
-            }
-        }
-        catch (Exception e)
-        {
-            msg = $"Error during print: {e.Message}";
-            alert = "alert-danger";
-        }
     }
 
 }
