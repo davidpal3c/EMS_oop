@@ -137,7 +137,7 @@
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
-                <select @bind="employee" placeholder="Employee" class="form-select" id="name" required>
+                <select @bind="pay.EmployeeId" placeholder="Employee" class="form-select" id="name" required>
                     <option value="">Select Employee</option>
                     @foreach(Employee e in employeeOptions)
                     {
