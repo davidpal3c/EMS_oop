@@ -316,15 +316,15 @@
     {
         try
         {
-            List<object> customerData = new List<object>();
-            customerData.Add(pay.EmployeeId);
-            customerData.Add(pay.BaseSalary);
-            customerData.Add(pay.OvertimePay);
-            customerData.Add(pay.Deductions);
+            List<object> payrollData = new List<object>();
+            payrollData.Add(pay.EmployeeId);
+            payrollData.Add(pay.BaseSalary);
+            payrollData.Add(pay.OvertimePay);
+            payrollData.Add(pay.Deductions);
             netPay = (pay.BaseSalary + pay.OvertimePay) - pay.Deductions;
-            customerData.Add(netPay);
+            payrollData.Add(netPay);
             
-            await PayrollService.AddPayroll(customerData);
+            await PayrollService.AddPayroll(payrollData);
             SendMessage($"New payroll record added successfully!");
             await RefreshList();
             await Reset();
