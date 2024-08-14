@@ -240,7 +240,6 @@
 
         //custList = await DatabaseService.GetCustomers();
         await RefreshList();
-
     }
 
     private async Task CallTable()
@@ -331,7 +330,6 @@
                 filteredData = await EmployeeService.FilterEmployees("EmployeeStatus", filter1, sort);
                 records = filteredData.Count;
             }
-
         }
         catch (Exception e)
         {

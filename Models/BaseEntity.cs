@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    // Base class for entities in the system (namely Employee, Payroll, and TimeRecord classes)
     public abstract class BaseEntity
     {
         private int _id;
@@ -32,7 +33,7 @@ namespace EMS.Models
             set { _updatedAt = value; }
         }
 
-
+        // Default constructor, initializes CreatedAt and UpdatedAt to the current date and time
         public BaseEntity() 
         {
             CreatedAt = DateTime.Now;

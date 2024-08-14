@@ -17,7 +17,7 @@ namespace EMS.Models
         private string _status;
         private int _role;
 
-
+        //Properties of the Employee class, with validation attributes
         [Required(ErrorMessage = "Eemployee Name required")]
         [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
         public string Name
@@ -25,7 +25,6 @@ namespace EMS.Models
             get { return _name; }
             set { _name = value; }
         }
-
 
         [Required(ErrorMessage = "Email required")]
         [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
@@ -71,9 +70,8 @@ namespace EMS.Models
             Status = status;
         
         }
-
-       
-
+              
+        
         public Employee(int id, string name, string email, string position, decimal salary, string status, int role, DateTime createdAt, DateTime updatedAt) : base(id, createdAt, updatedAt)
         {
             Id = id;
