@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Generates a leave and absence report
+    /// </summary>
     public class LeaveAndAbsenceReport : Report
     {
         private int _id;

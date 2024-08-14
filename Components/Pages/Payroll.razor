@@ -1,4 +1,10 @@
-﻿@page "/payroll"
+﻿<!--
+OOP2 - Stefan Garcia, David Palacios and Manminder Singh
+The payroll page manages payroll data for employees and allows users to add, update and delete payroll records.
+Users are also able to search for payroll data by employees and sort payroll data.
+-->
+
+@page "/payroll"
 @using Models
 @using Services
 @inject DBService DBService
@@ -12,9 +18,10 @@
         <div>Manage payrolls for employees | @records payroll records listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
+                <!-- Contains Search and Filters for Payroll -->
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                   <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
+                   <input type="search" class="form-control" placeholder="Search for payroll by employee" @bind="search" @bind:event="oninput" @bind:after="SearchPayrolls" />
                    </div>
                    <div class="form-floating">
             <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Role filter">
@@ -49,6 +56,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Displays the search results for payroll data if matches are found -->
                 @if (filteredData != null)
                 {
                     if(filteredData.Count == 0)
@@ -76,7 +84,7 @@
                 }
                 else
                 {
-
+                    <!-- Displays the results for payroll data from the database -->
                     if(payrollList.Count == 0)
                     {
                         <div class="loader">Loading...</div>
@@ -108,6 +116,7 @@
         </table>
     </div>
     <div class="page-section-ems">
+        <!-- Payroll Form -->
         <EditForm Model="@pay" OnValidSubmit="SubmitForm">
             <DataAnnotationsValidator />
             <div class="h2">@title
@@ -225,6 +234,7 @@
         await RefreshList();
     }
 
+    // Clears form data
     private async Task Reset()
     {
         baseSalary = netPay = overtimePay = deductions = 0;
@@ -233,11 +243,13 @@
         pay = new Models.Payroll();
     }
 
+    // Closes alert modal
     private async Task CloseMessage()
     {
         msg = null;
     }
 
+    // Retrieves payroll records from the database and returns a list
     private async Task RefreshList()
     {
         try
@@ -254,12 +266,14 @@
         }
     }
 
+    // Displays a message via the alert modal
     private void SendMessage(string message)
     {
         msg = message;
     }
 
-    private async Task SearchEmployees()
+    // Searches the payroll table in the database for payrolls by employee name
+    private async Task SearchPayrolls()
     {
         try
         {
@@ -277,6 +291,7 @@
         }
     }
 
+    // Updates form inputs with payroll object data to be edited
     private async Task EditPayroll(Models.Payroll payroll)
     {
         try
@@ -299,6 +314,7 @@
         }
     }
 
+    // Submits the form data
     private async Task SubmitForm()
     {
         if (formSubmission == "create")
@@ -311,7 +327,7 @@
         }
     }
 
-
+    // Adds a payroll record to the payroll table in the database
     private async Task AddPayroll()
     {
         try
@@ -336,6 +352,7 @@
         }
     }
 
+    // Updates a payroll record in the payroll table in the database with a payroll object
     private async Task UpdatePayroll()
     {
         try
@@ -354,6 +371,7 @@
         }
     }
 
+    // Deletes a payroll record from the database
     private async Task DeletePayroll()
     {
         try

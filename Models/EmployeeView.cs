@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Handles employee data for the employee view
+    /// </summary>
     public class EmployeeView : Employee
     {
       

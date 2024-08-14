@@ -8,6 +8,9 @@ using MySqlConnector;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Opens a databsse connection
+    /// </summary>
     internal class DBConnection
     {
         private string? _server;

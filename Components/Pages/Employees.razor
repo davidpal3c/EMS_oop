@@ -1,3 +1,9 @@
+<!--
+OOP2 - Stefan Garcia, David Palacios and Manminder Singh
+The employee page manages emplouee data and allows users to add, update and delete employees.
+Users are also able to search for employees, sort and filter employee data.
+-->
+
 @page "/employees"
 @using Models
 @using Services
@@ -11,6 +17,7 @@
         <div>Manage employees | @records employees listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
+                <!-- Contains Search and Filters for Employees -->
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
@@ -68,6 +75,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Displays the search results for employee data if matches are found -->
                 @if (filteredData != null)
                 {
                     if(filteredData.Count == 0)
@@ -96,6 +104,7 @@
                 }
                 else
                 {
+                    <!-- Displays the results for employee data from the database -->
                     if(employeeList.Count == 0)
                     {
                         <div class="loader">Loading...</div>
@@ -125,7 +134,7 @@
         </table>
     </div>
     <div class="page-section-ems">
-       
+       <!-- Employee Form -->
             <EditForm Model="@emp" OnValidSubmit="SubmitForm">
             <DataAnnotationsValidator />
          
@@ -250,15 +259,12 @@
             alert = "alert-danger";
         }
 
-        //custList = await DatabaseService.GetCustomers();
+        
         await RefreshList();
     }
 
-    private async Task CallTable()
-    {
-        await JS.InvokeAsync<string>("loadTable");
-    }
 
+    // Clears form data
     private async Task Reset()
     {
         fullName = emailAddress = position = "";
@@ -270,16 +276,19 @@
         emp = new Employee();
     }
 
+    // Closes alert modal
     private async Task CloseMessage()
     {
         msg = null;
     }
 
+    // Displays a message via the alert modal
     private void SendMessage(string message)
     {
         msg = message;
     }
 
+    // Retrieves employee records from the database and returns a list
     private async Task RefreshList()
     {
         try
@@ -296,6 +305,7 @@
         }
     }
 
+    // Searches the employee table in the database for employees
     private async Task SearchEmployees()
     {
         try
@@ -315,6 +325,7 @@
         }
     }
 
+    // Filters employee data by employee role by querying the database
     private async Task FilterByRole()
     {
         try
@@ -334,7 +345,7 @@
         }
     }
 
-
+    // Filters employee data by employee status by querying the database
     private async Task FilterByStatus()
     {
         try
@@ -360,6 +371,7 @@
         await FilterByRole();
     }
 
+    // Updates form inputs with employee object data to be edited
     private async Task EditEmployee(Employee employee)
     {
         try
@@ -384,6 +396,7 @@
         }
     }
 
+    // Submits the form data
     private async Task SubmitForm()
     {
         if (formSubmission == "create")
@@ -396,7 +409,7 @@
         }
     }
 
-
+    // Adds an employee record to the employee table in the database
     private async Task AddEmployee()
     {
         try
@@ -421,6 +434,7 @@
         }
     }
 
+    // Updates an employee record in the employee table in the database with a employee object
     private async Task UpdateEmployee()
     {
         try
@@ -437,6 +451,7 @@
         }
     }
 
+    // Deletes an employee record from the database
     private async Task DeleteEmployee()
     {
         try

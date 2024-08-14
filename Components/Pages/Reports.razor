@@ -15,6 +15,7 @@
 <div class="page-header-ems">
     <div class="page-header-ems-section">
         <div class="form-floating">
+            <!-- Filter for report -->
         <select class="form-select" @onchange="HandleReportSelect">
             <option value="">-- Select Report Type --</option>
             @foreach (Report.EReportType rt in Enum.GetValues(typeof(Report.EReportType)))
@@ -29,9 +30,7 @@
             <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Export (.xlsx)" @onclick="ExportHandler">
                 <i class="bi bi-file-spreadsheet"></i>
             </button>
-            <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Print" @onclick="PrintView">
-                <i class="bi bi-printer"></i>
-            </button>
+          
         </div>        
     </div>
     @if (msg != null)
@@ -43,6 +42,7 @@
     }
 </div>
 
+<!-- Renders Reports -->
 <div class="report-page-ems">
     <div class="page-section-ems">
         @if (reportList.Count > 0)
@@ -176,6 +176,7 @@
 
     }
 
+    // Pulls the appropriate report when user selects a report from the select field
     private async Task HandleReportSelect(ChangeEventArgs e)
     {
         if (string.IsNullOrEmpty(e.Value?.ToString()))
@@ -192,7 +193,7 @@
         }                
     }
 
-
+    // Retrieves reports from the database and returns a list
     private async Task RefreshList(Report.EReportType? rtype)
     {  
         try
@@ -211,12 +212,13 @@
         }
     }
 
-
+    // Closes alert modal
     private async Task CloseMessage()
     {
         msg = null;
     }
 
+    // Exports data from report to a CSV file
     private async Task ExportHandler()
     {
         try
@@ -225,7 +227,7 @@
             {
                 IReport rep = new Report();
                 await rep.SaveReport(reportList, selectedRepType);
-                msg = "Report exported successfully.";
+                msg = "Report exported successfully to your C drive (C:\\)";
                 alert = "alert-success";
             }
             else
@@ -239,29 +241,6 @@
             msg = $"Error during export: {e.Message}";
             alert = "alert-danger";
         }             
-    }
-
-
-    private async Task PrintView()
-    {
-        try
-        {
-            if (reportList.Count > 0)
-            {
-                string repTitle = selectedRepType.ToString();
-                await JSRuntime.InvokeVoidAsync("printElement", "reportTable");
-            }
-            else
-            {
-                msg = "No records available for print.";
-                alert = "alert-warning";
-            }
-        }
-        catch (Exception e)
-        {
-            msg = $"Error during print: {e.Message}";
-            alert = "alert-danger";
-        }
     }
 
 }

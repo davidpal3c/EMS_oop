@@ -7,7 +7,9 @@ using EMS.Models;
 
 namespace EMS.Interfaces
 {
-    //interface for report servicing
+    /// <summary>
+    /// Interface for report servicing
+    /// </summary>
     internal interface IReport
     {               
 

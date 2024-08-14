@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
-    // Base class for entities in the system (namely Employee, Payroll, and TimeRecord classes)
+    /// <summary>
+    /// Base class for entities in the system (namely Employee, Payroll, and TimeRecord classes)
+    /// </summary>
     public abstract class BaseEntity
     {
         private int _id;

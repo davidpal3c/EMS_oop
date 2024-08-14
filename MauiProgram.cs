@@ -5,6 +5,9 @@ using EMS.Models;
 
 namespace EMS
 {
+    /// <summary>
+    /// Registers several services to use within the application and initializes connection to the database
+    /// </summary>
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
