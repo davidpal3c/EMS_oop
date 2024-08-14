@@ -10,15 +10,31 @@ using EMS.Models;
 
 namespace EMS.Services
 {
+
+    /// <summary>
+    /// Service class handling input/output operations, using CLOSEDXML library to export data to xls.
+    /// </summary>
     public class IOService
     {
-        //handles the export to xls logic according to report type
+
+        /// <summary>
+        /// Asynchronous task providing saving workbook to file
+        /// </summary>       
+        /// <typeparam name="List<T>", "string", "Report.EReportType" ></typeparam>
+        /// <param name="list, path, sheetname, reptype"></param>        
+        /// <remarks>
+        /// Name: ExportToXls
+        /// Date: 2024-08-12 
+        /// Handles the export to xls logic according to report type and received generic list with report objects. 
+        /// </remarks>
         public async Task ExportToXls<T>(List<T> list, string path, string sheetName, Report.EReportType repType)
         {
+            // instantiates new workbook
             IXLWorkbook workbook = new XLWorkbook();
                        
             try
             {
+                /// switch statement handling different report types, calling appropriate method to export to xls. 
                 switch (repType)
                 {
                     case Report.EReportType.EmployeeDirectory:
@@ -40,6 +56,7 @@ namespace EMS.Services
                         throw new ArgumentException("Invalid report type specified.", nameof(repType));
                 }
 
+                // saves workbook object (IXLWorkbook) to file path
                 await SaveWorkbookAsync(workbook, path);
             }
             catch (Exception ex)
@@ -49,6 +66,19 @@ namespace EMS.Services
                 
         }
 
+
+        /// <summary>
+        /// Asynchronous task providing workbook object for EmployeeDirectoryReport type
+        /// </summary>
+        /// <type
+        /// <param name="list"></param>
+        /// <param name="file"></param>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>      
+        /// <remarks>
+        /// Name: xportEmployeeDirectoryToXls
+        /// Date: 2024-08-12         
+        /// </remarks>
         private async Task<IXLWorkbook> ExportEmployeeDirectoryToXls(List<EmployeeDirectoryReport> list, string file, string sheetName)
         {
             XLWorkbook workbook = new XLWorkbook();
@@ -68,6 +98,8 @@ namespace EMS.Services
             // adds data to the worksheet
             for (int i = 0; i < list.Count; i++)
             {
+
+                //asigns object's attribute values to cells
                 EmployeeDirectoryReport employee = list[i];
                 worksheet.Cell(i + 2, 1).Value = employee.Id;
                 worksheet.Cell(i + 2, 2).Value = employee.Name;
@@ -79,8 +111,21 @@ namespace EMS.Services
             }
 
             return await Task.FromResult(workbook);
-        }        
+        }
 
+
+
+        /// <summary>
+        /// Asynchronous task providing workbook object for AttendanceReport type
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="file"></param>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>      
+        /// <remarks>
+        /// Name: ExportAttendanceToXls
+        /// Date: 2024-08-12         
+        /// </remarks>
         private async Task<IXLWorkbook> ExportAttendanceToXls(List<AttendanceReport> list, string file, string sheetName)
         {
             XLWorkbook workbook = new XLWorkbook();
@@ -111,6 +156,17 @@ namespace EMS.Services
             return await Task.FromResult(workbook);
         }
 
+        /// <summary>
+        /// Asynchronous task providing workbook object for LeaveAndAbsenceReport type
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="file"></param>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>      
+        /// <remarks>
+        /// Name: ExportLeaveAndAbsenceToXls
+        /// Date: 2024-08-12 
+        /// </remarks>
         private async Task<IXLWorkbook> ExportLeaveAndAbsenceToXls(List<LeaveAndAbsenceReport> list, string file, string sheetName)
         {
             XLWorkbook workbook = new XLWorkbook();
@@ -141,6 +197,13 @@ namespace EMS.Services
             return await Task.FromResult(workbook);
         }
 
+
+        /// <summary>
+        /// Asynchronous task saving workbook to file
+        /// </summary>
+        /// <param name="workbook"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
         private async Task SaveWorkbookAsync(IXLWorkbook workbook, string file)
         {
             await Task.Run(() => workbook.SaveAs(file));

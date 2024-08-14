@@ -11,6 +11,18 @@ namespace EMS.Services
 {
     public class PayrollMapper
     {
+
+        /// <summary>
+        /// Mapper method from reader, instantiating Payroll object.
+        /// </summary>       
+        /// <typeparam name="MySqlDataReader"></typeparam>
+        /// <param name="reader"></param>        
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException">throws error mapping message related to invalid types</exception>
+        /// <remarks>
+        /// Name: MapFromReaderPayroll
+        /// Date: 2024-08-10       
+        /// </remarks>
         public Payroll MapFromReaderPayroll(MySqlDataReader reader)
         {
             try
@@ -40,6 +52,12 @@ namespace EMS.Services
 
 
 
+        /// <summary>
+        /// method moved to TimeRecordMapper.cs//
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public TimeRecord MapFromReaderTime(MySqlDataReader reader)
         {
             try
