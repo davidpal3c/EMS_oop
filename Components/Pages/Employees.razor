@@ -398,30 +398,6 @@
         }
     }
 
-    /*
-    private async Task AddEmployee()
-    {
-        try
-        {
-            List<object> customerData = new List<object>();
-            customerData.Add(fullName);
-            customerData.Add(emailAddress);
-            customerData.Add(position);
-            customerData.Add(salary);
-            customerData.Add(status);
-            customerData.Add(role);
-            await EmployeeService.AddEmployee(customerData);
-            await Reset();
-            await RefreshList();
-            msg = $"New employee {fullName} added successfully!";
-        }
-        catch (Exception e)
-        {
-            msg = $"An error occurred: adding{e.Message}";
-            alert = "alert-danger";
-        }
-    }
-    */
 
     private async Task AddEmployee()
     {
@@ -451,18 +427,10 @@
     {
         try
         {
-            emp.Name = fullName;
-            emp.Email = emailAddress;
-            emp.Position = position;
-            emp.Salary = salary;
-            emp.Status = status;
-            emp.Role = role;
             await EmployeeService.UpdateEmployee(emp);
             await RefreshList();
             SendMessage($"{emp.Name} updated successfully!");
-            await Reset();
-            
-           
+            await Reset();   
         }
         catch (Exception e)
         {

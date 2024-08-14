@@ -364,16 +364,6 @@
     {
         try
         {
-            /*
-            updatedTimeRecord = new Models.TimeRecord
-            {
-                    Id = selectedTimeRec.Id,
-                    EmployeeId = selectedTimeRec.EmployeeId,
-                    Date = selectedTimeRec.Date,
-                    HoursWorked = selectedTimeRec.HoursWorked,
-                    Type = selectedTimeRec.Type
-            };
-            */
             await TimeRecordService.UpdateTimeRecord(selectedTimeRec);         
             await RefreshList();
             await Reset();

@@ -341,12 +341,7 @@
         try
         {
             netPay = (pay.BaseSalary + pay.OvertimePay) - pay.Deductions;
-            //id = pay.Id;
-            //pay.BaseSalary = baseSalary;
-            //pay.OvertimePay = overtimePay;
-            //pay.Deductions = deductions;
             pay.NetSalary = netPay;
-
             await PayrollService.UpdatePayroll(pay);
             await RefreshList();
             await Reset();
