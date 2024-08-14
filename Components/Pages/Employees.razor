@@ -160,7 +160,7 @@
             <div class="mb-3">
                 <label class="form-label" for="name">Full Name</label>
                
-                <InputText type="text" class="form-control" @bind-Value="emp.Name" required/>
+                <InputText type="text" placeholder="Enter your full name" class="form-control" @bind-Value="emp.Name" required/>
                 <div><ValidationMessage For="@(() => emp.Name)" /></div>
             </div>
             <div class="mb-3">
