@@ -10,7 +10,9 @@ using EMS.Interfaces;
 
 namespace EMS.Models
 {
-    //Report class is the base class for all report classes in the system. 
+    /// <summary>
+    /// Report class is the base class for all report classes in the system. 
+    /// </summary>
     public class Report : IReport
     {
         private int _reportId;

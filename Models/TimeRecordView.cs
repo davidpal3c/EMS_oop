@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Handles Time Record data from the Time Record view
+    /// </summary>
     public class TimeRecordView : TimeRecord
     {
         private int _count;

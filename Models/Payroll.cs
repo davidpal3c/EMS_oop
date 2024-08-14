@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Handles payroll data from the database
+    /// </summary>
     public class Payroll : BaseEntity
     {
         private int _employeeId;

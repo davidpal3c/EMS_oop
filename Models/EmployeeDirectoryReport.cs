@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Generates employee data
+    /// </summary>
     public class EmployeeDirectoryReport : Report
     {
         private int _id;

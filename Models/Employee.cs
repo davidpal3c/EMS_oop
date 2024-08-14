@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Handles employee data from the databsse
+    /// </summary>
     public class Employee : BaseEntity
     {
         private string? _name;

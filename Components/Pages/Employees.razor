@@ -17,6 +17,7 @@ Users are also able to search for employees, sort and filter employee data.
         <div>Manage employees | @records employees listed</div>
         <div class="page-header-ems">
             <div class="page-header-ems-section">
+                <!-- Contains Search and Filters for Employees -->
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
                 <input type="search" class="form-control" placeholder="Search for employees by name, email address or position" @bind="search" @bind:event="oninput" @bind:after="SearchEmployees" />
@@ -74,6 +75,7 @@ Users are also able to search for employees, sort and filter employee data.
                 </tr>
             </thead>
             <tbody>
+                <!-- Displays the search results for employee data if matches are found -->
                 @if (filteredData != null)
                 {
                     if(filteredData.Count == 0)
@@ -102,6 +104,7 @@ Users are also able to search for employees, sort and filter employee data.
                 }
                 else
                 {
+                    <!-- Displays the results for employee data from the database -->
                     if(employeeList.Count == 0)
                     {
                         <div class="loader">Loading...</div>
@@ -131,7 +134,7 @@ Users are also able to search for employees, sort and filter employee data.
         </table>
     </div>
     <div class="page-section-ems">
-       
+       <!-- Employee Form -->
             <EditForm Model="@emp" OnValidSubmit="SubmitForm">
             <DataAnnotationsValidator />
          
@@ -256,15 +259,12 @@ Users are also able to search for employees, sort and filter employee data.
             alert = "alert-danger";
         }
 
-        //custList = await DatabaseService.GetCustomers();
+        
         await RefreshList();
     }
 
-    private async Task CallTable()
-    {
-        await JS.InvokeAsync<string>("loadTable");
-    }
 
+    // Clears form data
     private async Task Reset()
     {
         fullName = emailAddress = position = "";
@@ -276,16 +276,19 @@ Users are also able to search for employees, sort and filter employee data.
         emp = new Employee();
     }
 
+    // Closes alert modal
     private async Task CloseMessage()
     {
         msg = null;
     }
 
+    // Displays a message via the alert modal
     private void SendMessage(string message)
     {
         msg = message;
     }
 
+    // Retrieves employee records from the database and returns a list
     private async Task RefreshList()
     {
         try
@@ -302,6 +305,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
+    // Searches the employee table in the database for employees
     private async Task SearchEmployees()
     {
         try
@@ -321,6 +325,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
+    // Filters employee data by employee role by querying the database
     private async Task FilterByRole()
     {
         try
@@ -340,7 +345,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
-
+    // Filters employee data by employee status by querying the database
     private async Task FilterByStatus()
     {
         try
@@ -366,6 +371,7 @@ Users are also able to search for employees, sort and filter employee data.
         await FilterByRole();
     }
 
+    // Updates form inputs with employee object data to be edited
     private async Task EditEmployee(Employee employee)
     {
         try
@@ -390,6 +396,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
+    // Submits the form data
     private async Task SubmitForm()
     {
         if (formSubmission == "create")
@@ -402,7 +409,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
-
+    // Adds an employee record to the employee table in the database
     private async Task AddEmployee()
     {
         try
@@ -427,6 +434,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
+    // Updates an employee record in the employee table in the database with a employee object
     private async Task UpdateEmployee()
     {
         try
@@ -443,6 +451,7 @@ Users are also able to search for employees, sort and filter employee data.
         }
     }
 
+    // Deletes an employee record from the database
     private async Task DeleteEmployee()
     {
         try

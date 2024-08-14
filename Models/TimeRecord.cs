@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Handles Time Record data from the database
+    /// </summary>
     public class TimeRecord : BaseEntity
     {
 

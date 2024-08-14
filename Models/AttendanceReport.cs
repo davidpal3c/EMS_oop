@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EMS.Models
 {
+    /// <summary>
+    /// Contains properties and constructors for handling the Attendance Report
+    /// </summary>
     public class AttendanceReport : Report
     {
         private int _id;
