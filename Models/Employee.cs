@@ -10,11 +10,11 @@ namespace EMS.Models
 {
     public class Employee : BaseEntity
     {
-        private string _name;
-        private string _email;
-        private string _position;
+        private string? _name;
+        private string? _email;
+        private string? _position;
         private decimal _salary;
-        private string _status;
+        private string? _status;
         private int _role;
 
         //Properties of the Employee class, with validation attributes

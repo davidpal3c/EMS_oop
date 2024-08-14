@@ -19,6 +19,17 @@
                 </div>
 
                 <div class="form-floating">
+                    <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Type filter">
+                        <option value="Id" selected>Id</option>
+                        <option value="Name">Name</option>
+                        <option value="Date">Date</option>
+                        <option value="HoursWorked">Hours Worked</option>
+                        <option value="Type">Type</option>
+                    </select>
+                    <label>Sort by</label>
+                </div>
+
+                <div class="form-floating">
                 <select @bind="filter" @bind:event="onchange" @bind:after="FilterByType" class="form-select" placeholder="Choose filter">
                     <option value="" selected>Select filter</option>
                     <option value="Attendance">Attendance</option>
@@ -26,22 +37,11 @@
                     <option value="Leave">Leave</option>
                 </select>
                 <label>Filter by</label>
-            </div>
-
-            <div class="form-floating">
-                <select @bind="sort" @bind:event="onchange" @bind:after="RefreshList" class="form-select" placeholder="Type filter">
-                    <option value="Id" selected>Id</option>
-                    <option value="Name">Name</option>
-                    <option value="Date">Date</option>
-                    <option value="HoursWorked">Hours Worked</option>
-                    <option value="Type">Type</option>
-                </select>
-            <label>Sort by</label>
-        </div>
+            </div> 
             </div>
             @if (msg != null)
             {
-                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show alert-fixed" role="alert">
                     @msg
                     <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
                 </div>
@@ -322,11 +322,11 @@
     {
         if (formSubmission == "create")
         {
-            AddTimeRecord();
+            await AddTimeRecord();
         }
         else
         {
-            UpdateTimeRecord();
+            await UpdateTimeRecord();
         }
     }
 
@@ -342,11 +342,10 @@
             timeRecordData.Add(hoursWorked);
             timeRecordData.Add(type);
 
-            msg = $"New Time Record added successfully!";
             await TimeRecordService.AddTimeRecord(timeRecordData);
-
             await RefreshList();
-            Reset();
+            await Reset();
+            msg = $"New Time Record added successfully!";
         }
         catch (Exception e)
         {
@@ -369,11 +368,10 @@
                     Type = (string)type
             };
 
-            await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);
-
-            msg = $"Payroll record updated successfully!";
+            await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);         
             await RefreshList();
             await Reset();
+            msg = $"Payroll record updated successfully!";
         }
         catch (Exception e)
         {

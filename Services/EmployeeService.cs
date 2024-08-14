@@ -79,7 +79,7 @@ namespace EMS.Services
         /// </remarks>
         public async Task<List<Employee>> GetEmployeeReport1()
         {
-            List<Employee> employeeList = new List<Employee>();
+            List<EmployeeView> employeeList = new List<EmployeeView>();
 
             try
             {
@@ -94,7 +94,7 @@ namespace EMS.Services
 
                             while (await reader.ReadAsync())
                             {
-                                Employee employee = _employeeMapper.MapFromReaderEmployeeReport1(reader);
+                                EmployeeView employee = _employeeMapper.MapFromReaderEmployeeReport1(reader);
                                 employeeList.Add(employee);
                             }
                         }
@@ -121,7 +121,7 @@ namespace EMS.Services
         /// </remarks>
         public async Task<List<Employee>> GetEmployeeReport2()
         {
-            List<Employee> employeeList = new List<Employee>();
+            List<EmployeeView> employeeList = new List<EmployeeView>();
 
             try
             {
@@ -136,7 +136,7 @@ namespace EMS.Services
 
                             while (await reader.ReadAsync())
                             {
-                                Employee employee = _employeeMapper.MapFromReaderEmployeeReport2(reader);
+                                EmployeeView employee = _employeeMapper.MapFromReaderEmployeeReport2(reader);
                                 employeeList.Add(employee);
                             }
                         }

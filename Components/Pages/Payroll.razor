@@ -30,7 +30,7 @@
            </div>
             @if (msg != null)
             {
-                <div style="margin-top:10px;" class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show alert-fixed" role="alert">
                     @msg
                     <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="CloseMessage"></button>
                 </div>
@@ -248,6 +248,11 @@
         }
     }
 
+    private void SendMessage(string message)
+    {
+        msg = message;
+    }
+
     private async Task SearchEmployees()
     {
         try
@@ -292,11 +297,11 @@
     {
         if (formSubmission == "create")
         {
-            AddPayroll();
+            await AddPayroll();
         }
         else
         {
-            UpdatePayroll();
+            await UpdatePayroll();
         }
     }
 
@@ -312,10 +317,11 @@
             customerData.Add(deductions);
             netPay = (baseSalary + overtimePay) - deductions;
             customerData.Add(netPay);
-            msg = $"New payroll record added successfully!";
+            
             await PayrollService.AddPayroll(customerData);
             await RefreshList();
-            Reset();
+            await Reset();
+            SendMessage($"New payroll record added successfully!");
         }
         catch (Exception e)
         {
@@ -335,11 +341,10 @@
             pay.Deductions = deductions;
             pay.NetSalary= netPay;
 
-            
             await PayrollService.UpdatePayroll(pay);
-            msg = $"Payroll record updated successfully!";
             await RefreshList();
             await Reset();
+            SendMessage($"Payroll record updated successfully!");
         }
         catch (Exception e)
         {
@@ -359,9 +364,9 @@
                 if (pay != null)
                 {
                     await PayrollService.DeletePayroll(pay);
-                    msg = $"Payroll record was deleted successfully";
                     await RefreshList();
                     await Reset();
+                    SendMessage($"Payroll record was deleted successfully");
                 }
             }
             else

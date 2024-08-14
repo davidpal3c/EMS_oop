@@ -8,7 +8,7 @@
 
 <h1>Home</h1>
 
-Welcome to EMS!
+Welcome to the Employee Management System!
 
 <div class="home-section">
     <NavLink class="navv" href="employees"><div class="home-sub-section"><span>@employeeList.Count</span><div>Employees</div>
@@ -20,39 +20,63 @@ Welcome to EMS!
 <div class="home-section1">
    
     <div class="hs1">
-        <h4>Status Activity</h4>
+        <h5>Employee Status Summary</h5>
         <table class="table">
-            <tr class="tr-head"><th>Status</th><th># of employees</th></tr><tbody>
+            <tr class="tr-head"><th>Status</th><th class="td-actions">Number of employees</th></tr><tbody>
                 @if(employeeReport1.Count == 0)
                 {
                     <div class="loader">Loading...</div>
                 }else{
-            @foreach (Employee er1 in employeeReport1)
+            @foreach (EmployeeView er1 in employeeReport1)
             {
                 <tr>
-                    <td>@er1.Status</td>
-                    <td>@er1.Id</td>
+                    <td>@er1.Title</td>
+                    <td class="td-actions">@er1.Count</td>
                 </tr>
             }
                 }
             </tbody>
         </table>
         </div>
+
         <div class="hs1">
-            <h4>Employee Roles</h4>
+            <h5>Employee Role Summary</h5>
         <table class="table">
-            <tr class="tr-head"><th>Roles</th><th># of employees</th></tr><tbody>
+            <tr class="tr-head"><th>Roles</th><th class="td-actions">Number of employees</th></tr><tbody>
                  @if(employeeReport2.Count == 0)
                 {
                     <div class="loader">Loading...</div>
                 }else{
-            @foreach (Employee er2 in employeeReport2)
+            @foreach (EmployeeView er2 in employeeReport2)
             {
                 <tr>
-                    <td>@er2.Status</td>
-                    <td>@er2.Id</td>
+                    <td>@er2.Title</td>
+                    <td class="td-actions">@er2.Count</td>
                 </tr>
             }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="hs1">
+        <h5>Time Record Summary</h5>
+        <table class="table">
+            <tr class="tr-head"><th>Type</th><th class="td-actions">Number of employees</th></tr>
+            <tbody>
+                @if (employeeReport2.Count == 0)
+                {
+                    <div class="loader">Loading...</div>
+                }
+                else
+                {
+                    @foreach (TimeRecordView tr in timeRecordReport)
+                    {
+                        <tr>
+                            <td>@tr.Title</td>
+                            <td class="td-actions">@tr.Count</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -64,8 +88,9 @@ Welcome to EMS!
 
     private List<Models.Payroll> payrollList = new List<Models.Payroll>();
     private List<Models.Employee> employeeList = new List<Models.Employee>();
-    private List<Models.Employee>? employeeReport1 = new List<Models.Employee>();
-    private List<Models.Employee> employeeReport2 = new List<Models.Employee>();
+    private List<Models.EmployeeView> employeeReport1 = new List<Models.EmployeeView>();
+    private List<Models.EmployeeView> employeeReport2 = new List<Models.EmployeeView>();
+    private List<Models.TimeRecordView> timeRecordReport = new List<Models.TimeRecordView>();
     private List<Models.TimeRecord> timeList = new List<Models.TimeRecord>();
 
     protected override async Task OnInitializedAsync()
@@ -93,6 +118,7 @@ Welcome to EMS!
             employeeList = await EmployeeService.GetEmployees("Id");
             employeeReport1 = await EmployeeService.GetEmployeeReport1();
             employeeReport2 = await EmployeeService.GetEmployeeReport2();
+            timeRecordReport = await TimeRecordService.GetTimeRecordsReport();
             payrollList = await PayrollService.GetPayrolls("Id");
             timeList = await TimeRecordService.GetTimeRecords("Id");
          
