@@ -114,7 +114,7 @@ namespace EMS.Models
             DateOnly date = DateOnly.FromDateTime(DateTime.Now);
             string dateStr = date.ToString();
 
-            await ioService.ExportToXls<T>(repList, $@"C:\cprg211\{repTitle}-{dateStr}.xlsx", $"{repTitle}", repType);
+            await ioService.ExportToXls<T>(repList, $@"C:\Users\stefa\Downloads\{repTitle}-{dateStr}.xlsx", $"{repTitle}", repType);
         }
         
 

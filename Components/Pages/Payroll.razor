@@ -108,7 +108,8 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="SubmitForm">
+        <EditForm Model="@pay" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
             <div class="h2">@title
                 <div class="button-holder-ems">
                     @if (id != null)
@@ -120,6 +121,7 @@
                     }
                     else
                     {
+                        formSubmission = "create";
                         <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="hover" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
@@ -129,7 +131,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label" for="idd">Payroll Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
+                    <input type="number" @bind="pay.Id" class="form-control" id="idd" readonly disabled />
                 </div>
             }            
 
@@ -145,15 +147,18 @@
             </div>        
             <div class="mb-3">
                 <label class="form-label" for="salary">Base Salary</label>
-                <input type="number" @bind="baseSalary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+                <InputNumber type="number" @bind-Value="pay.BaseSalary" step=".01" placeholder="Enter Salary" class="form-control" id="salary" required />
+                <ValidationMessage For="@(() => pay.BaseSalary)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="overtime">Overtime Pay</label>
-                <input type="number" @bind="overtimePay" step=".01" placeholder="Enter Overtime Pay" class="form-control" id="overtime" required />
+                <InputNumber type="number" @bind-Value="pay.OvertimePay" step=".01" placeholder="Enter Overtime Pay" class="form-control" id="overtime" required />
+                <ValidationMessage For="@(() => pay.OvertimePay)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="deductions">Deductions</label>
-                <input type="number" @bind="deductions" step=".01" placeholder="Enter Deductions" class="form-control" id="deductions" required />
+                <InputNumber type="number" @bind-Value="pay.Deductions" step=".01" placeholder="Enter Deductions" class="form-control" id="deductions" required />
+                <ValidationMessage For="@(() => pay.Deductions)" />
             </div>
              @if (id != null)
             {
@@ -172,7 +177,7 @@
             }
            
 
-        </form>
+        </EditForm>
     </div>
 </div>
 
@@ -195,7 +200,7 @@
     private string alert = "alert-success";
     private int records = 0;
     private string activeClass = "";
-    private Models.Payroll? pay;
+    private Models.Payroll pay = new Models.Payroll();
     private List<Models.Payroll>? filteredData = new List<Models.Payroll>();
 
 
@@ -225,6 +230,7 @@
         baseSalary = netPay = overtimePay = deductions = 0;
         id = employee = null;
         title = "Add Payroll";
+        pay = new Models.Payroll();
     }
 
     private async Task CloseMessage()
@@ -311,17 +317,17 @@
         try
         {
             List<object> customerData = new List<object>();
-            customerData.Add(employee);
-            customerData.Add(baseSalary);
-            customerData.Add(overtimePay);
-            customerData.Add(deductions);
-            netPay = (baseSalary + overtimePay) - deductions;
+            customerData.Add(pay.EmployeeId);
+            customerData.Add(pay.BaseSalary);
+            customerData.Add(pay.OvertimePay);
+            customerData.Add(pay.Deductions);
+            netPay = (pay.BaseSalary + pay.OvertimePay) - pay.Deductions;
             customerData.Add(netPay);
             
             await PayrollService.AddPayroll(customerData);
+            SendMessage($"New payroll record added successfully!");
             await RefreshList();
             await Reset();
-            SendMessage($"New payroll record added successfully!");
         }
         catch (Exception e)
         {
@@ -334,12 +340,12 @@
     {
         try
         {
-            netPay = (baseSalary + overtimePay) - deductions;
-            id = pay.Id;
-            pay.BaseSalary = baseSalary;
-            pay.OvertimePay = overtimePay;
-            pay.Deductions = deductions;
-            pay.NetSalary= netPay;
+            netPay = (pay.BaseSalary + pay.OvertimePay) - pay.Deductions;
+            //id = pay.Id;
+            //pay.BaseSalary = baseSalary;
+            //pay.OvertimePay = overtimePay;
+            //pay.Deductions = deductions;
+            pay.NetSalary = netPay;
 
             await PayrollService.UpdatePayroll(pay);
             await RefreshList();

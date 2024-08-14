@@ -110,17 +110,20 @@
         </table>
     </div>
     <div class="page-section-ems">
-        <form @onsubmit="SubmitForm">
+        <EditForm Model="@selectedTimeRec" OnValidSubmit="SubmitForm">
+            <DataAnnotationsValidator />
             <div class="h2"><div>@title</div>
                 <div class="button-holder-ems">
                     @if (id != null)
                     {
+                        formSubmission = "update";
                         <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-save2"></i></button>
                         <button type="button" @onclick="Reset" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Back"><i class="bi bi-x-lg"></i></button>
                         <button type="button" @onclick="DeleteTimeRecord" class="btn btn-danger" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Delete"><i class="bi bi-trash3"></i></button>
                     }
                     else
                     {
+                        formSubmission = "create";
                         <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" data-trigger="top" title="Submit"><i class="bi bi-plus-lg"></i></button>
                     }
                 </div>
@@ -129,13 +132,13 @@
             {                
                 <div class="mb-3">
                     <label class="form-label" for="idd">Time Record Id</label>
-                    <input type="number" @bind="id" class="form-control" id="idd" readonly disabled />
+                    <input type="number" @bind="selectedTimeRec.Id" class="form-control" id="idd" readonly disabled />
                 </div>
             }           
 
             <div class="mb-3">
                 <label class="form-label" for="name">Employee</label>
-                <select @bind="employee" placeholder="Employee" class="form-select" id="name" required>
+                <select @bind="selectedTimeRec.EmployeeId" placeholder="Employee" class="form-select" id="name" required>
                     <option value="">Select Employee</option>
                     @foreach (Employee e in employeeOptions)
                     {
@@ -145,15 +148,17 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="date">Date</label>
-                <input type="date" @bind="date" class="form-control" id="date" required />
+                <InputDate @bind-Value="selectedTimeRec.Date" class="form-control" id="date" required />
+                <ValidationMessage For="@(() => selectedTimeRec.Date)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="hours">Hours Worked</label>
-                <input type="number" @bind="hoursWorked" step=".01" placeholder="Hours" class="form-control" id="hours" required />
+                <InputNumber @bind-Value="selectedTimeRec.HoursWorked" step=".01" placeholder="Hours" class="form-control" id="hours" required />
+                <ValidationMessage For="@(() => selectedTimeRec.HoursWorked)" />
             </div>
             <div class="mb-3">
                 <label class="form-label" for="type">Type</label>
-                <select @bind="type" class="form-select" id="type" required>
+                <select @bind="selectedTimeRec.Type" class="form-select" id="type" required>
                     <option value="">Select Type</option>
                     <option value="Attendance">Attendance</option>
                     <option value="Overtime">Overtime</option>
@@ -174,7 +179,7 @@
             }
             
 
-        </form>
+        </EditForm>
     </div>
 </div>
 
@@ -203,7 +208,7 @@
     private int records = 0;
     private string activeClass = "";
     private Models.TimeRecord? updatedTimeRecord;     
-    private Models.TimeRecord? selectedTimeRec;
+    private Models.TimeRecord selectedTimeRec = new Models.TimeRecord();
     private List<Models.TimeRecord>? filteredData = new List<Models.TimeRecord>();
 
     private int employeeId;
@@ -233,6 +238,7 @@
         id = employee = null;
         type = "";
         title = "Add Record";
+        selectedTimeRec = new Models.TimeRecord();
     }
 
     private async Task CloseMessage()
@@ -305,7 +311,7 @@
             employee = selectedTimeRec.EmployeeId;
             date = selectedTimeRec.Date;
             hoursWorked = selectedTimeRec.HoursWorked;
-            type = selectedTimeRec.Type;
+            //type = selectedTimeRec.Type;
             created = selectedTimeRec.CreatedAt;
             updated = selectedTimeRec.UpdatedAt;
             title = $"Update {selectedTimeRec.Id}";
@@ -337,10 +343,10 @@
         {
 
             List<object> timeRecordData = new List<object>();            
-            timeRecordData.Add(employee);           // employee Id
-            timeRecordData.Add(date);
-            timeRecordData.Add(hoursWorked);
-            timeRecordData.Add(type);
+            timeRecordData.Add(selectedTimeRec.EmployeeId);           // employee Id
+            timeRecordData.Add(selectedTimeRec.Date);
+            timeRecordData.Add(selectedTimeRec.HoursWorked);
+            timeRecordData.Add(selectedTimeRec.Type);
 
             await TimeRecordService.AddTimeRecord(timeRecordData);
             await RefreshList();
@@ -358,17 +364,17 @@
     {
         try
         {
-
+            /*
             updatedTimeRecord = new Models.TimeRecord
             {
-                    Id = (int)id,
-                    EmployeeId = (int)employee,
-                    Date = (DateTime)date,
-                    HoursWorked = (int)hoursWorked,
-                    Type = (string)type
+                    Id = selectedTimeRec.Id,
+                    EmployeeId = selectedTimeRec.EmployeeId,
+                    Date = selectedTimeRec.Date,
+                    HoursWorked = selectedTimeRec.HoursWorked,
+                    Type = selectedTimeRec.Type
             };
-
-            await TimeRecordService.UpdateTimeRecord(updatedTimeRecord);         
+            */
+            await TimeRecordService.UpdateTimeRecord(selectedTimeRec);         
             await RefreshList();
             await Reset();
             msg = $"Payroll record updated successfully!";

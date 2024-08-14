@@ -18,8 +18,8 @@ namespace EMS.Models
         private int _role;
 
 
-        [Required(ErrorMessage = "Eemployee Name required")]
-        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+        [Required(ErrorMessage = "Employee Name required")]
+        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 50 characters")]
         public string Name
         {
             get { return _name; }
@@ -28,7 +28,7 @@ namespace EMS.Models
 
 
         [Required(ErrorMessage = "Email required")]
-        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 50 characters")]
         public string Email
         {
             get { return _email; }
@@ -36,14 +36,14 @@ namespace EMS.Models
         }
 
         [Required(ErrorMessage = "Position required")]
-        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 100 characters")]
+        [StringLength(50, ErrorMessage = "Employee Name cannot exceed 50 characters")]
         public string Position
         {
             get { return _position; }
             set { _position = value; }
         }
 
-        [Range(0, double.MaxValue, ErrorMessage = "Salary must be a positive number")]
+        [Range(1, double.MaxValue, ErrorMessage = "Salary must be a positive number")]
         public decimal Salary
         {
             get { return _salary; }
