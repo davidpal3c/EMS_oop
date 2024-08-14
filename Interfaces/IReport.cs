@@ -7,13 +7,13 @@ using EMS.Models;
 
 namespace EMS.Interfaces
 {
+    //interface for report servicing
     internal interface IReport
-    {
-               
+    {               
 
         Task<List<Report>> GenerateReport(Report.EReportType rt);
                 
-        Task SaveReport<T>(List<T> repList, Report.EReportType rt);                    
+        Task SaveReport<T>(List<T> repList, Report.EReportType rt);                   
         
         
     }

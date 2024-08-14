@@ -18,6 +18,13 @@ namespace EMS.Services
         private readonly DBService _dbService;
         private readonly PayrollMapper _payrollMapper;
 
+
+        /// <summary>
+        /// Constructor for PayrollService class, instanting DBService and PayrollMapper objects to be used in the class.
+        /// </summary>
+        /// <param name="dbService"></param>
+        /// <param name="payrollMapper"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public PayrollService(DBService dbService, PayrollMapper payrollMapper)
         {
             _dbService = dbService ?? throw new ArgumentNullException(nameof(dbService));
@@ -25,6 +32,18 @@ namespace EMS.Services
         }
 
 
+
+        /// <summary>
+        /// Async method generating query to fetch employees from the database.
+        /// </summary>
+        /// <typeparam name="string"></typeparam>
+        /// <param name="sort">component provided sorting string</param>
+        /// <returns>A task async returning list of Payroll objects mapped from the database using the sort string</returns>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: GetPayrolls
+        /// Date: 2024-08-10        
+        /// </remarks>
         public async Task<List<Payroll>> GetPayrolls(string sort)
         {
             List<Payroll> payrollList = new List<Payroll>();
@@ -57,6 +76,18 @@ namespace EMS.Services
             return payrollList;
         }
 
+
+        /// <summary>
+        /// Async method generating query to fetch payrolls based user search parameter. 
+        /// </summary>       
+        /// <typeparam name="string"></typeparam>
+        /// <param name="search"></param>
+        /// <returns>Asynchronous task returning a list of Payroll objects from search query.>
+        /// <exception cref="Exception"></exception>
+        /// <remarks>
+        /// Name: SearchPayrolls
+        /// Date: 2024-08-10      
+        /// </remarks>
         public async Task<List<Payroll>> SearchPayrolls(string search)
         {
             List<Payroll> payrollList = new List<Payroll>();
@@ -90,6 +121,16 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Async method generating insert of employee object in database
+        /// </summary>       
+        /// <typeparam name="object"></typeparam>
+        /// <param name="List"></param>        
+        /// <remarks>
+        /// Name: AddEmployee
+        /// Date: 2024-08-10 
+        /// Parametizes insert query to add employee data into the database, using index of objects in list.
+        /// </remarks>
         public async Task AddPayroll(List<object> payrollData)
         {
 
@@ -118,6 +159,16 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Asynchronous task updatig payroll field into database
+        /// </summary>       
+        /// <typeparam name="Payroll"></typeparam>
+        /// <param name="updatedPayroll"></param>        
+        /// <remarks>
+        /// Name: UpdateEmployee
+        /// Date: 2024-08-10  
+        /// Method used to update employee fields in the database table 'Employees', based on employee id. 
+        /// Parametizes update data in the database using index of objects in list.
         public async Task UpdatePayroll(Payroll updatedPayroll)
         {
             using (MySqlConnection conn = new MySqlConnection(_dbService.ConnectionString))
@@ -141,6 +192,16 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Asynchronous task deleting payroll field from database
+        /// </summary>       
+        /// <typeparam name="Payroll"></typeparam>
+        /// <param name="payroll"></param>        
+        /// <remarks>
+        /// Name: DeleteEmployee
+        /// Date: 2024-08-10 
+        /// Method used to delete payroll fields in the database table 'Payroll', based on payroll id. 
+        /// </remarks>
         public async Task DeletePayroll(Payroll payroll)
         {
 

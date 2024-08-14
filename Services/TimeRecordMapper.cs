@@ -11,6 +11,18 @@ namespace EMS.Services
 {
     public class TimeRecordMapper
     {
+
+        /// <summary>
+        /// Mapper method from reader, instantiating TimeRecord object.
+        /// </summary>       
+        /// <typeparam name="MySqlDataReader"></typeparam>
+        /// <param name="reader"></param>        
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException">throws error mapping message related to invalid types</exception>
+        /// <remarks>
+        /// Name: MapFromReaderTimeRecord
+        /// Date: 2024-08-10       
+        /// </remarks>
         public TimeRecord MapFromReaderTimeRecord(MySqlDataReader reader)
         {
             try
@@ -37,6 +49,17 @@ namespace EMS.Services
         }
 
 
+        /// <summary>
+        /// Mapper method from reader, instantiating TimeRecordView object for additional fields.
+        /// </summary>       
+        /// <typeparam name="MySqlDataReader"></typeparam>
+        /// <param name="reader"></param>        
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="InvalidOperationException">throws error mapping message related to invalid types</exception>
+        /// <remarks>
+        /// Name: MapFromReaderTimeRecordReport
+        /// Date: 2024-08-13        
+        /// </remarks>
         public TimeRecordView MapFromReaderTimeRecordReport(MySqlDataReader reader)
         {
             try
