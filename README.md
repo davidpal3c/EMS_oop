@@ -25,6 +25,7 @@ The system integrates with a MySQL database to ensure efficient data storage and
 
 ### Reporting:
 •	Report Generation: Generate detailed reports on employees, payrolls, and time records.<br>
+•	Filter by date 
 •	Export to Excel: Export data to Excel files for further analysis and record-keeping.<br>
 
 ### Database Integration:
