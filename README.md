@@ -9,11 +9,10 @@ The system integrates with a MySQL database to ensure efficient data storage and
 <br>
 (Click Image for App Demo)
 <br>
-[![Employee Management System (EMS)](https://iili.io/2xF0UXt.md.png)](https://youtu.be/wPv-K9ioARo)
 
-[![2xFw8c7.th.png](https://iili.io/2xFw8c7.th.png)](https://youtu.be/wPv-K9ioARo)
+[![Employee Management System (EMS)](https://iili.io/2xFw8c7.th.png)](https://youtu.be/wPv-K9ioARo)
 
-[![2xF7xrQ.md.jpg](https://iili.io/2xF7xrQ.md.jpg)](https://youtu.be/3IxHSi6Clww)
+
 
 
 ## Functionality
