@@ -11,6 +11,9 @@ The system integrates with a MySQL database to ensure efficient data storage and
 <br>
 [![2xF0UXt.md.png](https://iili.io/2xF0UXt.md.png)](https://youtu.be/wPv-K9ioARo)
 
+[![2xF7xrQ.md.jpg](https://iili.io/2xF7xrQ.md.jpg)](https://youtu.be/wPv-K9ioARo)
+
+[![2xF0UXt.md.png](https://iili.io/2xF0UXt.md.png)](https://youtu.be/wPv-K9ioARo)
 
 ## Functionality
 
