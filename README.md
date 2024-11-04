@@ -7,6 +7,10 @@ comprehensive functionalities for managing employees, payrolls, time records, an
 The system integrates with a MySQL database to ensure efficient data storage and retrieval.
 
 <br>
+(Click Image for App Demo)
+<br>
+[![2xF0UXt.md.png](https://iili.io/2xF0UXt.md.png)](https://youtu.be/wPv-K9ioARo))
+
 
 ## Functionality
 
