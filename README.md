@@ -5,7 +5,7 @@
 The Employee Management System (EMS) is a robust application built using .NET MAUI and Blazor, designed to streamline HR processes by providing 
 comprehensive functionalities for managing employees, payrolls, time records, and generating various reports. <br>
 The system integrates with a MySQL database to ensure efficient data storage and retrieval.
-
+<br>
 <br>
 (Click Image for App Demo)
 <br>
